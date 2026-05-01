@@ -3,210 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STRIDE PROJECT // HIGH-PERFORMANCE LAB</title>
+    <title>The Pursuit of Excellence | Home</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto+Condensed:wght@400;700&display=swap');
-
-        :root {
-            --bg-obsidian: #0a0a0a;
-            --bg-slate: #1a1a1a;
-            --tactical-orange: #ff4d00;
-            --text-white: #ffffff;
-            --text-gray: #a0a0a0;
-            --font-impact: 'Oswald', sans-serif;
-            --font-data: 'Roboto Condensed', sans-serif;
-        }
-
         body {
-            background-color: var(--bg-obsidian);
-            color: var(--text-white);
-            font-family: var(--font-data);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
-            text-transform: uppercase;
-        }
-
-        /* --- HERO SECTION --- */
-        header {
-            height: 60vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1470&ixlib=rb-4.0.3') center/cover;
-            border-bottom: 8px solid var(--tactical-orange);
+            height: 100vh;
+            background-color: #121212; /* Dark, modern theme */
+            color: #ffffff;
             text-align: center;
         }
-
-        .hero-title {
-            font-family: var(--font-impact);
-            font-size: 5rem;
-            line-height: 0.9;
-            margin: 0;
-            letter-spacing: -2px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            color: var(--tactical-orange);
-            margin-top: 10px;
-        }
-
-        /* --- NAV BAR --- */
-        nav {
-            background: var(--bg-slate);
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #333;
-        }
-
-        nav a {
-            color: var(--text-white);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        nav a:hover { color: var(--tactical-orange); }
-
-        /* --- CONTENT --- */
         .container {
-            max-width: 1000px;
-            margin: 50px auto;
+            max-width: 600px;
             padding: 20px;
         }
-
-        .current-objective {
-            background: var(--tactical-orange);
-            color: black;
-            display: inline-block;
-            padding: 5px 15px;
-            font-family: var(--font-impact);
-            margin-bottom: 20px;
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
         }
-
-        .mission-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        p {
+            font-size: 1.2rem;
+            color: #bbbbbb;
+            margin-bottom: 30px;
         }
-
-        .protocol-card {
-            background: var(--bg-slate);
-            border: 1px solid #333;
-            padding: 0;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .protocol-card:hover {
-            border-color: var(--tactical-orange);
-            transform: translateY(-5px);
-        }
-
-        .card-image {
-            height: 200px;
-            background-color: #333;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .card-content {
-            padding: 25px;
-        }
-
-        .card-content h3 {
-            font-family: var(--font-impact);
-            font-size: 1.8rem;
-            margin: 0 0 10px 0;
-        }
-
-        .card-content p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            text-transform: none; /* Keep description readable */
-        }
-
-        .btn-execute {
-            display: block;
-            background: transparent;
-            border: 2px solid var(--tactical-orange);
-            color: var(--tactical-orange);
-            text-align: center;
-            padding: 12px;
-            margin-top: 20px;
+        .btn {
+            background-color: #d32f2f; /* Fire red */
+            color: white;
+            padding: 15px 30px;
             text-decoration: none;
             font-weight: bold;
-            font-family: var(--font-impact);
-            letter-spacing: 2px;
-            transition: 0.3s;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            text-transform: uppercase;
         }
-
-        .btn-execute:hover {
-            background: var(--tactical-orange);
-            color: black;
-        }
-
-        footer {
-            text-align: center;
-            padding: 60px;
-            border-top: 1px solid #333;
-            color: #444;
-            font-size: 0.8rem;
+        .btn:hover {
+            background-color: #b71c1c;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <p class="hero-subtitle">DATA-DRIVEN FITNESS LABORATORY</p>
-    <h1 class="hero-title">THE STRIDE<br>PROJECT</h1>
-</header>
-
-<nav>
-    <a href="#">DEPLOYMENTS</a>
-    <a href="#">PROTOCOLS</a>
-    <a href="#">RAW INTEL</a>
-    <a href="#">JOIN THE VANGUARD</a>
-</nav>
-
-<div class="container">
-    <div class="current-objective">ACTIVE OBJECTIVE: PHASE 01 // LEVERAGE OPTIMIZATION</div>
-
-    <div class="mission-grid">
-        <!-- Card 1 -->
-        <article class="protocol-card">
-            <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1470');"></div>
-            <div class="card-content">
-                <h3>MECHANICAL SUPERIORITY</h3>
-                <p>Testing the "Tall Frame Stance" to maximize torque and protect the posterior chain. 30 days in the lab. Zero excuses.</p>
-                <a href="#" class="btn-execute">EXECUTE PROTOCOL</a>
-            </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="protocol-card">
-            <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&q=80&w=1374');"></div>
-            <div class="card-content">
-                <h3>METABOLIC RECON</h3>
-                <p>Analyzing insulin sensitivity in athletic frames over 6'2". Data suggests standard carb-loading is failing us. Here is the fix.</p>
-                <a href="#" class="btn-execute">ACCESS INTEL</a>
-            </div>
-        </article>
+    <div class="container">
+        <h1>THE PURSUIT OF EXCELLENCE</h1>
+        <p>A mission to explore the limits of health, fitness, and human performance.</p>
+        <a href="post1.html" class="btn">Read My First Entry</a>
     </div>
-</div>
-
-<footer>
-    ESTABLISHED 2026 // NO FINISH LINE // STRIDE PROJECT GLOBAL
-</footer>
 
 </body>
 </html>
