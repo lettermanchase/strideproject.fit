@@ -3,55 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Pursuit of Excellence | Home</title>
+    <title>The Pursuit of Excellence | Blog Feed</title>
     <style>
+        /* General Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            background-color: #121212; /* Dark theme */
+            color: #ffffff;
+        }
+
+        /* Hero Header with Background Image Slot */
+        header.hero {
+            height: 45vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('header.jpg') no-repeat center center;
+            background-size: cover;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #121212; /* Dark, modern theme */
-            color: #ffffff;
             text-align: center;
+            border-bottom: 4px solid #d32f2f;
         }
-        .container {
-            max-width: 600px;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-        p {
-            font-size: 1.2rem;
-            color: #bbbbbb;
-            margin-bottom: 30px;
-        }
-        .btn {
-            background-color: #d32f2f; /* Fire red */
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background 0.3s ease;
+
+        header.hero h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
-        .btn:hover {
-            background-color: #b71c1c;
+
+        header.hero p {
+            font-size: 1.2rem;
+            color: #d32f2f;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Blog Feed Section */
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .feed-title {
+            border-bottom: 1px solid #333;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        /* Post Card Styles */
+        .post-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            padding: 25px;
+            border-left: 0px solid #d32f2f;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .post-card:hover {
+            border-left: 8px solid #d32f2f;
+            background-color: #252525;
+            transform: translateX(10px);
+        }
+
+        .post-card h2 {
+            margin: 0 0 10px 0;
+            color: #fff;
+        }
+
+        .post-card .date {
+            font-size: 0.85rem;
+            color: #d32f2f;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .post-card p {
+            margin: 0;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #555;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
+    <!-- Hero Header -->
+    <header class="hero">
+        <h1>The Pursuit of Excellence</h1>
+        <p>MISSION-READY HEALTH & FITNESS</p>
+    </header>
+
     <div class="container">
-        <h1>THE PURSUIT OF EXCELLENCE</h1>
-        <p>A mission to explore the limits of health, fitness, and human performance.</p>
-        <a href="post1.html" class="btn">Read My First Entry</a>
+        <h2 class="feed-title">Mission Log</h2>
+
+        <!-- Post 2 Card -->
+        <a href="post2.html" class="post-card">
+            <span class="date">May 2, 2026</span>
+            <h2>Nature's Obstacle Course</h2>
+            <p>From the buoyancy of the Dead Sea to the rugged canyons of the Mujib Nature Reserve, exploring how functional fitness allows us to experience the world's most incredible spectacles.</p>
+        </a>
+
+        <!-- Post 1 Card -->
+        <a href="post1.html" class="post-card">
+            <span class="date">May 1, 2026</span>
+            <h2>The Spark of Performance</h2>
+            <p>Why I started this journey, my time in the military, and the commitment to finding the gap between average and exceptional.</p>
+        </a>
+
     </div>
+
+    <footer>
+        &copy; 2026 The Pursuit of Excellence. All Rights Reserved.
+    </footer>
 
 </body>
 </html>
