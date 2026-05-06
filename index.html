@@ -22,8 +22,18 @@
         .dropdown-content a:hover { background-color: #f4f7f6; color: #2e7d32; }
         .dropdown:hover .dropdown-content { display: block; }
         
-        /* Hero & Feed Styles */
-        header.hero { background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('image.png') no-repeat center center; background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 5px solid #2e7d32; height: 55vh; }
+        /* Hero Header using header.jpg */
+        header.hero { 
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('header.jpg') no-repeat center center; 
+            background-size: cover; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            border-bottom: 5px solid #2e7d32; 
+            height: 55vh; /* Desktop Height */
+        }
         header.hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); }
         header.hero p { font-size: 1.2rem; color: #81c784; font-weight: bold; margin-top: 10px; letter-spacing: 1px; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); }
         
@@ -38,7 +48,12 @@
         
         footer { text-align: center; padding: 40px; color: #888; font-size: 0.9rem; background-color: #ffffff; border-top: 1px solid #ddd; }
         
-        @media (max-width: 768px) { header.hero { height: 40vh; } header.hero h1 { font-size: 2.2rem; } .nav-links { display: none; } }
+        /* Mobile Scaling Rules */
+        @media (max-width: 768px) { 
+            header.hero { height: 40vh; } /* Mobile Height */
+            header.hero h1 { font-size: 2.2rem; } 
+            .nav-links { display: none; } 
+        }
     </style>
 </head>
 <body>
