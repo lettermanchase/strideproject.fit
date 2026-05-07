@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFT Maximizer · Military PT Prep | The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+/* ============ RESET & BASE ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAVIGATION ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+    display: flex; justify-content: space-between;
+    align-items: center; position: relative;
+}
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary); background: none; border: none;
+    font-size: 0.95rem; cursor: pointer; font-family: inherit;
+    padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+
+.nav-cta {
+    background: none; padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent); border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none; position: absolute; top: 100%; left: 0;
+    background: white; min-width: 200px;
+    border: 1px solid var(--border); border-top: 2px solid var(--accent);
+    z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+    text-transform: none; letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none; background: none; border: none; cursor: pointer;
+    flex-direction: column; gap: 5px; padding: 0.5rem;
+}
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+/* ============ PAGE HEADER ============ */
+.page-header {
+    background: linear-gradient(rgba(47, 107, 58, 0.85), rgba(31, 42, 35, 0.9));
+    padding: 4rem 2rem 3rem;
+    text-align: center; color: white;
+    border-bottom: 3px solid var(--accent-bright);
+}
+.page-header-inner { max-width: 900px; margin: 0 auto; }
+
+.page-eyebrow {
+    display: inline-block;
+    background: var(--accent-bright); color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 3px; font-weight: bold;
+    margin-bottom: 1rem;
+}
+.page-header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1rem; color: white;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+.page-header p {
+    font-size: 1.05rem; color: rgba(255,255,255,0.9);
+    max-width: 720px; margin: 0 auto 2rem;
+}
+
+/* ============ PDF BUTTONS ============ */
+.pdf-btn {
+    display: inline-block; padding: 0.9rem 2rem;
+    background: var(--accent-bright); color: white;
+    text-transform: uppercase; letter-spacing: 2px;
+    font-weight: bold; font-size: 0.85rem;
+    border-radius: 3px; border: 2px solid var(--accent-bright);
+    cursor: pointer; font-family: inherit; transition: all 0.2s;
+}
+.pdf-btn:hover { background: white; color: var(--accent); border-color: white; }
+
+.pdf-btn-float {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--accent); color: white; border: none;
+    padding: 0.85rem 1.4rem; border-radius: 50px;
+    font-size: 0.8rem; font-weight: bold; letter-spacing: 1.5px;
+    text-transform: uppercase; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.35);
+    transition: transform 0.2s, background 0.2s; font-family: inherit;
+}
+.pdf-btn-float:hover { background: var(--accent-bright); transform: scale(1.05); }
+
+/* ============ META STATS BAR ============ */
+.meta-stats {
+    max-width: 1200px; margin: -2rem auto 0;
+    padding: 0 2rem; position: relative; z-index: 5;
+}
+.meta-stats-inner {
+    background: var(--bg-card); border-top: 3px solid var(--accent);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    padding: 1rem;
+}
+.meta-item {
+    padding: 1rem; border-right: 1px solid var(--border); text-align: center;
+}
+.meta-item:last-child { border-right: none; }
+.meta-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-secondary); margin-bottom: 0.4rem;
+}
+.meta-value { font-size: 1rem; font-weight: bold; color: var(--accent); margin-bottom: 0.2rem; }
+.meta-sub { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* ============ AFT EVENT KEY ============ */
+.acft-key {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+}
+.acft-key-inner {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.acft-key-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent);
+    font-weight: bold; margin-bottom: 0.75rem;
+}
+.acft-events {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+.acft-event {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem; color: var(--text-secondary);
+}
+.acft-event-tag {
+    background: var(--accent); color: white;
+    padding: 0.15rem 0.5rem; font-size: 0.7rem;
+    font-weight: bold; letter-spacing: 1px;
+    border-radius: 2px; min-width: 38px; text-align: center;
+}
+
+/* ============ CONTENT LAYOUT ============ */
+.content-wrapper {
+    max-width: 1200px; margin: 3rem auto;
+    padding: 0 2rem;
+    display: grid; grid-template-columns: 1fr 300px; gap: 3rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem; margin-bottom: 2rem;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.section-intro {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* ============ DAY CARDS ============ */
+.day-card {
+    background: var(--bg-card);
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+}
+.day-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.15);
+}
+.day-card-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--accent-soft);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 0.5rem;
+}
+.day-card-title { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.day-tag {
+    background: var(--accent); color: white;
+    padding: 0.2rem 0.6rem; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
+}
+.day-card h3 {
+    font-size: 1.2rem; color: var(--text-primary);
+    text-transform: uppercase; letter-spacing: 1.5px;
+}
+.day-card-meta { font-size: 0.8rem; color: var(--text-secondary); }
+.day-card-body { padding: 1.5rem; }
+.day-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; font-style: italic; }
+
+.day-card.rest-day { border-left-color: var(--accent-bright); }
+.day-card.rest-day .day-card-header { background: #f0f6f1; }
+
+.circuit-callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+.circuit-callout strong { color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+
+/* ============ TABLES ============ */
+table {
+    width: 100%; border-collapse: collapse;
+    margin-bottom: 1rem; font-size: 0.9rem;
+}
+thead { background: var(--accent-soft); }
+th {
+    text-align: left; padding: 0.75rem 1rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 1px; font-size: 0.75rem;
+    font-weight: bold; border-bottom: 2px solid var(--accent);
+}
+td {
+    text-align: left; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+}
+tbody tr:hover { background: var(--accent-soft); }
+td:first-child { font-weight: bold; }
+td:nth-child(2) { color: var(--text-secondary); }
+td:last-child { color: var(--text-secondary); font-size: 0.85rem; }
+
+.inline-tag {
+    display: inline-block;
+    background: var(--accent); color: white;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem; font-weight: bold;
+    letter-spacing: 0.5px; border-radius: 2px;
+    margin-right: 0.3rem;
+}
+
+/* ============ COACHING NOTES ============ */
+.coaching-notes {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem; margin-top: 1rem;
+}
+.coaching-notes-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent);
+    font-weight: bold; margin-bottom: 0.6rem;
+}
+.coaching-notes ul { list-style: none; }
+.coaching-notes li {
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    position: relative; color: var(--text-secondary);
+    font-size: 0.9rem; line-height: 1.5;
+}
+.coaching-notes li::before {
+    content: "→"; position: absolute; left: 0;
+    color: var(--accent); font-weight: bold;
+}
+
+/* ============ PROGRESSION & PRINCIPLE CARDS ============ */
+.progress-grid, .system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+}
+.progress-card {
+    background: var(--bg-card); padding: 1.5rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.progress-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.progress-card h4 {
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 1px; font-size: 1rem; margin-bottom: 0.5rem;
+}
+.progress-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+.system-card {
+    background: var(--bg-card);
+    border-top: 3px solid var(--accent);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.system-number {
+    background: var(--accent); color: white;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; margin-bottom: 0.75rem;
+}
+.system-card h4 {
+    font-size: 1rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+.system-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ============ AFT CALCULATOR ============ */
+.calculator {
+    background: var(--bg-card);
+    border-top: 4px solid var(--accent);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.calculator-intro {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.calc-event {
+    background: var(--bg-light);
+    padding: 1rem;
+    border-left: 3px solid var(--accent);
+}
+.calc-event label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+.calc-event .calc-event-name {
+    font-size: 0.85rem; color: var(--text-primary);
+    font-weight: bold; margin-bottom: 0.5rem;
+}
+.calc-input-row {
+    display: flex; gap: 0.4rem; align-items: center;
+}
+.calc-input-row input {
+    flex: 1; min-width: 0;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: white;
+    color: var(--text-primary);
+    text-align: center;
+}
+.calc-input-row input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.calc-input-row .unit {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 35px;
+}
+.calc-event .event-score {
+    margin-top: 0.6rem;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent);
+    line-height: 1;
+}
+.calc-event .event-score-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-secondary);
+    text-align: center; margin-top: 0.2rem;
+}
+
+.total-display {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+.total-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 0.5rem;
+    opacity: 0.9; font-weight: bold;
+}
+.total-value {
+    font-size: 3rem; font-weight: 900;
+    letter-spacing: 2px; line-height: 1;
+}
+.total-status {
+    font-size: 0.9rem; margin-top: 0.5rem;
+    text-transform: uppercase; letter-spacing: 2px;
+    opacity: 0.95; font-weight: bold;
+}
+.calc-disclaimer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* ============ VERDICT BLOCK ============ */
+.verdict {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white; padding: 2.5rem 2rem;
+    margin: 2rem 0; text-align: center;
+}
+.verdict-label {
+    font-size: 0.75rem; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(255,255,255,0.9);
+    margin-bottom: 1rem; font-weight: bold;
+}
+.verdict-quote {
+    font-size: 1.1rem; line-height: 1.55; color: white;
+    max-width: 700px; margin: 0 auto;
+}
+
+/* ============ DISCLAIMER ============ */
+.disclaimer {
+    text-align: center; color: var(--text-secondary);
+    font-size: 0.85rem; padding: 1.25rem;
+    border: 1px dashed var(--border); background: var(--bg-card);
+    margin-top: 1.5rem;
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar-block {
+    background: var(--bg-card); padding: 1.5rem;
+    margin-bottom: 1.5rem; border-top: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.sidebar-block h4 {
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 1rem; font-size: 0.9rem; color: var(--accent);
+}
+.sidebar-block p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.sidebar-block ul { list-style: none; }
+.sidebar-block li {
+    padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+.sidebar-block li:last-child { border-bottom: none; }
+.sidebar-block strong { color: var(--accent); }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag-cloud a {
+    background: var(--accent-soft); padding: 0.3rem 0.7rem;
+    font-size: 0.8rem; color: var(--accent);
+    border-radius: 3px; border: 1px solid var(--border);
+}
+.tag-cloud a:hover { background: var(--accent); color: white; }
+
+.scorecard-table { width: 100%; font-size: 0.8rem; }
+.scorecard-table td {
+    padding: 0.4rem 0; border-bottom: 1px solid var(--border);
+}
+.scorecard-table td:first-child {
+    font-weight: bold; color: var(--text-primary);
+}
+.scorecard-table td:last-child {
+    text-align: right; color: var(--accent); font-weight: bold;
+}
+
+/* ============ NEWSLETTER ============ */
+.newsletter {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    padding: 4rem 2rem; text-align: center; color: white;
+}
+.newsletter-inner { max-width: 600px; margin: 0 auto; }
+.newsletter h2 {
+    font-size: 2rem; margin-bottom: 0.5rem;
+    text-transform: uppercase; letter-spacing: 3px; color: white;
+}
+.newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+    flex: 1; padding: 0.9rem; border: none;
+    background: rgba(255,255,255,0.95); color: var(--text-primary);
+    font-size: 1rem; border-radius: 3px;
+}
+.newsletter-form button {
+    padding: 0.9rem 1.5rem; background: var(--text-primary);
+    color: white; border: none; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; border-radius: 3px; font-family: inherit;
+}
+.newsletter-form button:hover { background: black; }
+
+/* ============ FOOTER ============ */
+.site-footer {
+    background: var(--text-primary); padding: 2rem;
+    text-align: center; color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer a { color: var(--accent-bright); }
+.site-footer .footer-brand {
+    font-weight: 900; letter-spacing: 3px;
+    color: white; margin-bottom: 0.3rem;
+}
+.social { margin-top: 0.5rem; }
+
+/* ============ MOBILE ============ */
+@media (max-width: 900px) {
+    .content-wrapper { grid-template-columns: 1fr; }
+    .meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .meta-item:last-child { border-bottom: none; }
+}
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        display: none; position: absolute; top: 100%;
+        left: 0; right: 0; background: white;
+        flex-direction: column; gap: 0; padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle {
+        width: 100%; text-align: left; padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static; width: 100%; border: none;
+        background: var(--accent-soft); box-shadow: none;
+    }
+    .newsletter-form { flex-direction: column; }
+}
+
+/* ============ PRINT STYLES ============ */
+@media print {
+    body { background: white; color: black; font-size: 10.5pt; line-height: 1.45; }
+    .site-header, .menu-toggle, .nav-menu, .newsletter, .site-footer,
+    .pdf-btn, .pdf-btn-float, .no-print, .sidebar, .calculator { display: none !important; }
+    .content-wrapper { display: block; max-width: 100%; margin: 0; padding: 0 0.5in; }
+    .page-header {
+        background: white !important; color: black;
+        padding: 0.5in 0 0.3in;
+        border-bottom: 2px solid #2f6b3a;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .page-header h1, .page-header p { color: black !important; text-shadow: none; }
+    .page-eyebrow { background: #2f6b3a !important; color: white !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .meta-stats, .acft-key { margin-top: 1rem; }
+    .meta-stats-inner, .acft-key-inner { box-shadow: none; border: 1px solid #ccc; }
+    .day-card, .system-card, .progress-card, .coaching-notes, table {
+        page-break-inside: avoid; box-shadow: none !important;
+    }
+    .day-card { border: 1px solid #ccc; border-left: 3px solid #2f6b3a; margin-bottom: 0.75rem; }
+    .day-card-header { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .verdict { background: #e8f1ea !important; color: black !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        border-left: 3px solid #2f6b3a; }
+    .verdict-label, .verdict-quote { color: black !important; }
+    .inline-tag, .day-tag, .acft-event-tag {
+        background: #2f6b3a !important; color: white !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    h2, h3 { page-break-after: avoid; }
+    a { color: black; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military / AFT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+    <div class="page-header-inner">
+        <span class="page-eyebrow">Military PT Prep · AFT Maximizer</span>
+        <h1>The AFT Maximizer Program</h1>
+        <p>A 7-day training split engineered to build the strength, endurance, and grit required to crush the Army Fitness Test (AFT — effective 1 June 2025). Every workout trains a measurable AFT event. No SPT, no fluff — just five events and a clear path to a max score. Built by a soldier, for soldiers.</p>
+        <button onclick="window.print()" class="pdf-btn no-print">📄 Download Printable PDF</button>
+    </div>
+</section>
+
+<!-- ============ META STATS BAR ============ -->
+<div class="meta-stats">
+    <div class="meta-stats-inner">
+        <div class="meta-item">
+            <div class="meta-label">Days / Week</div>
+            <div class="meta-value">5 + 2 Recovery</div>
+            <div class="meta-sub">Field-ready load</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Cycle Length</div>
+            <div class="meta-value">8 Weeks</div>
+            <div class="meta-sub">Test-cycle build</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Level</div>
+            <div class="meta-value">All Soldiers</div>
+            <div class="meta-sub">PVT to NCO</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Session Time</div>
+            <div class="meta-value">60–75 min</div>
+            <div class="meta-sub">PT-window ready</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Goal</div>
+            <div class="meta-value">Max AFT Score</div>
+            <div class="meta-sub">450+ target</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ AFT EVENT KEY ============ -->
+<div class="acft-key">
+    <div class="acft-key-inner">
+        <div class="acft-key-label">⚔️ AFT Event Key (Effective 1 June 2025)</div>
+        <div class="acft-events">
+            <div class="acft-event"><span class="acft-event-tag">MDL</span> 3-Rep Max Deadlift</div>
+            <div class="acft-event"><span class="acft-event-tag">HRP</span> Hand-Release Push-Up</div>
+            <div class="acft-event"><span class="acft-event-tag">SDC</span> Sprint-Drag-Carry</div>
+            <div class="acft-event"><span class="acft-event-tag">PLK</span> Plank</div>
+            <div class="acft-event"><span class="acft-event-tag">2MR</span> 2-Mile Run</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="content-wrapper">
+
+    <section>
+        <!-- ============ AFT CALCULATOR ============ -->
+        <h2 class="section-title">🎯 AFT Score Calculator</h2>
+        <p class="section-intro">Plug in your numbers from your last test (or training rep) to see your projected AFT score. Use it to find your weakest event and adjust your training focus week to week.</p>
+
+        <div class="calculator no-print">
+            <p class="calculator-intro">Based on Army Fitness Test scoring (effective 1 June 2025). Max possible score: <strong>500</strong>. Passing per event: <strong>60 points</strong> (300 total + pass each event).</p>
+
+            <div class="calc-grid">
+                <!-- MDL -->
+                <div class="calc-event">
+                    <label>Event 1</label>
+                    <div class="calc-event-name">🏋️ Max Deadlift (MDL)</div>
+                    <div class="calc-input-row">
+                        <input type="number" id="mdl-input" placeholder="0" min="0" max="400" oninput="calculateAFT()">
+                        <span class="unit">lbs</span>
+                    </div>
+                    <div class="event-score" id="mdl-score">—</div>
+                    <div class="event-score-label">Points</div>
+                </div>
+
+                <!-- HRP -->
+                <div class="calc-event">
+                    <label>Event 2</label>
+                    <div class="calc-event-name">💪 Hand-Release Push-Ups</div>
+                    <div class="calc-input-row">
+                        <input type="number" id="hrp-input" placeholder="0" min="0" max="100" oninput="calculateAFT()">
+                        <span class="unit">reps</span>
+                    </div>
+                    <div class="event-score" id="hrp-score">—</div>
+                    <div class="event-score-label">Points</div>
+                </div>
+
+                <!-- SDC -->
+                <div class="calc-event">
+                    <label>Event 3</label>
+                    <div class="calc-event-name">🏃 Sprint-Drag-Carry</div>
+                    <div class="calc-input-row">
+                        <input type="number" id="sdc-min" placeholder="m" min="0" max="5" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">:</span>
+                        <input type="number" id="sdc-sec" placeholder="ss" min="0" max="59" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">m:s</span>
+                    </div>
+                    <div class="event-score" id="sdc-score">—</div>
+                    <div class="event-score-label">Points</div>
+                </div>
+
+                <!-- PLK -->
+                <div class="calc-event">
+                    <label>Event 4</label>
+                    <div class="calc-event-name">🧘 Plank Hold</div>
+                    <div class="calc-input-row">
+                        <input type="number" id="plk-min" placeholder="m" min="0" max="10" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">:</span>
+                        <input type="number" id="plk-sec" placeholder="ss" min="0" max="59" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">m:s</span>
+                    </div>
+                    <div class="event-score" id="plk-score">—</div>
+                    <div class="event-score-label">Points</div>
+                </div>
+
+                <!-- 2MR -->
+                <div class="calc-event">
+                    <label>Event 5</label>
+                    <div class="calc-event-name">🏃 Two-Mile Run</div>
+                    <div class="calc-input-row">
+                        <input type="number" id="run-min" placeholder="mm" min="0" max="30" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">:</span>
+                        <input type="number" id="run-sec" placeholder="ss" min="0" max="59" oninput="calculateAFT()" style="max-width: 50px;">
+                        <span class="unit">m:s</span>
+                    </div>
+                    <div class="event-score" id="run-score">—</div>
+                    <div class="event-score-label">Points</div>
+                </div>
+            </div>
+
+            <div class="total-display">
+                <div class="total-label">Total AFT Score</div>
+                <div class="total-value" id="total-score">0</div>
+                <div class="total-status" id="total-status">Enter your numbers above</div>
+            </div>
+
+            <p class="calc-disclaimer">Estimated using standard AFT scoring scales. Actual scores may vary slightly based on age/sex group tables. Always confirm with your unit's official scorer.</p>
+        </div>
+
+        <!-- ============ WEEKLY SPLIT ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">Weekly Training Split</h2>
+        <p class="section-intro">Every day targets specific AFT events. The split balances heavy strength, anaerobic power, and aerobic endurance so no event gets neglected.</p>
+        <table>
+            <thead>
+                <tr><th>Day</th><th>Focus</th><th>Events Trained</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Monday</td><td>Max Strength</td><td><span class="inline-tag">MDL</span><span class="inline-tag">SDC</span></td></tr>
+                <tr><td>Tuesday</td><td>Muscular & Aerobic Endurance</td><td><span class="inline-tag">HRP</span><span class="inline-tag">2MR</span><span class="inline-tag">PLK</span></td></tr>
+                <tr><td>Wednesday</td><td>Power & Anaerobic Capacity</td><td><span class="inline-tag">SDC</span><span class="inline-tag">2MR</span></td></tr>
+                <tr><td>Thursday</td><td>Active Recovery / Rest</td><td>—</td></tr>
+                <tr><td>Friday</td><td>Strength & Muscular Endurance</td><td><span class="inline-tag">MDL</span><span class="inline-tag">HRP</span><span class="inline-tag">PLK</span></td></tr>
+                <tr><td>Saturday</td><td>Combat Endurance Circuit</td><td><span class="inline-tag">SDC</span><span class="inline-tag">2MR</span></td></tr>
+                <tr><td>Sunday</td><td>Active Recovery / Rest</td><td>—</td></tr>
+            </tbody>
+        </table>
+
+        <h2 class="section-title" style="margin-top: 3rem;">The 7-Day Breakdown</h2>
+
+        <!-- MONDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 1</span>
+                    <h3>Monday · Max Strength</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Heavy day · Build the deadlift and grip strength that wins the MDL and SDC</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>Trap Bar Deadlift</td><td>5 × 3–5</td><td><span class="inline-tag">MDL</span> Strength</td></tr>
+                        <tr><td>Farmer's Carry</td><td>4 × 50m</td><td><span class="inline-tag">SDC</span> Grip / Core</td></tr>
+                        <tr><td>Barbell Hip Thrust</td><td>4 × 8–10</td><td><span class="inline-tag">MDL</span> Power</td></tr>
+                        <tr><td>Heavy Sled Drag</td><td>4 × 50m</td><td><span class="inline-tag">SDC</span> Leg Drive</td></tr>
+                        <tr><td>Pull-Ups</td><td>4 × AMRAP</td><td>Total Body Strength</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Trap bar > straight bar for the MDL — it carries over directly to test-day form.</li>
+                        <li>Farmer's carry is your secret weapon for the drag-carry portion of the SDC. Don't skip it.</li>
+                        <li>Leave 1–2 reps in the tank on heavy sets. Save max efforts for mock tests.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- TUESDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 2</span>
+                    <h3>Tuesday · Muscular & Aerobic Endurance</h3>
+                </div>
+                <span class="day-card-meta">🏃 5 exercises · ⏱ ~75 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Conditioning day · Build the engine that crushes the 2MR and grinds out HRPs</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>800m Repeats</td><td>4–6 rounds</td><td><span class="inline-tag">2MR</span> Speed</td></tr>
+                        <tr><td>Hand-Release Push-Ups</td><td>5 × Max Reps</td><td><span class="inline-tag">HRP</span> Endurance</td></tr>
+                        <tr><td>Dumbbell Bench Press</td><td>4 × 10–15</td><td><span class="inline-tag">HRP</span> Strength</td></tr>
+                        <tr><td>Plank</td><td>4 × Max Time</td><td><span class="inline-tag">PLK</span> Endurance</td></tr>
+                        <tr><td>Cool-down Jog</td><td>10–15 min</td><td>Active Recovery</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Run 800m repeats at goal 2MR pace — track them in a notebook each week.</li>
+                        <li>Hand-release form: arms must fully extend off the deck on every rep. Train it that way.</li>
+                        <li>Plank under fatigue is harder than fresh — that's why it comes after the runs.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- WEDNESDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 3</span>
+                    <h3>Wednesday · Power & Anaerobic Capacity</h3>
+                </div>
+                <span class="day-card-meta">⚡ 5 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Explosive day · Power output for the SDC sprints and hill running</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>Kettlebell Swings</td><td>8 × 15–20</td><td>Hip Power</td></tr>
+                        <tr><td>Box Jumps</td><td>5 × 5</td><td>Explosiveness</td></tr>
+                        <tr><td>Sled Push (Heavy)</td><td>5 × 25m</td><td><span class="inline-tag">SDC</span> Drive</td></tr>
+                        <tr><td>100m Sprints</td><td>8–10 rounds</td><td><span class="inline-tag">SDC</span><span class="inline-tag">2MR</span> Speed</td></tr>
+                        <tr><td>Burpees</td><td>5 × 10–12</td><td>Anaerobic Capacity</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Sled work directly mimics the drag portion of the SDC — load it heavy.</li>
+                        <li>Move every rep with intent — speed of movement matters more than weight today.</li>
+                        <li>Walk back between sprints. Full recovery = better quality reps.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- THURSDAY -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 4</span>
+                    <h3>Thursday · Active Recovery</h3>
+                </div>
+                <span class="day-card-meta">🧘 ~30–45 min total</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Recovery is mandatory · You don't get stronger in the gym, you recover stronger</p>
+                <table>
+                    <thead><tr><th>Activity</th><th>Duration</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>🚶 Light Cardio (walk/jog/bike)</td><td>30–45 min</td><td>Easy pace, conversational</td></tr>
+                        <tr><td>🧘 Full Body Stretching</td><td>15 min</td><td>Hips, hamstrings, shoulders</td></tr>
+                        <tr><td>🌀 Foam Rolling</td><td>10 min</td><td>Calves, quads, lats, t-spine</td></tr>
+                        <tr><td>💧 Hydration + Nutrition</td><td>All day</td><td>Refuel and rebuild</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>If you feel beat up, take a full rest day. Listen to your body, not your ego.</li>
+                        <li>Aim for 7–9 hours of sleep. Sleep is the most underrated PT enhancer in the Army.</li>
+                        <li>Hydration directly impacts your 2MR time. Drink water like it's your job.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- FRIDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 5</span>
+                    <h3>Friday · Strength & Muscular Endurance</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Hybrid day · Reinforce the MDL and HRP with controlled volume</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>Barbell Rows</td><td>4 × 8–10</td><td><span class="inline-tag">MDL</span><span class="inline-tag">HRP</span> Stability</td></tr>
+                        <tr><td>Weighted Push-Ups</td><td>4 × 8–12</td><td><span class="inline-tag">HRP</span> Strength</td></tr>
+                        <tr><td>Leg Press</td><td>4 × 15–20</td><td><span class="inline-tag">SDC</span> Leg Endurance</td></tr>
+                        <tr><td>Plank Variations Circuit</td><td>3 rounds</td><td><span class="inline-tag">PLK</span> Core Strength</td></tr>
+                        <tr><td>Face Pulls</td><td>3 × 15–20</td><td>Shoulder Health</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Plank circuit: front plank → side plank L → side plank R → 30s each, no rest.</li>
+                        <li>Face pulls protect your shoulders from all the pressing volume — never skip them.</li>
+                        <li>Weighted push-ups carry over directly to higher rep counts under bodyweight.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- SATURDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 6</span>
+                    <h3>Saturday · Combat Endurance Circuit</h3>
+                </div>
+                <span class="day-card-meta">🪖 Circuit · ⏱ ~60 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Test-day simulation · Train your body to perform when it's already tired</p>
+                <div class="circuit-callout">
+                    <strong>Circuit Protocol:</strong> Perform exercises back-to-back with minimal rest between movements. Rest 3–4 minutes between rounds. Complete <strong>3–4 total rounds</strong>.
+                </div>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Reps / Duration</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>400m Run</td><td>1 lap</td><td><span class="inline-tag">2MR</span> Pace</td></tr>
+                        <tr><td>Kettlebell Deadlifts</td><td>15 reps</td><td><span class="inline-tag">MDL</span> Endurance</td></tr>
+                        <tr><td>Sandbag / Kettlebell Carry</td><td>50m</td><td><span class="inline-tag">SDC</span> Simulation</td></tr>
+                        <tr><td>Push-Ups</td><td>20 reps</td><td><span class="inline-tag">HRP</span> Under Fatigue</td></tr>
+                        <tr><td>Plank</td><td>60 seconds</td><td><span class="inline-tag">PLK</span> Under Stress</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>This is the most important workout of the week — it teaches your body the demands of test day.</li>
+                        <li>Track total round time. Aim to shave seconds off each week.</li>
+                        <li>If form breaks, slow down. Garbage reps in training = garbage scores on test day.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- SUNDAY -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 7</span>
+                    <h3>Sunday · Full Recovery</h3>
+                </div>
+                <span class="day-card-meta">😴 Rest day</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Reset for next week · Light movement only if needed</p>
+                <table>
+                    <thead><tr><th>Focus</th><th>Reminder</th></tr></thead>
+                    <tbody>
+                        <tr><td>😴 Sleep</td><td>Prioritize 8+ hours — recovery happens here</td></tr>
+                        <tr><td>🍽️ Nutrition</td><td>Refuel with protein + complex carbs + veggies</td></tr>
+                        <tr><td>🚶 Optional Light Walk</td><td>20–30 min only if the legs feel stiff</td></tr>
+                        <tr><td>🧠 Mental Reset</td><td>Plan next week's training, prep your gear</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Rest days are training days — they're when adaptation happens.</li>
+                        <li>Use today to log this week's numbers. Track everything.</li>
+                        <li>Soldiers who skip recovery hit plateaus. Soldiers who embrace it hit PRs.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- ============ 8-WEEK PROGRESSION ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">The 8-Week Progression Plan</h2>
+        <p class="section-intro">Progressive overload is non-negotiable. Follow this model to ensure you're consistently getting stronger, faster, and more durable each week.</p>
+
+        <div class="progress-grid">
+            <div class="progress-card">
+                <div class="progress-icon">🏋️</div>
+                <h4>Strength Lifts</h4>
+                <p>Weeks 1–4: focus on perfect form. Weeks 5–8: add 5–10 lbs to the bar each week if you complete all sets cleanly. (Deadlift, Rows, Press)</p>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">💪</div>
+                <h4>Muscular Endurance</h4>
+                <p>Increase total reps or hold time each week. Hit 40 push-ups in a set this week? Aim for 42 next week. Plank for 90s? Push for 95s.</p>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">🏃</div>
+                <h4>Endurance / Runs</h4>
+                <p>800m repeats: cut rest time by 15 seconds each week. Distance runs: add 0.25 miles each week to build aerobic base.</p>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">⚡</div>
+                <h4>Power Movements</h4>
+                <p>Focus on explosiveness, not weight. Kettlebells and sled work should feel light enough to move as fast as humanly possible — with control.</p>
+            </div>
+        </div>
+
+        <!-- ============ KEY PRINCIPLES ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">Key Principles for AFT Success</h2>
+        <p class="section-intro">Programs don't make max scores. Execution does. These four rules separate soldiers who max out from those who plateau.</p>
+
+        <div class="system-grid">
+            <div class="system-card">
+                <div class="system-number">1</div>
+                <h4>Train the Events</h4>
+                <p>This plan directly trains the specific movements and energy systems of the AFT. Don't neglect any component — your weakest event sets your score ceiling.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">2</div>
+                <h4>Recovery Is Mandatory</h4>
+                <p>You don't get stronger in the gym — you get stronger when you recover. 7–9 hours of sleep, real food, and rest days. Non-negotiable.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">3</div>
+                <h4>Don't Train to Failure</h4>
+                <p>On most working sets, leave 1–2 reps "in the tank." This builds strength without trashing recovery. Save the max efforts for mock tests.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">4</div>
+                <h4>Mock Test Every 4 Weeks</h4>
+                <p>Run a full, timed AFT every 4 weeks to measure progress and find weak points. Then adjust your training focus to attack the weakness.</p>
+            </div>
+        </div>
+
+        <!-- VERDICT -->
+        <div class="verdict">
+            <div class="verdict-label">The Field-Tested Verdict</div>
+            <p class="verdict-quote"><strong>Soldier first, athlete always.</strong> The AFT isn't just a test — it's a measure of your readiness to fight. This program builds resilient, functional fitness that translates directly to the demands of the field. Train hard, recover harder, and own the score.</p>
+        </div>
+
+        <div class="disclaimer">
+            ⚕️ Field Tested, not FDA approved. This program is built from real-world military training — not a medical prescription. AFT scoring is per the official Army standards effective 1 June 2025. Consult your unit medic or a qualified professional before starting any new fitness program.
+        </div>
+
+    </section>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+        <div class="sidebar-block">
+            <h4>Quick Actions</h4>
+            <button onclick="window.print()" class="pdf-btn" style="width: 100%; margin-top: 0.5rem;">📄 Save as PDF</button>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Program Difficulty</h4>
+            <p style="font-size: 1rem; font-weight: bold; color: var(--accent);">🪖 All Skill Levels</p>
+            <p style="font-size: 0.85rem;">Designed for any soldier — scale weights and reps to your current fitness level.</p>
+        </div>
+
+        <div class="sidebar-block stats">
+            <h4>Program Stats</h4>
+            <ul>
+                <li><strong>5</strong> Training days</li>
+                <li><strong>8</strong> Week cycle</li>
+                <li><strong>5</strong> AFT events trained</li>
+                <li><strong>~70</strong> Min per session</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>AFT Max Score</h4>
+            <table class="scorecard-table">
+                <tr><td>MDL</td><td>100</td></tr>
+                <tr><td>HRP</td><td>100</td></tr>
+                <tr><td>SDC</td><td>100</td></tr>
+                <tr><td>PLK</td><td>100</td></tr>
+                <tr><td>2MR</td><td>100</td></tr>
+                <tr><td><strong>TOTAL</strong></td><td><strong>500</strong></td></tr>
+            </table>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem;">Effective 1 June 2025. SPT removed.</p>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Helpful Tools</h4>
+            <div class="tag-cloud">
+                <a href="1rm-calc.html">1-Rep Max Calc</a>
+                <a href="cal-calc.html">Calorie Calc</a>
+                <a href="bmi-calc.html">BMI Estimator</a>
+                <a href="meal-calc.html">Meal Planner</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Other Plans</h4>
+            <p style="font-size: 0.85rem;">Looking for something different?</p>
+            <div class="tag-cloud">
+                <a href="bg-workout.html">Beginner Plan</a>
+                <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                <a href="#">HIIT & Conditioning</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>The Soldier Mantra</h4>
+            <p style="font-size: 0.95rem; font-style: italic; color: var(--text-primary);">"Soldier first, athlete always."</p>
+        </div>
+    </aside>
+</main>
+
+<!-- ============ NEWSLETTER ============ -->
+<section id="newsletter" class="newsletter">
+    <div class="newsletter-inner">
+        <h2>Get the Field Report</h2>
+        <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Enlist →</button>
+        </form>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved.</p>
+    <div class="social">
+        <a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a>
+    </div>
+</footer>
+
+<!-- ============ FLOATING PDF BUTTON ============ -->
+<button onclick="window.print()" class="pdf-btn-float no-print" aria-label="Download as PDF">📄 PDF</button>
+
+<!-- ============ NAV SCRIPT ============ -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            navMenu.classList.remove('active');
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                d.classList.remove('open');
+            });
+        }
+    });
+});
+</script>
+
+<!-- ============ AFT CALCULATOR LOGIC ============ -->
+<script>
+/**
+ * AFT Score Calculator (effective 1 June 2025)
+ * Uses interpolation between known reference points for each event.
+ * 
+ * 📝 TO UPDATE WITH EXACT PDF VALUES:
+ * Replace the data points in each scoring function below with the
+ * exact values from your AFT_Score_Chart_2025 PDF.
+ *
+ * Format: [performance_value, points]
+ * Higher performance = higher points (except for time-based events)
+ */
+
+// === SCORING TABLES (sorted by performance, descending) ===
+// Using publicly-available AFT reference values. Replace with your PDF data for exact match.
+
+// MDL: deadlift weight (lbs) → points. Higher = better.
+const MDL_TABLE = [
+    [340, 100], [330, 99], [320, 97], [310, 95], [300, 93],
+    [290, 91], [280, 89], [270, 87], [260, 85], [250, 83],
+    [240, 81], [230, 79], [220, 77], [210, 75], [200, 73],
+    [190, 71], [180, 69], [170, 67], [160, 65], [150, 63],
+    [140, 60], [130, 50], [120, 40], [110, 30], [100, 20], [90, 10], [0, 0]
+];
+
+// HRP: reps → points. Higher = better.
+const HRP_TABLE = [
+    [60, 100], [57, 97], [54, 94], [51, 91], [48, 88],
+    [45, 85], [42, 82], [39, 79], [36, 76], [33, 73],
+    [30, 70], [27, 67], [24, 64], [21, 61], [10, 60],
+    [8, 50], [6, 40], [4, 30], [2, 20], [0, 0]
+];
+
+// SDC: time in seconds → points. Lower time = higher points.
+const SDC_TABLE = [
+    [93, 100],   // 1:33
+    [99, 97],    // 1:39
+    [105, 94],   // 1:45
+    [110, 91],   // 1:50
+    [117, 88],   // 1:57
+    [123, 85],   // 2:03
+    [129, 80],   // 2:09 = 60 pts (passing)
+    [135, 70], [145, 60], [160, 50], [180, 40], [200, 30], [240, 20], [300, 0]
+];
+
+// PLK: time in seconds → points. Higher = better.
+const PLK_TABLE = [
+    [215, 100],  // 3:35
+    [200, 97], [185, 94], [170, 91], [155, 88],
+    [140, 85], [125, 82], [110, 79], [100, 76],
+    [90, 73], [80, 70], [80, 60],   // 1:20 passing
+    [70, 50], [60, 40], [50, 30], [40, 20], [0, 0]
+];
+
+// 2MR: time in seconds → points. Lower time = higher points.
+const RUN_TABLE = [
+    [810, 100],   // 13:30
+    [840, 97],    // 14:00
+    [870, 94],    // 14:30
+    [900, 91],    // 15:00
+    [930, 88],    // 15:30
+    [960, 85],    // 16:00
+    [1000, 82],   // 16:40
+    [1050, 79], [1100, 76], [1140, 73], [1180, 70],
+    [1320, 60],   // 22:00 passing
+    [1380, 50], [1440, 40], [1500, 30], [1560, 20], [1800, 0]
+];
+
+/**
+ * Interpolates a score from a scoring table.
+ * @param {number} value - The performance value entered by the user
+ * @param {Array} table - Scoring table [[performance, points], ...]
+ * @param {boolean} lowerIsBetter - True for time-based events (SDC, 2MR)
+ */
+function interpolateScore(value, table, lowerIsBetter = false) {
+    if (isNaN(value) || value <= 0) return 0;
+
+    if (lowerIsBetter) {
+        // Sorted ascending by time (lower = higher pts)
+        if (value <= table[0][0]) return table[0][1];
+        if (value >= table[table.length - 1][0]) return 0;
+        for (let i = 0; i < table.length - 1; i++) {
+            const [t1, p1] = table[i];
+            const [t2, p2] = table[i + 1];
+            if (value >= t1 && value <= t2) {
+                const ratio = (value - t1) / (t2 - t1);
+                return Math.round(p1 + ratio * (p2 - p1));
+            }
+        }
+    } else {
+        // Sorted descending by performance (higher = higher pts)
+        if (value >= table[0][0]) return table[0][1];
+        if (value <= table[table.length - 1][0]) return 0;
+        for (let i = 0; i < table.length - 1; i++) {
+            const [v1, p1] = table[i];
+            const [v2, p2] = table[i + 1];
+            if (value <= v1 && value >= v2) {
+                const ratio = (v1 - value) / (v1 - v2);
+                return Math.round(p1 - ratio * (p1 - p2));
+            }
+        }
+    }
+    return 0;
+}
+
+function timeToSeconds(min, sec) {
+    const m = parseInt(min) || 0;
+    const s = parseInt(sec) || 0;
+    return m * 60 + s;
+}
+
+function calculateAFT() {
+    // MDL
+    const mdl = parseInt(document.getElementById('mdl-input').value) || 0;
+    const mdlScore = mdl > 0 ? interpolateScore(mdl, MDL_TABLE, false) : 0;
+    document.getElementById('mdl-score').textContent = mdl > 0 ? mdlScore : '—';
+
+    // HRP
+    const hrp = parseInt(document.getElementById('hrp-input').value) || 0;
+    const hrpScore = hrp > 0 ? interpolateScore(hrp, HRP_TABLE, false) : 0;
+    document.getElementById('hrp-score').textContent = hrp > 0 ? hrpScore : '—';
+
+    // SDC (time)
+    const sdcSec = timeToSeconds(
+        document.getElementById('sdc-min').value,
+        document.getElementById('sdc-sec').value
+    );
+    const sdcScore = sdcSec > 0 ? interpolateScore(sdcSec, SDC_TABLE, true) : 0;
+    document.getElementById('sdc-score').textContent = sdcSec > 0 ? sdcScore : '—';
+
+    // PLK (time)
+    const plkSec = timeToSeconds(
+        document.getElementById('plk-min').value,
+        document.getElementById('plk-sec').value
+    );
+    const plkScore = plkSec > 0 ? interpolateScore(plkSec, PLK_TABLE, false) : 0;
+    document.getElementById('plk-score').textContent = plkSec > 0 ? plkScore : '—';
+
+    // 2MR (time)
+    const runSec = timeToSeconds(
+        document.getElementById('run-min').value,
+        document.getElementById('run-sec').value
+    );
+    const runScore = runSec > 0 ? interpolateScore(runSec, RUN_TABLE, true) : 0;
+    document.getElementById('run-score').textContent = runSec > 0 ? runScore : '—';
+
+    // Total
+    const total = mdlScore + hrpScore + sdcScore + plkScore + runScore;
+    document.getElementById('total-score').textContent = total;
+
+    // Status message
+    const allEntered = mdl > 0 && hrp > 0 && sdcSec > 0 && plkSec > 0 && runSec > 0;
+    const allPassing = mdlScore >= 60 && hrpScore >= 60 && sdcScore >= 60 && plkScore >= 60 && runScore >= 60;
+    const statusEl = document.getElementById('total-status');
+
+    if (!allEntered) {
+        statusEl.textContent = 'Enter all 5 events for total';
+    } else if (!allPassing) {
+        statusEl.textContent = '⚠️ Failed event(s) — must pass each';
+    } else if (total >= 450) {
+        statusEl.textContent = '🪖 Excellent — Top Tier';
+    } else if (total >= 400) {
+        statusEl.textContent = '✅ Strong Pass';
+    } else if (total >= 350) {
+        statusEl.textContent = '✅ Solid Pass';
+    } else {
+        statusEl.textContent = '✅ Passing';
+    }
+}
+</script>
+
+</body>
+</html>

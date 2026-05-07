@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBL Strength & Hypertrophy · 7-Day Split | The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+/* ============ RESET & BASE (matches index.html) ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAVIGATION ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+    display: flex; justify-content: space-between;
+    align-items: center; position: relative;
+}
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary); background: none; border: none;
+    font-size: 0.95rem; cursor: pointer; font-family: inherit;
+    padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+
+.nav-cta {
+    background: none; padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent); border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none; position: absolute; top: 100%; left: 0;
+    background: white; min-width: 200px;
+    border: 1px solid var(--border); border-top: 2px solid var(--accent);
+    z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+    text-transform: none; letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none; background: none; border: none; cursor: pointer;
+    flex-direction: column; gap: 5px; padding: 0.5rem;
+}
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+/* ============ PAGE HEADER ============ */
+.page-header {
+    background: linear-gradient(rgba(47, 107, 58, 0.85), rgba(31, 42, 35, 0.85));
+    padding: 4rem 2rem 3rem;
+    text-align: center; color: white;
+    border-bottom: 3px solid var(--accent-bright);
+}
+.page-header-inner { max-width: 900px; margin: 0 auto; }
+
+.page-eyebrow {
+    display: inline-block;
+    background: var(--accent-bright); color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 3px; font-weight: bold;
+    margin-bottom: 1rem;
+}
+.page-header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1rem; color: white;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+.page-header p {
+    font-size: 1.05rem; color: rgba(255,255,255,0.9);
+    max-width: 720px; margin: 0 auto 2rem;
+}
+
+/* ============ PDF BUTTONS ============ */
+.pdf-btn {
+    display: inline-block; padding: 0.9rem 2rem;
+    background: var(--accent-bright); color: white;
+    text-transform: uppercase; letter-spacing: 2px;
+    font-weight: bold; font-size: 0.85rem;
+    border-radius: 3px; border: 2px solid var(--accent-bright);
+    cursor: pointer; font-family: inherit; transition: all 0.2s;
+}
+.pdf-btn:hover { background: white; color: var(--accent); border-color: white; }
+
+.pdf-btn-float {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--accent); color: white; border: none;
+    padding: 0.85rem 1.4rem; border-radius: 50px;
+    font-size: 0.8rem; font-weight: bold; letter-spacing: 1.5px;
+    text-transform: uppercase; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.35);
+    transition: transform 0.2s, background 0.2s; font-family: inherit;
+}
+.pdf-btn-float:hover { background: var(--accent-bright); transform: scale(1.05); }
+
+/* ============ META STATS BAR ============ */
+.meta-stats {
+    max-width: 1200px; margin: -2rem auto 0;
+    padding: 0 2rem; position: relative; z-index: 5;
+}
+.meta-stats-inner {
+    background: var(--bg-card); border-top: 3px solid var(--accent);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    padding: 1rem;
+}
+.meta-item {
+    padding: 1rem; border-right: 1px solid var(--border); text-align: center;
+}
+.meta-item:last-child { border-right: none; }
+.meta-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-secondary); margin-bottom: 0.4rem;
+}
+.meta-value { font-size: 1rem; font-weight: bold; color: var(--accent); margin-bottom: 0.2rem; }
+.meta-sub { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* ============ CONTENT LAYOUT ============ */
+.content-wrapper {
+    max-width: 1200px; margin: 3rem auto;
+    padding: 0 2rem;
+    display: grid; grid-template-columns: 1fr 300px; gap: 3rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem; margin-bottom: 2rem;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.section-intro {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* ============ DAY CARDS ============ */
+.day-card {
+    background: var(--bg-card);
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+}
+.day-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.15);
+}
+.day-card-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--accent-soft);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 0.5rem;
+}
+.day-card-title { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.day-tag {
+    background: var(--accent); color: white;
+    padding: 0.2rem 0.6rem; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
+}
+.day-card h3 {
+    font-size: 1.2rem; color: var(--text-primary);
+    text-transform: uppercase; letter-spacing: 1.5px;
+}
+.day-card-meta { font-size: 0.8rem; color: var(--text-secondary); }
+.day-card-body { padding: 1.5rem; }
+.day-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; font-style: italic; }
+
+/* Recovery day variant */
+.day-card.rest-day { border-left-color: var(--accent-bright); }
+.day-card.rest-day .day-card-header { background: #f0f6f1; }
+
+/* ============ TABLES ============ */
+table {
+    width: 100%; border-collapse: collapse;
+    margin-bottom: 1rem; font-size: 0.9rem;
+}
+thead { background: var(--accent-soft); }
+th {
+    text-align: left; padding: 0.75rem 1rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 1px; font-size: 0.75rem;
+    font-weight: bold; border-bottom: 2px solid var(--accent);
+}
+td {
+    text-align: left; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+}
+tbody tr:hover { background: var(--accent-soft); }
+td:first-child { font-weight: bold; }
+td:nth-child(2) { color: var(--text-secondary); }
+td:last-child { color: var(--text-secondary); font-size: 0.85rem; }
+
+/* ============ COACHING NOTES ============ */
+.coaching-notes {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem; margin-top: 1rem;
+}
+.coaching-notes-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent);
+    font-weight: bold; margin-bottom: 0.6rem;
+}
+.coaching-notes ul { list-style: none; }
+.coaching-notes li {
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    position: relative; color: var(--text-secondary);
+    font-size: 0.9rem; line-height: 1.5;
+}
+.coaching-notes li::before {
+    content: "→"; position: absolute; left: 0;
+    color: var(--accent); font-weight: bold;
+}
+
+/* ============ MACROCYCLE CARDS ============ */
+.macro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+}
+.macro-phase {
+    background: var(--bg-card);
+    border-top: 3px solid var(--accent);
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.phase-weeks {
+    background: var(--accent); color: white;
+    display: inline-block;
+    padding: 0.2rem 0.6rem; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; margin-bottom: 0.6rem;
+}
+.macro-phase h4 {
+    font-size: 1rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+.macro-phase p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ============ PROGRESSION CARDS ============ */
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+}
+.progress-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.progress-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.progress-card h4 {
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 1px; font-size: 1rem; margin-bottom: 0.5rem;
+}
+.progress-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* ============ VERDICT BLOCK ============ */
+.verdict {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white; padding: 2.5rem 2rem;
+    margin: 2rem 0; text-align: center;
+}
+.verdict-label {
+    font-size: 0.75rem; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(255,255,255,0.9);
+    margin-bottom: 1rem; font-weight: bold;
+}
+.verdict-quote {
+    font-size: 1.1rem; line-height: 1.55; color: white;
+    max-width: 700px; margin: 0 auto;
+}
+
+/* ============ DISCLAIMER ============ */
+.disclaimer {
+    text-align: center; color: var(--text-secondary);
+    font-size: 0.85rem; padding: 1.25rem;
+    border: 1px dashed var(--border); background: var(--bg-card);
+    margin-top: 1.5rem;
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar-block {
+    background: var(--bg-card); padding: 1.5rem;
+    margin-bottom: 1.5rem; border-top: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.sidebar-block h4 {
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 1rem; font-size: 0.9rem; color: var(--accent);
+}
+.sidebar-block p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.sidebar-block ul { list-style: none; }
+.sidebar-block li {
+    padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+.sidebar-block li:last-child { border-bottom: none; }
+.sidebar-block strong { color: var(--accent); }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag-cloud a {
+    background: var(--accent-soft); padding: 0.3rem 0.7rem;
+    font-size: 0.8rem; color: var(--accent);
+    border-radius: 3px; border: 1px solid var(--border);
+}
+.tag-cloud a:hover { background: var(--accent); color: white; }
+
+/* ============ NEWSLETTER ============ */
+.newsletter {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    padding: 4rem 2rem; text-align: center; color: white;
+}
+.newsletter-inner { max-width: 600px; margin: 0 auto; }
+.newsletter h2 {
+    font-size: 2rem; margin-bottom: 0.5rem;
+    text-transform: uppercase; letter-spacing: 3px; color: white;
+}
+.newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+    flex: 1; padding: 0.9rem; border: none;
+    background: rgba(255,255,255,0.95); color: var(--text-primary);
+    font-size: 1rem; border-radius: 3px;
+}
+.newsletter-form button {
+    padding: 0.9rem 1.5rem; background: var(--text-primary);
+    color: white; border: none; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; border-radius: 3px; font-family: inherit;
+}
+.newsletter-form button:hover { background: black; }
+
+/* ============ FOOTER ============ */
+.site-footer {
+    background: var(--text-primary); padding: 2rem;
+    text-align: center; color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer a { color: var(--accent-bright); }
+.site-footer .footer-brand {
+    font-weight: 900; letter-spacing: 3px;
+    color: white; margin-bottom: 0.3rem;
+}
+.social { margin-top: 0.5rem; }
+
+/* ============ MOBILE ============ */
+@media (max-width: 900px) {
+    .content-wrapper { grid-template-columns: 1fr; }
+    .meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .meta-item:last-child { border-bottom: none; }
+}
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        display: none; position: absolute; top: 100%;
+        left: 0; right: 0; background: white;
+        flex-direction: column; gap: 0; padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle {
+        width: 100%; text-align: left; padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static; width: 100%; border: none;
+        background: var(--accent-soft); box-shadow: none;
+    }
+    .newsletter-form { flex-direction: column; }
+}
+
+/* ============ PRINT STYLES ============ */
+@media print {
+    body { background: white; color: black; font-size: 10.5pt; line-height: 1.45; }
+    .site-header, .menu-toggle, .nav-menu, .newsletter, .site-footer,
+    .pdf-btn, .pdf-btn-float, .no-print, .sidebar { display: none !important; }
+    .content-wrapper { display: block; max-width: 100%; margin: 0; padding: 0 0.5in; }
+    .page-header {
+        background: white !important; color: black;
+        padding: 0.5in 0 0.3in;
+        border-bottom: 2px solid #2f6b3a;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .page-header h1, .page-header p { color: black !important; text-shadow: none; }
+    .page-eyebrow { background: #2f6b3a !important; color: white !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .meta-stats { margin-top: 1rem; }
+    .meta-stats-inner { box-shadow: none; border: 1px solid #ccc; }
+    .day-card, .macro-phase, .progress-card, .coaching-notes, table {
+        page-break-inside: avoid; box-shadow: none !important;
+    }
+    .day-card { border: 1px solid #ccc; border-left: 3px solid #2f6b3a; margin-bottom: 0.75rem; }
+    .day-card-header { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .verdict { background: #e8f1ea !important; color: black !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        border-left: 3px solid #2f6b3a; }
+    .verdict-label, .verdict-quote { color: black !important; }
+    h2, h3 { page-break-after: avoid; }
+    a { color: black; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+    <div class="page-header-inner">
+        <span class="page-eyebrow">Intermediate · Strength & Hypertrophy</span>
+        <h1>The 7-Day CBL Split</h1>
+        <p>Chest · Back · Legs. An aesthetic-and-athletic physique program built around heavy compounds, hypertrophy volume, conditioning, and intentional recovery. Best for lifters with 6+ months of consistent training.</p>
+        <button onclick="window.print()" class="pdf-btn no-print">📄 Download Printable PDF</button>
+    </div>
+</section>
+
+<!-- ============ META STATS BAR ============ -->
+<div class="meta-stats">
+    <div class="meta-stats-inner">
+        <div class="meta-item">
+            <div class="meta-label">Days / Week</div>
+            <div class="meta-value">6 + 1 Recovery</div>
+            <div class="meta-sub">Full coverage</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Cycle Length</div>
+            <div class="meta-value">12 Weeks</div>
+            <div class="meta-sub">Macrocycle</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Level</div>
+            <div class="meta-value">Intermediate</div>
+            <div class="meta-sub">6+ months exp</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Session Time</div>
+            <div class="meta-value">60–75 min</div>
+            <div class="meta-sub">Average</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Equipment</div>
+            <div class="meta-value">Full Gym</div>
+            <div class="meta-sub">Bar, DBs, cables</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="content-wrapper">
+
+    <section>
+        <h2 class="section-title">Weekly Overview</h2>
+        <p class="section-intro">Six training days organized around the three biggest movement patterns — push, pull, and legs — with one dedicated recovery day to keep the system sustainable long-term.</p>
+        <table>
+            <thead>
+                <tr><th>Day</th><th>Focus</th><th>Style</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Monday</td><td>Chest + Triceps</td><td>Strength Focus</td></tr>
+                <tr><td>Tuesday</td><td>Back + Biceps</td><td>Strength Focus</td></tr>
+                <tr><td>Wednesday</td><td>Legs + Core</td><td>Strength Focus</td></tr>
+                <tr><td>Thursday</td><td>Active Recovery + Mobility</td><td>Recovery</td></tr>
+                <tr><td>Friday</td><td>Chest + Shoulders</td><td>Hypertrophy Focus</td></tr>
+                <tr><td>Saturday</td><td>Back + Arms</td><td>Width & Detail</td></tr>
+                <tr><td>Sunday</td><td>Legs + Conditioning</td><td>Athletic Focus</td></tr>
+            </tbody>
+        </table>
+
+        <h2 class="section-title" style="margin-top: 3rem;">The 7-Day Breakdown</h2>
+
+        <!-- MONDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 1</span>
+                    <h3>Monday · Chest + Triceps</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 7 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Strength Focus · Push power foundation</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>Bench Press</td><td>5 × 5–8</td><td>2–3 min</td></tr>
+                        <tr><td>Incline Dumbbell Press</td><td>4 × 8–10</td><td>2 min</td></tr>
+                        <tr><td>Weighted Dips</td><td>3 × 8–12</td><td>2 min</td></tr>
+                        <tr><td>Cable Chest Fly</td><td>3 × 12–15</td><td>60–90s</td></tr>
+                        <tr><td>Overhead Cable Tricep Extension</td><td>3 × 10–12</td><td>60–90s</td></tr>
+                        <tr><td>Tricep Rope Pushdowns</td><td>3 × 12–15</td><td>60–90s</td></tr>
+                        <tr><td>Incline Walk / Cardio</td><td>10–15 min</td><td>Finisher</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Pause briefly at the chest on bench — own the bottom position before pressing.</li>
+                        <li>Keep 1–2 reps in reserve on most working sets to maintain quality.</li>
+                        <li>Squeeze and hold the contraction for 1 second on flies and pushdowns.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- TUESDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 2</span>
+                    <h3>Tuesday · Back + Biceps</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 7 exercises · ⏱ ~75 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Strength Focus · Pull strength + thickness</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>Deadlift</td><td>4 × 5–6</td><td>3 min</td></tr>
+                        <tr><td>Pull-Ups</td><td>4 × 8–12</td><td>2 min</td></tr>
+                        <tr><td>Bent Over Barbell Row</td><td>4 × 8–10</td><td>2 min</td></tr>
+                        <tr><td>Single Arm Dumbbell Row</td><td>3 × 10–12</td><td>90s</td></tr>
+                        <tr><td>Face Pulls</td><td>3 × 15</td><td>60s</td></tr>
+                        <tr><td>EZ Bar Curl</td><td>3 × 10–12</td><td>60–90s</td></tr>
+                        <tr><td>Hammer Curl</td><td>3 × 12–15</td><td>60s</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Reset between every deadlift rep — no touch-and-go on heavy sets.</li>
+                        <li>Initiate every pull from the lats, not the biceps. Drive elbows back and down.</li>
+                        <li>Use a slight pause at the top of the curl to maximize bicep tension.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- WEDNESDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 3</span>
+                    <h3>Wednesday · Legs + Core</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 7 exercises · ⏱ ~75 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Strength Focus · Lower body power + abs</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>Back Squat</td><td>5 × 5–8</td><td>3 min</td></tr>
+                        <tr><td>Romanian Deadlift</td><td>4 × 8–10</td><td>2–3 min</td></tr>
+                        <tr><td>Walking Lunges</td><td>3 × 12 each leg</td><td>2 min</td></tr>
+                        <tr><td>Leg Extensions</td><td>3 × 12–15</td><td>60–90s</td></tr>
+                        <tr><td>Standing Calf Raises</td><td>4 × 20</td><td>60s</td></tr>
+                        <tr><td>Hanging Knee Raises</td><td>3 × 15–20</td><td>60s</td></tr>
+                        <tr><td>Cable Crunches</td><td>3 × 15</td><td>60s</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Squat to depth — at least parallel. Quality over loaded ego reps.</li>
+                        <li>RDLs are about hip hinge, not squat depth — feel the stretch in the hamstrings.</li>
+                        <li>Pause 1 second at peak contraction on calf raises and crunches.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- THURSDAY -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 4</span>
+                    <h3>Thursday · Active Recovery</h3>
+                </div>
+                <span class="day-card-meta">🧘 ~60 min total</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Recovery focus · Reduce fatigue, improve mobility</p>
+                <table>
+                    <thead><tr><th>Recovery Focus</th><th>Duration</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>🚶 Incline Walking</td><td>20–30 min</td><td>Easy pace</td></tr>
+                        <tr><td>🧘 Mobility Stretching</td><td>15 min</td><td>Hips / shoulders / spine</td></tr>
+                        <tr><td>🌀 Foam Rolling</td><td>10 min</td><td>Full body sweep</td></tr>
+                        <tr><td>💧 Hydration + Recovery</td><td>All day</td><td>Water + protein</td></tr>
+                        <tr><td>♨️ Optional Sauna</td><td>10–15 min</td><td>Heat exposure</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>This day matters — skipping recovery sabotages the next training block.</li>
+                        <li>Spend extra mobility time on hips, shoulders, and t-spine.</li>
+                        <li>Aim for 8+ hours of sleep tonight.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- FRIDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 5</span>
+                    <h3>Friday · Chest + Shoulders</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 7 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Hypertrophy Focus · Volume + muscle detail</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>Larsen Press</td><td>4 × 10–12</td><td>2 min</td></tr>
+                        <tr><td>Incline Machine Press</td><td>3 × 12</td><td>2 min</td></tr>
+                        <tr><td>Pec Deck</td><td>3 × 15</td><td>60–90s</td></tr>
+                        <tr><td>Seated Dumbbell Shoulder Press</td><td>4 × 8–10</td><td>2 min</td></tr>
+                        <tr><td>Cable Lateral Raises</td><td>4 × 12–15</td><td>60s</td></tr>
+                        <tr><td>Front Raises</td><td>3 × 12</td><td>60s</td></tr>
+                        <tr><td>Pushup Burnout</td><td>2 sets to failure</td><td>Finisher</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Hypertrophy day — slow eccentrics (3-second lowering on every rep).</li>
+                        <li>Lateral raises: lead with the elbow, not the hand. Pause at the top.</li>
+                        <li>Pushup burnout: go slow, full ROM. Quality reps to failure.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- SATURDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 6</span>
+                    <h3>Saturday · Back + Arms</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 8 exercises · ⏱ ~75 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Width & Detail · Lat width + arm definition</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>Lat Pulldown</td><td>4 × 10–12</td><td>90s</td></tr>
+                        <tr><td>Chest Supported Row</td><td>4 × 10</td><td>90s</td></tr>
+                        <tr><td>Reverse Pec Deck</td><td>3 × 15</td><td>60s</td></tr>
+                        <tr><td>Barbell Shrugs</td><td>3 × 12</td><td>60s</td></tr>
+                        <tr><td>Preacher Curl</td><td>3 × 10</td><td>60s</td></tr>
+                        <tr><td>Cross-Body Hammer Curl</td><td>3 × 12</td><td>60s</td></tr>
+                        <tr><td>Reverse EZ Curl</td><td>3 × 12</td><td>60s</td></tr>
+                        <tr><td>Farmer Carries</td><td>2 rounds</td><td>Finisher</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Pull lat pulldowns to your upper chest — focus on lat stretch at the top.</li>
+                        <li>Squeeze shoulder blades together hard at the top of every row.</li>
+                        <li>Farmer carries: heavy as possible without losing posture. Stand tall.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- SUNDAY -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 7</span>
+                    <h3>Sunday · Legs + Conditioning</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 7 exercises · ⏱ ~70 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Athletic Focus · Volume + work capacity</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th><th>Rest</th></tr></thead>
+                    <tbody>
+                        <tr><td>High Rep Squats</td><td>4 × 15–20</td><td>2 min</td></tr>
+                        <tr><td>Single Leg RDL</td><td>3 × 10 each leg</td><td>90s</td></tr>
+                        <tr><td>Hamstring Curl</td><td>4 × 12</td><td>60–90s</td></tr>
+                        <tr><td>Bulgarian Split Squat</td><td>3 × 12</td><td>90s</td></tr>
+                        <tr><td>Calf Press</td><td>4 × 20</td><td>60s</td></tr>
+                        <tr><td>2-Minute Core Circuit</td><td>3 rounds</td><td>60s</td></tr>
+                        <tr><td>Bike / Sled / Cardio</td><td>15 min</td><td>Finisher</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>High-rep squats: pick a weight you can grind for 15+. Embrace the burn.</li>
+                        <li>Sled or bike sprints: aim for 80% effort intervals if conditioning is the goal.</li>
+                        <li>Finish the week strong — this day builds work capacity for the next cycle.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- ============ MACROCYCLE ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">The 12-Week Macrocycle</h2>
+        <p class="section-intro">Random training spins your wheels. This 12-week cycle manages intensity, prevents burnout, and ensures every block builds on the last.</p>
+
+        <div class="macro-grid">
+            <div class="macro-phase">
+                <span class="phase-weeks">Weeks 1–3</span>
+                <h4>Foundation</h4>
+                <p>Build technique and consistency. Moderate weight, higher volume.</p>
+            </div>
+            <div class="macro-phase">
+                <span class="phase-weeks">Weeks 4–6</span>
+                <h4>Progressive Overload</h4>
+                <p>Add weight gradually. Heavy compounds emphasized.</p>
+            </div>
+            <div class="macro-phase">
+                <span class="phase-weeks">Weeks 7–9</span>
+                <h4>Peak Intensity</h4>
+                <p>Push strength and intensity. Near-max compound effort.</p>
+            </div>
+            <div class="macro-phase">
+                <span class="phase-weeks">Week 10</span>
+                <h4>Deload</h4>
+                <p>Reduce fatigue. 50–60% of normal training volume.</p>
+            </div>
+            <div class="macro-phase">
+                <span class="phase-weeks">Weeks 11–12</span>
+                <h4>Rebuild</h4>
+                <p>Return stronger with improved performance. Controlled heavy training.</p>
+            </div>
+        </div>
+
+        <!-- ============ WEEKLY PROGRESSION ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">Weekly Progression Rules</h2>
+        <p class="section-intro">The rules are different for compounds vs. isolation work. Don't apply the same logic to both.</p>
+
+        <div class="progress-grid">
+            <div class="progress-card">
+                <div class="progress-icon">🏋️</div>
+                <h4>Compounds</h4>
+                <p>Add 5–10 lbs once you hit the top of the rep range with clean form. If performance stalls for 2 weeks, hold the weight and improve rep quality.</p>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">💪</div>
+                <h4>Isolation</h4>
+                <p>Add 1–2 reps weekly before increasing weight. Prioritize tension, control, and full range of motion over momentum.</p>
+            </div>
+            <div class="progress-card">
+                <div class="progress-icon">🏃</div>
+                <h4>Cardio</h4>
+                <p>Increase duration or intensity slowly. Keep cardio low enough to preserve lifting performance — never sacrifice the lifts.</p>
+            </div>
+        </div>
+
+        <!-- ============ PERFORMANCE TRACKING ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">Performance Tracking Goals</h2>
+        <table>
+            <thead><tr><th>Metric</th><th>Goal</th></tr></thead>
+            <tbody>
+                <tr><td>Bench Press</td><td>+5–15 lbs every 6–8 weeks</td></tr>
+                <tr><td>Squat</td><td>+10–20 lbs every 6–8 weeks</td></tr>
+                <tr><td>Deadlift</td><td>+10–20 lbs every 6–8 weeks</td></tr>
+                <tr><td>Pull-Ups</td><td>Increase reps or reduce assistance</td></tr>
+                <tr><td>Bodyweight</td><td>Slow lean gain or controlled fat loss</td></tr>
+                <tr><td>Conditioning</td><td>Improved recovery and endurance</td></tr>
+            </tbody>
+        </table>
+
+        <!-- VERDICT -->
+        <div class="verdict">
+            <div class="verdict-label">The Field-Tested Verdict</div>
+            <p class="verdict-quote"><strong>Consistency beats perfection.</strong> Heavy compounds build the foundation, accessory work paints the detail, and recovery makes the whole thing sustainable. Show up, improve gradually, and trust the process.</p>
+        </div>
+
+        <div class="disclaimer">
+            ⚕️ Field Tested, not FDA approved. Built from real-world training — not a medical prescription. Consult a professional before starting any new fitness program.
+        </div>
+
+    </section>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+        <div class="sidebar-block">
+            <h4>Quick Actions</h4>
+            <button onclick="window.print()" class="pdf-btn" style="width: 100%; margin-top: 0.5rem;">📄 Save as PDF</button>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Program Difficulty</h4>
+            <p style="font-size: 1rem; font-weight: bold; color: var(--accent);">🟠 Intermediate</p>
+            <p style="font-size: 0.85rem;">Best for lifters with 6+ months of consistent gym experience.</p>
+        </div>
+
+        <div class="sidebar-block stats">
+            <h4>Program Stats</h4>
+            <ul>
+                <li><strong>7</strong> Training days</li>
+                <li><strong>12</strong> Week cycle</li>
+                <li><strong>5</strong> Progression phases</li>
+                <li><strong>~70</strong> Min per session</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Helpful Tools</h4>
+            <div class="tag-cloud">
+                <a href="1rm-calc.html">1-Rep Max Calc</a>
+                <a href="cal-calc.html">Calorie Calc</a>
+                <a href="bmi-calc.html">BMI Estimator</a>
+                <a href="meal-calc.html">Meal Planner</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Other Plans</h4>
+            <p style="font-size: 0.85rem;">Looking for something different?</p>
+            <div class="tag-cloud">
+                <a href="bg-workout.html">Beginner Plan</a>
+                <a href="#">Military PT Prep</a>
+                <a href="#">HIIT & Conditioning</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>The CBL Mantra</h4>
+            <p style="font-size: 0.95rem; font-style: italic; color: var(--text-primary);">"Compounds build the foundation."</p>
+        </div>
+    </aside>
+</main>
+
+<!-- ============ NEWSLETTER ============ -->
+<section id="newsletter" class="newsletter">
+    <div class="newsletter-inner">
+        <h2>Get the Field Report</h2>
+        <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Enlist →</button>
+        </form>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved.</p>
+    <div class="social">
+        <a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a>
+    </div>
+</footer>
+
+<!-- ============ FLOATING PDF BUTTON ============ -->
+<button onclick="window.print()" class="pdf-btn-float no-print" aria-label="Download as PDF">📄 PDF</button>
+
+<!-- ============ NAV SCRIPT ============ -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            navMenu.classList.remove('active');
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                d.classList.remove('open');
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>

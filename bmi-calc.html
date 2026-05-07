@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI & Body Fat Estimator | Tools — The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+    --cat-under: #4a7a8c;
+    --cat-normal: #2f6b3a;
+    --cat-over: #c97a2f;
+    --cat-obese: #b94a3d;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAV ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main {
+    font-weight: 900; font-size: 1.4rem;
+    letter-spacing: 3px; color: var(--accent);
+}
+.logo-sub {
+    font-size: 0.7rem; letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase; margin-top: 2px;
+}
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary);
+    background: none; border: none;
+    font-size: 0.95rem; cursor: pointer;
+    font-family: inherit; padding: 0.5rem;
+    text-transform: uppercase; letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+.nav-cta {
+    background: none;
+    padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent);
+    border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none;
+    position: absolute; top: 100%; left: 0;
+    background: white;
+    min-width: 200px;
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    text-transform: none; letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown-content a.active { background: var(--accent-soft); color: var(--accent); font-weight: bold; }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none;
+    background: none; border: none;
+    cursor: pointer;
+    flex-direction: column; gap: 5px;
+    padding: 0.5rem;
+}
+.menu-toggle span {
+    display: block; width: 25px; height: 3px;
+    background: var(--accent);
+}
+
+/* ============ PAGE HEADER ============ */
+.page-header {
+    background: linear-gradient(rgba(31, 42, 35, 0.6), rgba(47, 107, 58, 0.85)),
+                url('https://images.unsplash.com/photo-1532383282788-7d3208de5f1f?w=1600') center/cover;
+    color: white;
+    padding: 4rem 2rem 5rem;
+    text-align: center;
+}
+.page-header-inner { max-width: 800px; margin: 0 auto; }
+.page-eyebrow {
+    display: inline-block;
+    background: var(--accent-bright);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.page-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+.page-header p {
+    color: rgba(255,255,255,0.95);
+    font-size: 1.1rem;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* ============ CALC LAYOUT ============ */
+.calc-wrapper {
+    max-width: 1200px;
+    margin: -3rem auto 4rem;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    position: relative;
+}
+
+.calc-card {
+    background: var(--bg-card);
+    border-top: 4px solid var(--accent);
+    box-shadow: 0 4px 20px rgba(47, 107, 58, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.calc-card-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--accent-soft);
+}
+.calc-card-header h2 {
+    font-size: 1.4rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+}
+.calc-card-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.calc-body { padding: 2rem; flex: 1; }
+
+/* Form fields */
+.form-group { margin-bottom: 1.3rem; }
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+.form-group .helper {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: 0.3rem;
+    font-style: italic;
+}
+
+input[type="number"], select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="number"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(47, 107, 58, 0.15);
+}
+
+/* Two-column input grid (height ft + in) */
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+/* Toggle row (sex, units) */
+.toggle-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+.toggle-row label {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.7rem;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    margin: 0;
+}
+.toggle-row input[type="radio"] { display: none; }
+.toggle-row label:has(input:checked) {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+/* Result hero */
+.result-hero {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+.result-hero .label {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+.result-hero .value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+.result-hero .unit {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.result-hero .category {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+/* ============ CATEGORY BAR ============ */
+.category-bar-wrap {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border);
+}
+.category-bar-wrap h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+.category-bar {
+    position: relative;
+    display: flex;
+    height: 36px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+.cat-segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.cat-under { background: var(--cat-under); }
+.cat-normal { background: var(--cat-normal); }
+.cat-over { background: var(--cat-over); }
+.cat-obese { background: var(--cat-obese); }
+
+.cat-marker {
+    position: relative;
+    height: 18px;
+    margin-top: 4px;
+}
+.cat-pointer {
+    position: absolute;
+    top: -8px;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--text-primary);
+    transition: left 0.4s;
+}
+.cat-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+/* Stats grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin: 1rem 2rem 0;
+}
+.stat-pill {
+    background: var(--accent-soft);
+    padding: 0.9rem;
+    border-radius: 3px;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+.stat-pill .stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+}
+.stat-pill .stat-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+.stat-pill .stat-unit {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-left: 0.2rem;
+}
+
+/* Verdict info */
+.verdict-info {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 2rem 2rem;
+    border-radius: 0 4px 4px 0;
+}
+.verdict-info h4 {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+.verdict-info p {
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+/* Disclaimer */
+.disclaimer {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+}
+.disclaimer-inner {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Footer */
+.site-footer {
+    background: var(--text-primary);
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer .footer-brand {
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: white;
+    margin-bottom: 0.3rem;
+}
+.site-footer a { color: var(--accent-bright); }
+
+/* ============ MOBILE ============ */
+@media (max-width: 900px) {
+    .calc-wrapper { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static;
+        border: none;
+        background: var(--accent-soft);
+        box-shadow: none;
+    }
+
+    .result-hero .value { font-size: 2.8rem; }
+    .cat-segment { font-size: 0.6rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie & Protein Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html" class="active">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+    <div class="page-header-inner">
+        <span class="page-eyebrow">Tools</span>
+        <h1>BMI & Body Fat Estimator</h1>
+        <p>Two ways to size up your composition. BMI gives you the textbook number — the U.S. Navy method gives you something a lot more useful.</p>
+    </div>
+</section>
+
+<!-- ============ CALCULATORS ============ -->
+<div class="calc-wrapper">
+
+    <!-- ===== BMI CALCULATOR ===== -->
+    <div class="calc-card">
+        <div class="calc-card-header">
+            <h2>BMI Calculator</h2>
+            <p>Body Mass Index — the standard height-to-weight ratio.</p>
+        </div>
+        <div class="calc-body">
+
+            <div class="form-group">
+                <label>Units</label>
+                <div class="toggle-row">
+                    <label><input type="radio" name="bmiUnit" value="imperial" checked onchange="toggleBmiUnits()"><span>Imperial (lbs/in)</span></label>
+                    <label><input type="radio" name="bmiUnit" value="metric" onchange="toggleBmiUnits()"><span>Metric (kg/cm)</span></label>
+                </div>
+            </div>
+
+            <!-- Imperial inputs -->
+            <div id="bmiImperial">
+                <div class="form-group">
+                    <label>Height</label>
+                    <div class="input-row">
+                        <input type="number" id="bmiHeightFt" value="5" min="3" max="8" placeholder="ft" oninput="calculateBMI()">
+                        <input type="number" id="bmiHeightIn" value="10" min="0" max="11" placeholder="in" oninput="calculateBMI()">
+                    </div>
+                    <span class="helper">Feet and inches</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="bmiWeightLbs">Weight (lbs)</label>
+                    <input type="number" id="bmiWeightLbs" value="180" min="50" max="600" oninput="calculateBMI()">
+                </div>
+            </div>
+
+            <!-- Metric inputs -->
+            <div id="bmiMetric" style="display:none;">
+                <div class="form-group">
+                    <label for="bmiHeightCm">Height (cm)</label>
+                    <input type="number" id="bmiHeightCm" value="178" min="100" max="250" oninput="calculateBMI()">
+                </div>
+
+                <div class="form-group">
+                    <label for="bmiWeightKg">Weight (kg)</label>
+                    <input type="number" id="bmiWeightKg" value="82" min="30" max="300" step="0.5" oninput="calculateBMI()">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Result -->
+        <div class="result-hero">
+            <div class="label">Your BMI</div>
+            <div class="value" id="bmiValue">25.8</div>
+            <div class="unit">kg/m²</div>
+            <div class="category" id="bmiCategory">Overweight</div>
+        </div>
+
+        <!-- Category bar -->
+        <div class="category-bar-wrap">
+            <h4>Where You Fall</h4>
+            <div class="category-bar">
+                <div class="cat-segment cat-under">Under</div>
+                <div class="cat-segment cat-normal" style="flex: 1.6;">Normal</div>
+                <div class="cat-segment cat-over">Over</div>
+                <div class="cat-segment cat-obese">Obese</div>
+            </div>
+            <div class="cat-marker"><div class="cat-pointer" id="bmiPointer" style="left: 60%;"></div></div>
+            <div class="cat-scale">
+                <span>15</span>
+                <span>18.5</span>
+                <span>25</span>
+                <span>30</span>
+                <span>40+</span>
+            </div>
+        </div>
+
+        <div class="verdict-info">
+            <h4>The Field-Tested Note</h4>
+            <p>BMI doesn't know the difference between muscle and fat. Most lifters and athletes get flagged "overweight" by BMI while sitting at 12% body fat. Use it as a quick screen — not a diagnosis. Scroll right for a more honest number.</p>
+        </div>
+
+    </div>
+
+    <!-- ===== BODY FAT % CALCULATOR ===== -->
+    <div class="calc-card">
+        <div class="calc-card-header">
+            <h2>Body Fat % Estimator</h2>
+            <p>U.S. Navy method — uses tape measurements for accuracy.</p>
+        </div>
+        <div class="calc-body">
+
+            <div class="form-group">
+                <label>Sex</label>
+                <div class="toggle-row">
+                    <label><input type="radio" name="bfSex" value="male" checked onchange="calculateBodyFat()"><span>Male</span></label>
+                    <label><input type="radio" name="bfSex" value="female" onchange="calculateBodyFat()"><span>Female</span></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Units</label>
+                <div class="toggle-row">
+                    <label><input type="radio" name="bfUnit" value="imperial" checked onchange="calculateBodyFat()"><span>Inches</span></label>
+                    <label><input type="radio" name="bfUnit" value="metric" onchange="calculateBodyFat()"><span>Centimeters</span></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="bfHeight">Height</label>
+                <input type="number" id="bfHeight" value="70" min="40" max="100" step="0.5" oninput="calculateBodyFat()">
+                <span class="helper" id="heightHelper">In inches (5'10" = 70 in)</span>
+            </div>
+
+            <div class="form-group">
+                <label for="bfWeight">Weight (lbs)</label>
+                <input type="number" id="bfWeight" value="180" min="50" max="600" oninput="calculateBodyFat()">
+                <span class="helper" id="weightHelper">In pounds</span>
+            </div>
+
+            <div class="form-group">
+                <label for="bfNeck">Neck Circumference</label>
+                <input type="number" id="bfNeck" value="15" min="8" max="30" step="0.25" oninput="calculateBodyFat()">
+                <span class="helper">Measure just below the larynx (Adam's apple)</span>
+            </div>
+
+            <div class="form-group">
+                <label for="bfWaist">Waist Circumference</label>
+                <input type="number" id="bfWaist" value="34" min="15" max="80" step="0.25" oninput="calculateBodyFat()">
+                <span class="helper" id="waistHelper">Measure at navel level</span>
+            </div>
+
+            <div class="form-group" id="hipGroup" style="display:none;">
+                <label for="bfHip">Hip Circumference</label>
+                <input type="number" id="bfHip" value="38" min="20" max="80" step="0.25" oninput="calculateBodyFat()">
+                <span class="helper">Measure at the widest point — women only</span>
+            </div>
+
+        </div>
+
+        <!-- Result -->
+        <div class="result-hero">
+            <div class="label">Estimated Body Fat</div>
+            <div class="value" id="bfValue">17.2</div>
+            <div class="unit">% body fat</div>
+            <div class="category" id="bfCategory">Fitness</div>
+        </div>
+
+        <!-- Composition breakdown -->
+        <div class="stats-grid">
+            <div class="stat-pill">
+                <div class="stat-label">Lean Mass</div>
+                <div class="stat-value"><span id="leanMass">149</span><span class="stat-unit" id="leanUnit">lbs</span></div>
+            </div>
+            <div class="stat-pill">
+                <div class="stat-label">Fat Mass</div>
+                <div class="stat-value"><span id="fatMass">31</span><span class="stat-unit" id="fatUnit">lbs</span></div>
+            </div>
+        </div>
+
+        <div class="verdict-info">
+            <h4>The Field-Tested Note</h4>
+            <p>The Navy method is the most accurate tape-and-tape-measure method out there — used by every branch of the U.S. military for body comp testing. For best results, measure first thing in the morning, before food or water, and pull the tape snug but not tight.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============ DISCLAIMER ============ -->
+<div class="disclaimer">
+    <div class="disclaimer-inner">
+        ⚕️ <strong>Field Tested, not FDA approved.</strong> These are estimates, not medical diagnoses. For clinical body composition, get a DEXA scan or consult a registered dietitian or physician.
+    </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved. · <em>Field Tested</em> is a research blog series of The Stride Project.</p>
+    <div><a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a></div>
+</footer>
+
+<script>
+// ============ BMI CALCULATOR ============
+function toggleBmiUnits() {
+    const unit = document.querySelector('input[name="bmiUnit"]:checked').value;
+    document.getElementById('bmiImperial').style.display = unit === 'imperial' ? 'block' : 'none';
+    document.getElementById('bmiMetric').style.display = unit === 'metric' ? 'block' : 'none';
+    calculateBMI();
+}
+
+function calculateBMI() {
+    const unit = document.querySelector('input[name="bmiUnit"]:checked').value;
+    let heightM, weightKg;
+
+    if (unit === 'imperial') {
+        const ft = parseFloat(document.getElementById('bmiHeightFt').value) || 0;
+        const inches = parseFloat(document.getElementById('bmiHeightIn').value) || 0;
+        const totalInches = (ft * 12) + inches;
+        heightM = totalInches * 0.0254;
+        weightKg = (parseFloat(document.getElementById('bmiWeightLbs').value) || 0) * 0.453592;
+    } else {
+        heightM = (parseFloat(document.getElementById('bmiHeightCm').value) || 0) / 100;
+        weightKg = parseFloat(document.getElementById('bmiWeightKg').value) || 0;
+    }
+
+    if (!heightM || !weightKg || heightM < 0.5) {
+        document.getElementById('bmiValue').textContent = '--';
+        return;
+    }
+
+    const bmi = weightKg / (heightM * heightM);
+    document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+
+    // Determine category & color
+    let category, catColor, pointerPos;
+    if (bmi < 18.5) {
+        category = 'Underweight';
+        catColor = 'var(--cat-under)';
+    } else if (bmi < 25) {
+        category = 'Normal';
+        catColor = 'var(--cat-normal)';
+    } else if (bmi < 30) {
+        category = 'Overweight';
+        catColor = 'var(--cat-over)';
+    } else {
+        category = 'Obese';
+        catColor = 'var(--cat-obese)';
+    }
+    document.getElementById('bmiCategory').textContent = category;
+
+    // Position pointer along the bar (15-40 range)
+    const minBmi = 15, maxBmi = 40;
+    const clamped = Math.max(minBmi, Math.min(maxBmi, bmi));
+    pointerPos = ((clamped - minBmi) / (maxBmi - minBmi)) * 100;
+    document.getElementById('bmiPointer').style.left = pointerPos + '%';
+}
+
+// ============ BODY FAT % CALCULATOR ============
+function calculateBodyFat() {
+    const sex = document.querySelector('input[name="bfSex"]:checked').value;
+    const unit = document.querySelector('input[name="bfUnit"]:checked').value;
+
+    // Show/hide hip input
+    document.getElementById('hipGroup').style.display = sex === 'female' ? 'block' : 'none';
+
+    // Update helpers
+    if (unit === 'imperial') {
+        document.getElementById('heightHelper').textContent = "In inches (5'10\" = 70 in)";
+        document.getElementById('weightHelper').textContent = 'In pounds';
+        document.getElementById('waistHelper').textContent = 'Measure at navel level (in inches)';
+        document.getElementById('leanUnit').textContent = 'lbs';
+        document.getElementById('fatUnit').textContent = 'lbs';
+    } else {
+        document.getElementById('heightHelper').textContent = 'In centimeters';
+        document.getElementById('weightHelper').textContent = 'In kilograms';
+        document.getElementById('waistHelper').textContent = 'Measure at navel level (in cm)';
+        document.getElementById('leanUnit').textContent = 'kg';
+        document.getElementById('fatUnit').textContent = 'kg';
+    }
+
+    let height = parseFloat(document.getElementById('bfHeight').value) || 0;
+    let neck = parseFloat(document.getElementById('bfNeck').value) || 0;
+    let waist = parseFloat(document.getElementById('bfWaist').value) || 0;
+    let hip = parseFloat(document.getElementById('bfHip').value) || 0;
+    let weight = parseFloat(document.getElementById('bfWeight').value) || 0;
+
+    // Convert imperial → cm for the formula
+    if (unit === 'imperial') {
+        height = height * 2.54;
+        neck = neck * 2.54;
+        waist = waist * 2.54;
+        hip = hip * 2.54;
+    }
+
+    if (!height || !neck || !waist || (sex === 'female' && !hip)) {
+        document.getElementById('bfValue').textContent = '--';
+        return;
+    }
+
+    // U.S. Navy formula (metric, cm) — log10 = Math.log10
+    let bf;
+    if (sex === 'male') {
+        if (waist - neck <= 0) {
+            document.getElementById('bfValue').textContent = '--';
+            return;
+        }
+        bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+    } else {
+        if (waist + hip - neck <= 0) {
+            document.getElementById('bfValue').textContent = '--';
+            return;
+        }
+        bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+    }
+
+    if (bf < 2 || bf > 70 || isNaN(bf)) {
+        document.getElementById('bfValue').textContent = '--';
+        return;
+    }
+
+    document.getElementById('bfValue').textContent = bf.toFixed(1);
+
+    // Category
+    const cat = getBfCategory(bf, sex);
+    document.getElementById('bfCategory').textContent = cat;
+
+    // Lean / Fat mass breakdown (display in user's chosen unit)
+    if (weight > 0) {
+        const fatMass = weight * (bf / 100);
+        const leanMass = weight - fatMass;
+        document.getElementById('leanMass').textContent = leanMass.toFixed(1);
+        document.getElementById('fatMass').textContent = fatMass.toFixed(1);
+    } else {
+        document.getElementById('leanMass').textContent = '--';
+        document.getElementById('fatMass').textContent = '--';
+    }
+}
+
+function getBfCategory(bf, sex) {
+    // ACE body fat categories
+    if (sex === 'male') {
+        if (bf < 6) return 'Essential Fat';
+        if (bf < 14) return 'Athlete';
+        if (bf < 18) return 'Fitness';
+        if (bf < 25) return 'Average';
+        return 'Above Average';
+    } else {
+        if (bf < 14) return 'Essential Fat';
+        if (bf < 21) return 'Athlete';
+        if (bf < 25) return 'Fitness';
+        if (bf < 32) return 'Average';
+        return 'Above Average';
+    }
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', function() {
+    calculateBMI();
+    calculateBodyFat();
+});
+
+// ============ MOBILE NAV ============
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+});
+</script>
+
+</body>
+</html>

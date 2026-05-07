@@ -1,81 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Spark of Performance | Entry #1</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f7f6; color: #333333; line-height: 1.8; }
-        nav { background-color: #ffffff; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-        .brand-logo { font-weight: 900; font-size: 1.4rem; color: #2e7d32; text-transform: uppercase; text-decoration: none; letter-spacing: 1px; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links > a, .dropdown { margin-left: 25px; }
-        .nav-links > a, .dropbtn { text-decoration: none; color: #555555; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; cursor: pointer; transition: color 0.3s ease; padding: 20px 0; display: inline-block; }
-        .nav-links > a:hover, .dropbtn:hover { color: #2e7d32; }
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 220px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 1; top: 100%; left: 0; border-radius: 0 0 4px 4px; overflow: hidden; border-top: 3px solid #2e7d32; }
-        .dropdown-content.align-right { left: auto; right: 0; }
-        .dropdown-content a { color: #555555; padding: 15px 20px; text-decoration: none; display: block; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #f4f7f6; transition: background 0.2s ease; line-height: 1.2; }
-        .dropdown-content a:hover { background-color: #f4f7f6; color: #2e7d32; }
-        .dropdown:hover .dropdown-content { display: block; }
-        
-        .post-container { max-width: 800px; margin: 50px auto; background-color: #ffffff; padding: 50px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        header.post-header { border-bottom: 3px solid #2e7d32; margin-bottom: 40px; padding-bottom: 10px; }
-        h1 { font-size: 2.5rem; margin-bottom: 0; color: #1a1a1a; }
-        .meta { color: #2e7d32; font-size: 0.9rem; text-transform: uppercase; font-weight: bold; margin-top: 5px; }
-        p { margin-bottom: 25px; font-size: 1.1rem; color: #444; }
-        .takeaway { background-color: #e8f5e9; padding: 25px; border-left: 5px solid #2e7d32; font-size: 1.05rem; color: #1a1a1a; margin-top: 40px; border-radius: 0 4px 4px 0; }
-        .takeaway strong { color: #2e7d32; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px; }
-        .nav-links-bottom { margin-top: 50px; display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 20px; }
-        .nav-links-bottom a { color: #2e7d32; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Spark of Performance | Field Tested — The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg-light); color: var(--text-primary); line-height: 1.8; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+.progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: transparent; z-index: 1100; }
+.progress-bar-read { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-bright)); transition: width 0.1s; }
+
+.site-header { background: var(--bg-header); border-bottom: 2px solid var(--accent); position: sticky; top: 4px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle { color: var(--text-primary); background: none; border: none; font-size: 0.95rem; cursor: pointer; font-family: inherit; padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+.nav-cta { background: none; padding: 0.5rem 1rem !important; border: 2px solid var(--accent); border-radius: 3px; color: var(--accent) !important; }
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; border: 1px solid var(--border); border-top: 2px solid var(--accent); z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.dropdown-content a { display: block; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-primary); text-transform: none; letter-spacing: 0; }
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 0.5rem; }
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+.post-hero {
+    height: 60vh;
+    min-height: 400px;
+    background: linear-gradient(rgba(31, 42, 35, 0.4), rgba(31, 42, 35, 0.85)),
+                url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=1600') center/cover;
+    display: flex; align-items: flex-end; padding: 4rem 2rem; color: white;
+}
+.post-hero-inner { max-width: 800px; margin: 0 auto; width: 100%; }
+
+.series-badge { display: inline-block; background: var(--accent-bright); color: white; padding: 0.4rem 1rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; margin-bottom: 1rem; }
+.series-badge .series-name { font-weight: 900; }
+.series-badge .entry-num { opacity: 0.85; margin-left: 0.5rem; }
+
+.post-hero .tag { background: rgba(255,255,255,0.2); color: white; padding: 0.3rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-bottom: 1rem; margin-left: 0.5rem; border: 1px solid rgba(255,255,255,0.4); }
+.post-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); }
+.post-hero-meta { display: flex; gap: 1.5rem; align-items: center; color: rgba(255,255,255,0.95); font-size: 0.9rem; flex-wrap: wrap; }
+
+.post-container { max-width: 750px; margin: 3rem auto; padding: 0 2rem; }
+.author-byline { display: flex; align-items: center; gap: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.author-byline-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Makes it a circle */
+    object-fit: cover; /* Ensures the image fills the circle without squishing */
+    flex-shrink: 0;
+}
+.author-byline-info { font-size: 0.9rem; }
+.author-byline-info strong { display: block; color: var(--text-primary); }
+.author-byline-info span { color: var(--text-secondary); }
+
+.post-body { font-size: 1.1rem; color: #2c3a30; }
+.post-body p { margin-bottom: 1.5rem; }
+.post-body > p:first-of-type::first-letter { float: left; font-size: 4.5rem; line-height: 1; padding: 0.4rem 0.7rem 0 0; color: var(--accent); font-weight: 900; }
+.post-body h2 { font-size: 1.8rem; margin: 2.5rem 0 1rem; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 1rem; }
+
+.pull-quote { font-size: 1.5rem; line-height: 1.4; color: var(--accent); font-style: italic; font-weight: 300; border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); padding: 2rem 0; margin: 2.5rem 0; text-align: center; }
+
+.inline-image { margin: 2.5rem 0; }
+.inline-image img { width: 100%; height: auto; border-radius: 4px; }
+.inline-image .caption { text-align: center; color: var(--text-secondary); font-size: 0.9rem; font-style: italic; margin-top: 0.7rem; }
+
+.verdict { background: var(--accent-soft); border-left: 5px solid var(--accent); padding: 1.5rem 2rem; margin: 2.5rem 0; border-radius: 0 4px 4px 0; }
+.verdict h4 { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 0.8rem; }
+.verdict p { font-size: 1.15rem; margin: 0; color: var(--text-primary); }
+
+.challenge { background: var(--accent); color: white; padding: 2rem; margin: 2.5rem 0; border-radius: 4px; text-align: center; }
+.challenge h4 { text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.8rem; color: rgba(255,255,255,0.85); }
+.challenge p { font-size: 1.2rem; margin: 0; font-weight: 500; }
+
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 3rem 0 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.post-tags a { background: var(--accent-soft); color: var(--accent); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border); }
+.post-tags a:hover { background: var(--accent); color: white; }
+
+.share-bar { display: flex; gap: 1rem; align-items: center; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1rem 0 2rem; flex-wrap: wrap; }
+.share-bar > span { color: var(--text-secondary); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold; }
+.share-bar a { background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 3px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+.share-bar a:hover { background: var(--accent-bright); color: white; }
+
+.author-card { display: flex; gap: 1.5rem; background: var(--bg-card); padding: 2rem; border-left: 3px solid var(--accent); margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.author-avatar { width: 90px; height: 90px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); border-radius: 50%; flex-shrink: 0; }
+.author-info h4 { margin-bottom: 0.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+.author-info p { color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+.related-section { background: var(--bg-card); padding: 3rem 2rem; margin-top: 3rem; border-top: 3px solid var(--accent); }
+.related-inner { max-width: 1100px; margin: 0 auto; }
+.related-section h3 { text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.3rem; text-align: center; }
+.related-section .related-sub { text-align: center; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.related-card { background: var(--bg-light); overflow: hidden; border-left: 3px solid var(--accent); transition: transform 0.2s; }
+.related-card:hover { transform: translateY(-3px); }
+.related-thumb { height: 150px; background-size: cover; background-position: center; }
+.related-content { padding: 1rem; }
+.related-content .tag { background: var(--accent); color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.related-content h4 { margin: 0.5rem 0; font-size: 1rem; }
+.related-content h4 a { color: var(--text-primary); }
+.related-content h4 a:hover { color: var(--accent); }
+.related-content .date { color: var(--text-secondary); font-size: 0.8rem; }
+
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1100px; margin: 3rem auto; padding: 0 2rem; }
+.post-nav a { background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; }
+.post-nav a:hover { transform: translateY(-2px); }
+.post-nav .label { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem; }
+.post-nav .title { color: var(--text-primary); font-weight: bold; font-size: 1.05rem; }
+.post-nav .next { text-align: right; }
+.post-nav .disabled { opacity: 0.4; cursor: not-allowed; }
+
+.site-footer { background: var(--text-primary); padding: 2rem; text-align: center; color: rgba(255,255,255,0.8); border-top: 3px solid var(--accent); }
+.site-footer .footer-brand { font-weight: 900; letter-spacing: 3px; color: white; margin-bottom: 0.3rem; }
+.site-footer a { color: var(--accent-bright); }
+
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; border-top: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle { width: 100%; text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content { position: static; border: none; background: var(--accent-soft); box-shadow: none; }
+    .related-grid { grid-template-columns: 1fr; }
+    .post-nav { grid-template-columns: 1fr; }
+    .post-nav .next { text-align: left; }
+    .post-body > p:first-of-type::first-letter { font-size: 3.5rem; }
+    .pull-quote { font-size: 1.2rem; }
+    .author-card { flex-direction: column; text-align: center; }
+    .author-avatar { margin: 0 auto; }
+    .post-hero .tag { margin-left: 0; margin-top: 0.3rem; }
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="brand-logo">The Stride Project</a>
-        <div class="nav-links">
-            <a href="index.html">Research Log</a>
+<div class="progress-container"><div class="progress-bar-read" id="progressBar"></div></div>
+
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+        <button class="menu-toggle"><span></span><span></span><span></span></button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
             <div class="dropdown">
-                <a class="dropbtn">Workout Plans ▾</a>
+                <button class="dropdown-toggle">Workout Plans ▾</button>
                 <div class="dropdown-content">
-                    <a href="strength-split.html">Strength Training Split</a>
-                    <a href="full-body.html">Full-Body Split</a>
-                    <a href="cardio-plans.html">Running & Cardio Plans</a>
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
                 </div>
             </div>
             <div class="dropdown">
-                <a class="dropbtn">Tools ▾</a>
-                <div class="dropdown-content align-right">
-                    <a href="protein-calc.html">Daily Protein Calculator</a>
-                    <a href="macro-calc.html">Macro Calculator</a>
-                    <a href="calorie-calc.html">Daily Calorie Calculator</a>
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
                 </div>
             </div>
-        </div>
-    </nav>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
 
-    <div class="post-container">
-        <header class="post-header">
-            <h1>The Spark of Performance</h1>
-            <div class="meta">Entry #1 | May 1, 2026</div>
-        </header>
-
-        <article>
-            <p>Greatness rarely starts with a grand epiphany—sometimes it starts with a quiet restlessness. It begins when the mind craves more than the stillness of routine and demands to be challenged. That restless energy, what some might just call boredom, was what ignited this journey. It gave me the ultimate reason to start building this platform, a space I am determined to watch grow into something extraordinary.</p>
-            <p>For a long time, I was lost. Whether it was schoolwork, the gym, or daily obligations, the fire to truly commit just wasn't there. I lacked a driving force that could make me endure when things got difficult—until I joined the military. That environment shattered my complacency. The people to my left and right, the shared grind, and the realization of what we are capable of when we refuse to quit became my forge. I learned firsthand that the gap between average and exceptional is bridged by just one more ounce of relentless effort. The profound pride that comes from pushing past your breaking point changed everything for me. I found myself surrounded by a standard of excellence, and it demanded excellence from me in return.</p>
-            <p>Now that I have found my fire, I refuse to keep it to myself. I am dedicating this space to exploring all aspects of health, fitness, and human performance. I will be the test subject, diving into the latest fitness trends, putting experimental studies to the test, and breaking down diets to find what truly builds a resilient body and mind. My mission is to experience the extremes of the health world and share the raw, unfiltered truth with you. I want to ignite that same drive in others, to inspire you to move, to challenge your own limits, and to relentlessly pursue a healthier life.</p>
-
-            <div class="takeaway">
-                <strong>The Field-Tested Verdict:</strong> 
-                This isn't just my journey; it's an invitation. Let's discover the strength, endurance, and vitality we never knew we had.
-            </div>
-        </article>
-
-        <div class="nav-links-bottom">
-            <a href="index.html">← Back to Home</a>
+<section class="post-hero">
+    <div class="post-hero-inner">
+        <span class="series-badge">
+            <span class="series-name">Field Tested</span>
+            <span class="entry-num">· Entry #1</span>
+        </span>
+        <span class="tag">Military Mindset</span>
+        <h1>The Spark of Performance</h1>
+        <div class="post-hero-meta">
+            <span>📅 May 1, 2026</span>
+            <span>⏱ 3 min read</span>
         </div>
     </div>
+</section>
+
+<article class="post-container">
+
+    <div class="author-byline">
+        <img src="avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-byline-info">
+            <strong>The Stride Project</strong>
+            <span>Field Tested Series · Veteran · Researcher · Test Subject</span>
+        </div>
+    </div>
+
+    <div class="post-body">
+        <p>Greatness rarely starts with a grand epiphany—sometimes it starts with a quiet restlessness. It begins when the mind craves more than the stillness of routine and demands to be challenged. That restless energy, what some might just call boredom, was what ignited this journey. It gave me the ultimate reason to start building this platform, a space I am determined to watch grow into something extraordinary.</p>
+
+        <p>For a long time, I was lost. Whether it was schoolwork, the gym, or daily obligations, the fire to truly commit just wasn't there. I lacked a driving force that could make me endure when things got difficult—until I joined the military. That environment shattered my complacency.</p>
+
+        <blockquote class="pull-quote">"The gap between average and exceptional is bridged by just one more ounce of relentless effort."</blockquote>
+
+        <p>The people to my left and right, the shared grind, and the realization of what we are capable of when we refuse to quit became my forge. I learned firsthand that the gap between average and exceptional is bridged by just one more ounce of relentless effort. The profound pride that comes from pushing past your breaking point changed everything for me. I found myself surrounded by a standard of excellence, and it demanded excellence from me in return.</p>
+
+        <h2>Why I'm Doing This</h2>
+        <p>Now that I have found my fire, I refuse to keep it to myself. I am dedicating this space to exploring all aspects of health, fitness, and human performance. I will be the test subject, diving into the latest fitness trends, putting experimental studies to the test, and breaking down diets to find what truly builds a resilient body and mind.</p>
+
+        <p>My mission is to experience the extremes of the health world and share the raw, unfiltered truth with you. I want to ignite that same drive in others, to inspire you to move, to challenge your own limits, and to relentlessly pursue a healthier life.</p>
+
+        <aside class="verdict">
+            <h4>The Field-Tested Verdict</h4>
+            <p>This isn't just my journey; it's an invitation. Let's discover the strength, endurance, and vitality we never knew we had.</p>
+        </aside>
+
+        <div class="challenge">
+            <h4>Your First Challenge</h4>
+            <p>Find one thing this week that you've been avoiding because it's hard. Do it anyway. That's the first step.</p>
+        </div>
+    </div>
+
+    <div class="post-tags">
+        <a href="#">#MilitaryMindset</a>
+        <a href="#">#Discipline</a>
+        <a href="#">#Mindset</a>
+        <a href="#">#GettingStarted</a>
+        <a href="#">#HumanPerformance</a>
+    </div>
+
+    <div class="share-bar">
+        <span>Share this:</span>
+        <a href="#">Twitter</a>
+        <a href="#">Reddit</a>
+        <a href="#">Facebook</a>
+        <a href="#">Copy Link</a>
+    </div>
+
+    <div class="author-card">
+        <img src="avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-info">
+            <h4>About the Field Tester</h4>
+            <p>The Stride Project is built on a simple idea: real fitness research shouldn't live in journals — it should live in the dirt, the gym, and the trail. Field Tested is the blog series where I run experiments on my own body and report back with the raw, unfiltered data.</p>
+            <a href="index.html#field-tested">More Field Tested entries →</a>
+        </div>
+    </div>
+
+</article>
+
+<section class="related-section">
+    <div class="related-inner">
+        <h3>Keep Reading</h3>
+        <p class="related-sub">More from the Field Tested Series</p>
+        <div class="related-grid">
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Outdoor Training</span>
+                    <h4><a href="post2.html">Nature's Obstacle Course</a></h4>
+                    <span class="date">Entry #2 · May 2, 2026</span>
+                </div>
+            </article>
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Outdoor Training</span>
+                    <h4><a href="post3.html">The Science of the Outdoor Grind</a></h4>
+                    <span class="date">Entry #3 · May 4, 2026</span>
+                </div>
+            </article>
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Productivity</span>
+                    <h4><a href="post4.html">Bypassing the Burnout</a></h4>
+                    <span class="date">Entry #4 · May 5, 2026</span>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<nav class="post-nav">
+    <span class="prev disabled" style="background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--border); display: block;">
+        <span class="label" style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">← Previous Entry</span>
+        <span class="title" style="color: var(--text-secondary); font-weight: bold; font-size: 1.05rem;">This is the first entry</span>
+    </span>
+    <a href="post2.html" class="next">
+        <span class="label">Next Field Tested Entry →</span>
+        <span class="title">Nature's Obstacle Course</span>
+    </a>
+</nav>
+
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved. · <em>Field Tested</em> is a research blog series of The Stride Project.</p>
+    <div><a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a></div>
+</footer>
+
+<script>
+window.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+});
+</script>
 
 </body>
 </html>

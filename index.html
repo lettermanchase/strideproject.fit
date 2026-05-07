@@ -1,122 +1,685 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Stride Project | Field Tested</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f7f6; color: #333333; line-height: 1.8; }
-        
-        /* Fixed & Aligned Navigation */
-        nav { background-color: #ffffff; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-        .brand-logo { font-weight: 900; font-size: 1.4rem; color: #2e7d32; text-transform: uppercase; text-decoration: none; letter-spacing: 1px; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links > a, .dropdown { margin-left: 25px; }
-        .nav-links > a, .dropbtn { text-decoration: none; color: #555555; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; cursor: pointer; transition: color 0.3s ease; padding: 20px 0; display: inline-block; }
-        .nav-links > a:hover, .dropbtn:hover { color: #2e7d32; }
-        
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 220px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 1; top: 100%; left: 0; border-radius: 0 0 4px 4px; overflow: hidden; border-top: 3px solid #2e7d32; }
-        .dropdown-content.align-right { left: auto; right: 0; }
-        .dropdown-content a { color: #555555; padding: 15px 20px; text-decoration: none; display: block; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #f4f7f6; transition: background 0.2s ease; line-height: 1.2; }
-        .dropdown-content a:hover { background-color: #f4f7f6; color: #2e7d32; }
-        .dropdown:hover .dropdown-content { display: block; }
-        
-        /* Hero Header using header.jpg */
-        header.hero { 
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('header.jpg') no-repeat center center; 
-            background-size: cover; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center; 
-            border-bottom: 5px solid #2e7d32; 
-            height: 55vh; /* Desktop Height */
-        }
-        header.hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); }
-        header.hero p { font-size: 1.2rem; color: #81c784; font-weight: bold; margin-top: 10px; letter-spacing: 1px; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); }
-        
-        .container { max-width: 900px; margin: 50px auto; padding: 0 20px; }
-        .feed-title { border-bottom: 2px solid #ddd; margin-bottom: 30px; padding-bottom: 10px; font-size: 1.5rem; text-transform: uppercase; color: #2e7d32; }
-        
-        .post-card { background-color: #ffffff; border-radius: 8px; margin-bottom: 25px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s ease; text-decoration: none; display: block; color: inherit; border-left: 0px solid #2e7d32; }
-        .post-card:hover { border-left: 8px solid #2e7d32; transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
-        .post-card h2 { margin: 0 0 10px 0; color: #1a1a1a; font-size: 1.5rem; }
-        .post-card .date { font-size: 0.85rem; color: #2e7d32; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: bold; }
-        .post-card p { margin: 0; color: #666666; line-height: 1.6; }
-        
-        footer { text-align: center; padding: 40px; color: #888; font-size: 0.9rem; background-color: #ffffff; border-top: 1px solid #ddd; }
-        
-        /* Mobile Scaling Rules */
-        @media (max-width: 768px) { 
-            header.hero { height: 40vh; } /* Mobile Height */
-            header.hero h1 { font-size: 2.2rem; } 
-            .nav-links { display: none; } 
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Stride Project | Health, Fitness & Human Performance</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+/* ============ RESET & BASE ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAVIGATION ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+.logo-main {
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+}
+.logo-sub {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+
+.nav-cta {
+    background: none;
+    padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent);
+    border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 200px;
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    text-transform: none;
+    letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem;
+}
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--accent);
+}
+
+/* ============ HERO ============ */
+.hero {
+    height: 75vh;
+    min-height: 500px;
+    background: linear-gradient(rgba(47, 107, 58, 0.55), rgba(31, 42, 35, 0.75)),
+                url('header.jpg') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.hero-overlay { max-width: 800px; }
+
+.hero h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    letter-spacing: 6px;
+    margin-bottom: 1rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+.hero-tagline {
+    font-size: 1.1rem;
+    color: #b8e0c0;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.hero-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.9);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.hero-cta {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: var(--accent-bright);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+.hero-cta:hover { background: white; color: var(--accent); }
+
+/* ============ FIELD TESTED SERIES BANNER ============ */
+.series-banner {
+    max-width: 1200px;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+    text-align: center;
+}
+.series-eyebrow {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.series-banner h2 {
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.series-banner p {
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+}
+
+/* ============ CONTENT LAYOUT ============ */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+/* ============ POST CARDS ============ */
+.post-card {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+    background: var(--bg-card);
+    margin-bottom: 2rem;
+    border-left: 3px solid var(--accent);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.15);
+}
+
+.post-thumb {
+    background-size: cover;
+    background-position: center;
+    min-height: 200px;
+}
+
+.post-content { padding: 1.5rem 1.5rem 1.5rem 0; }
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: var(--accent);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.read-time { color: var(--text-secondary); }
+
+.post-card h3 { margin: 0.3rem 0; }
+.post-card h3 a { color: var(--text-primary); font-size: 1.3rem; }
+.post-card h3 a:hover { color: var(--accent); }
+
+.post-date { color: var(--text-secondary); font-size: 0.85rem; margin: 0.3rem 0; }
+.post-excerpt { margin: 0.8rem 0; color: var(--text-secondary); }
+
+.read-more {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: var(--accent);
+}
+.read-more:hover { color: var(--accent-bright); }
+
+/* ============ SIDEBAR ============ */
+.sidebar-block {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-top: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.sidebar-block h4 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--accent);
+}
+
+.testing-now { font-size: 1.1rem; font-weight: bold; }
+.testing-week { color: var(--text-secondary); font-size: 0.85rem; margin: 0.5rem 0; }
+
+.progress-bar {
+    background: var(--accent-soft);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.progress-fill {
+    background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+    height: 100%;
+}
+
+.sidebar-block.stats ul { list-style: none; }
+.sidebar-block.stats li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.sidebar-block.stats strong { color: var(--accent); font-size: 1.3rem; margin-right: 0.5rem; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag-cloud a {
+    background: var(--accent-soft);
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+    border-radius: 3px;
+    border: 1px solid var(--border);
+}
+.tag-cloud a:hover { background: var(--accent); color: white; }
+
+/* ============ NEWSLETTER ============ */
+.newsletter {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+}
+.newsletter-inner { max-width: 600px; margin: 0 auto; }
+.newsletter h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: white;
+}
+.newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+    flex: 1;
+    padding: 0.9rem;
+    border: none;
+    background: rgba(255,255,255,0.95);
+    color: var(--text-primary);
+    font-size: 1rem;
+    border-radius: 3px;
+}
+.newsletter-form input::placeholder { color: var(--text-secondary); }
+.newsletter-form button {
+    padding: 0.9rem 1.5rem;
+    background: var(--text-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+.newsletter-form button:hover { background: black; }
+
+/* ============ FOOTER ============ */
+.site-footer {
+    background: var(--text-primary);
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer a { color: var(--accent-bright); }
+.site-footer .footer-brand {
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: white;
+    margin-bottom: 0.3rem;
+}
+.social { margin-top: 0.5rem; }
+
+/* ============ MOBILE ============ */
+@media (max-width: 900px) {
+    .content-wrapper { grid-template-columns: 1fr; }
+    .post-card { grid-template-columns: 1fr; }
+    .post-thumb { min-height: 200px; }
+    .post-content { padding: 0 1.5rem 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .nav-menu.active { display: flex; }
+
+    .nav-menu a, .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static;
+        width: 100%;
+        border: none;
+        background: var(--accent-soft);
+        box-shadow: none;
+    }
+
+    .newsletter-form { flex-direction: column; }
+    .hero h1 { letter-spacing: 4px; }
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="brand-logo">The Stride Project</a>
-        <div class="nav-links">
-            <a href="index.html">Research Log</a>
+<!-- ============ NAVIGATION ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="#" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+
             <div class="dropdown">
-                <a class="dropbtn">Workout Plans ▾</a>
+                <button class="dropdown-toggle">Workout Plans ▾</button>
                 <div class="dropdown-content">
-                    <a href="strength-split.html">Strength Training Split</a>
-                    <a href="full-body.html">Full-Body Split</a>
-                    <a href="cardio-plans.html">Running & Cardio Plans</a>
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
                 </div>
             </div>
+
             <div class="dropdown">
-                <a class="dropbtn">Tools ▾</a>
-                <div class="dropdown-content align-right">
-                    <a href="protein-calc.html">Daily Protein Calculator</a>
-                    <a href="macro-calc.html">Macro Calculator</a>
-                    <a href="calorie-calc.html">Daily Calorie Calculator</a>
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
                 </div>
+            </div>
+
+            <a href="#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+    <div class="hero-overlay">
+        <h1>THE STRIDE PROJECT</h1>
+        <p class="hero-tagline">Health · Fitness · Human Performance</p>
+        <p class="hero-sub">Training plans, tools, and field-tested research for anyone chasing the gap between average and exceptional.</p>
+        <a href="#field-tested" class="hero-cta">Read the Research →</a>
+    </div>
+</section>
+
+<!-- ============ FIELD TESTED SERIES BANNER ============ -->
+<div class="series-banner" id="field-tested">
+    <span class="series-eyebrow">The Blog Series</span>
+    <h2>Field Tested</h2>
+    <p>Real-world experiments in human performance — written from the dirt patch, not the laboratory. I'm the test subject. You get the verdict.</p>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="content-wrapper">
+
+    <section class="posts-section">
+        <h2 class="section-title">Research Log</h2>
+
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag">Productivity</span>
+                    <span class="read-time">⏱ 4 min read</span>
+                </div>
+                <h3><a href="post4.html">Bypassing the Burnout: Finding Time to Train</a></h3>
+                <p class="post-date">Field Tested · Entry #4 · May 5, 2026</p>
+                <p class="post-excerpt">How to drop the caffeine crutch, defeat late-day fatigue, and exploit hidden windows in your schedule to get the work done.</p>
+                <a href="post4.html" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag">Outdoor Training</span>
+                    <span class="read-time">⏱ 5 min read</span>
+                </div>
+                <h3><a href="post3.html">The Science of the Outdoor Grind</a></h3>
+                <p class="post-date">Field Tested · Entry #3 · May 4, 2026</p>
+                <p class="post-excerpt">From deployment dirt patches to the science of sunlight: why skipping the conventional gym might just lower your cortisol and fix your sleep.</p>
+                <a href="post3.html" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag">Outdoor Training</span>
+                    <span class="read-time">⏱ 4 min read</span>
+                </div>
+                <h3><a href="post2.html">Nature's Obstacle Course</a></h3>
+                <p class="post-date">Field Tested · Entry #2 · May 2, 2026</p>
+                <p class="post-excerpt">From the buoyancy of the Dead Sea to the rugged canyons of the Mujib Nature Reserve, exploring how functional fitness lets us experience the world's most incredible spectacles.</p>
+                <a href="post2.html" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag">Military Mindset</span>
+                    <span class="read-time">⏱ 3 min read</span>
+                </div>
+                <h3><a href="post1.html">The Spark of Performance</a></h3>
+                <p class="post-date">Field Tested · Entry #1 · May 1, 2026</p>
+                <p class="post-excerpt">Why I started this journey, my time in the military, and the commitment to finding the gap between average and exceptional.</p>
+                <a href="post1.html" class="read-more">Read More →</a>
+            </div>
+        </article>
+    </section>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+
+        <div class="sidebar-block">
+            <h4>Currently Testing</h4>
+            <p class="testing-now">🧪 Deployment Workouts</p>
+            <p class="testing-week">Week 8 of 40</p>
+            <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+        </div>
+
+        <div class="sidebar-block stats">
+            <h4>Field Tested Stats</h4>
+            <ul>
+                <li><strong>4</strong> Entries Published</li>
+                <li><strong>5</strong> Topics Covered</li>
+                <li><strong>1</strong> Active Experiment</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Topics</h4>
+            <div class="tag-cloud">
+                <a href="#">Outdoor Training</a>
+                <a href="#">Military Mindset</a>
+                <a href="#">Recovery</a>
+                <a href="#">Nutrition</a>
+                <a href="#">Productivity</a>
             </div>
         </div>
-    </nav>
 
-    <header class="hero">
-        <h1>Field Tested</h1>
-        <p>APPLIED HEALTH & FITNESS</p>
-    </header>
+    </aside>
+</main>
 
-    <div class="container">
-        <h2 class="feed-title">Research Log</h2>
-
-        <a href="post4.html" class="post-card">
-            <span class="date">May 5, 2026</span>
-            <h2>Bypassing the Burnout: Finding Time to Train</h2>
-            <p>How to drop the caffeine crutch, defeat late-day fatigue, and exploit hidden windows in your schedule to get the work done.</p>
-        </a>
-
-        <a href="post3.html" class="post-card">
-            <span class="date">May 4, 2026</span>
-            <h2>The Science of the Outdoor Grind</h2>
-            <p>From deployment dirt patches to the science of sunlight: why skipping the conventional gym might just lower your cortisol and fix your sleep.</p>
-        </a>
-
-        <a href="post2.html" class="post-card">
-            <span class="date">May 2, 2026</span>
-            <h2>Nature's Obstacle Course</h2>
-            <p>From the buoyancy of the Dead Sea to the rugged canyons of the Mujib Nature Reserve, exploring how functional fitness allows us to experience the world's most incredible spectacles.</p>
-        </a>
-
-        <a href="post1.html" class="post-card">
-            <span class="date">May 1, 2026</span>
-            <h2>The Spark of Performance</h2>
-            <p>Why I started this journey, my time in the military, and the commitment to finding the gap between average and exceptional.</p>
-        </a>
+<!-- ============ NEWSLETTER ============ -->
+<section id="newsletter" class="newsletter">
+    <div class="newsletter-inner">
+        <h2>Get the Field Report</h2>
+        <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Enlist →</button>
+        </form>
     </div>
+</section>
 
-    <footer>
-        &copy; 2026 The Stride Project. All Rights Reserved.
-    </footer>
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved.</p>
+    <div class="social">
+        <a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            navMenu.classList.remove('active');
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                d.classList.remove('open');
+            });
+        }
+    });
+});
+</script>
 
 </body>
 </html>

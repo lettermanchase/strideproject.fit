@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1-Rep Max Calculator | Tools — The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+    --zone-strength: #b94a3d;
+    --zone-power: #c97a2f;
+    --zone-hypertrophy: #2f6b3a;
+    --zone-endurance: #4a7a8c;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAV ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main {
+    font-weight: 900; font-size: 1.4rem;
+    letter-spacing: 3px; color: var(--accent);
+}
+.logo-sub {
+    font-size: 0.7rem; letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase; margin-top: 2px;
+}
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary);
+    background: none; border: none;
+    font-size: 0.95rem; cursor: pointer;
+    font-family: inherit; padding: 0.5rem;
+    text-transform: uppercase; letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+.nav-cta {
+    background: none;
+    padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent);
+    border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none;
+    position: absolute; top: 100%; left: 0;
+    background: white;
+    min-width: 200px;
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    text-transform: none; letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown-content a.active { background: var(--accent-soft); color: var(--accent); font-weight: bold; }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none;
+    background: none; border: none;
+    cursor: pointer;
+    flex-direction: column; gap: 5px;
+    padding: 0.5rem;
+}
+.menu-toggle span {
+    display: block; width: 25px; height: 3px;
+    background: var(--accent);
+}
+
+/* ============ PAGE HEADER ============ */
+.page-header {
+    background: linear-gradient(rgba(31, 42, 35, 0.6), rgba(47, 107, 58, 0.85)),
+                url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=1600') center/cover;
+    color: white;
+    padding: 4rem 2rem 5rem;
+    text-align: center;
+}
+.page-header-inner { max-width: 800px; margin: 0 auto; }
+.page-eyebrow {
+    display: inline-block;
+    background: var(--accent-bright);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.page-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+.page-header p {
+    color: rgba(255,255,255,0.95);
+    font-size: 1.1rem;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* ============ CALC LAYOUT ============ */
+.calc-wrapper {
+    max-width: 1100px;
+    margin: -3rem auto 4rem;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.calc-card {
+    background: var(--bg-card);
+    border-top: 4px solid var(--accent);
+    box-shadow: 0 4px 20px rgba(47, 107, 58, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.calc-card-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--accent-soft);
+}
+.calc-card-header h2 {
+    font-size: 1.4rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+}
+.calc-card-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.calc-body { padding: 2rem; }
+
+/* Input grid - side by side weight + reps */
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+}
+.input-grid.two-col { grid-template-columns: 1fr 1fr; }
+
+.form-group { margin-bottom: 1.3rem; }
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+.form-group .helper {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: 0.3rem;
+    font-style: italic;
+}
+
+input[type="number"], select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="number"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(47, 107, 58, 0.15);
+}
+
+/* Unit toggle */
+.unit-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+.unit-toggle label {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.7rem;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    margin: 0;
+}
+.unit-toggle input[type="radio"] { display: none; }
+.unit-toggle label:has(input:checked) {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+/* ============ RESULT HERO ============ */
+.result-hero {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white;
+    padding: 2.5rem 2rem;
+    text-align: center;
+}
+.result-hero .label {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+.result-hero .value {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+}
+.result-hero .unit {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.result-hero .formula-note {
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    font-size: 0.85rem;
+    opacity: 0.95;
+}
+.result-hero .lift-name {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ============ % TRAINING TABLE ============ */
+.training-table-wrap { padding: 2rem; }
+.training-table-wrap h3 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+}
+.training-table-wrap .sub {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+}
+
+.training-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.training-table thead {
+    background: var(--accent);
+    color: white;
+}
+.training-table th {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.training-table th.center, .training-table td.center { text-align: center; }
+.training-table th.right, .training-table td.right { text-align: right; }
+.training-table tbody tr {
+    border-top: 1px solid var(--border);
+    transition: background 0.15s;
+}
+.training-table tbody tr:hover { background: var(--accent-soft); }
+.training-table td {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+.training-table td.pct {
+    font-weight: bold;
+    color: var(--accent);
+    width: 80px;
+}
+.training-table td.weight {
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+.training-table td.reps {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Zone tags */
+.zone-tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: white;
+    border-radius: 3px;
+}
+.zone-strength { background: var(--zone-strength); }
+.zone-power { background: var(--zone-power); }
+.zone-hypertrophy { background: var(--zone-hypertrophy); }
+.zone-endurance { background: var(--zone-endurance); }
+
+/* ============ PLATE LOADER ============ */
+.plate-section {
+    background: var(--accent-soft);
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+}
+.plate-section h3 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+}
+.plate-section .sub {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+}
+
+.bar-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin: 1.5rem 0;
+    min-height: 100px;
+    background: white;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+}
+.plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+.plate-45 { background: #1a1a1a; width: 16px; height: 90px; }
+.plate-35 { background: #c45a1f; width: 14px; height: 80px; }
+.plate-25 { background: #2f5d8c; width: 13px; height: 70px; }
+.plate-10 { background: #2e7d32; width: 11px; height: 55px; }
+.plate-5  { background: #c0392b; width: 10px; height: 45px; }
+.plate-2  { background: #7f8c8d; width: 9px;  height: 35px; }
+.bar {
+    background: linear-gradient(180deg, #888 0%, #ccc 50%, #888 100%);
+    width: 60px;
+    height: 8px;
+    flex-shrink: 0;
+}
+
+.plate-summary {
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+.plate-summary strong { color: var(--accent); }
+.plate-summary .empty {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ============ VERDICT INFO ============ */
+.verdict-info {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 2rem 2rem;
+    border-radius: 0 4px 4px 0;
+}
+.verdict-info h4 {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+.verdict-info p {
+    font-size: 0.95rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+/* ============ DISCLAIMER ============ */
+.disclaimer {
+    max-width: 1100px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+}
+.disclaimer-inner {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ============ FOOTER ============ */
+.site-footer {
+    background: var(--text-primary);
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer .footer-brand {
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: white;
+    margin-bottom: 0.3rem;
+}
+.site-footer a { color: var(--accent-bright); }
+
+/* ============ MOBILE ============ */
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static;
+        border: none;
+        background: var(--accent-soft);
+        box-shadow: none;
+    }
+
+    .input-grid, .input-grid.two-col { grid-template-columns: 1fr; }
+    .result-hero .value { font-size: 3.2rem; }
+    .training-table th, .training-table td {
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    .zone-tag { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie & Protein Calculator</a>
+                    <a href="1rm-calc.html" class="active">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+    <div class="page-header-inner">
+        <span class="page-eyebrow">Tools</span>
+        <h1>1-Rep Max Calculator</h1>
+        <p>Estimate your absolute strength ceiling and get a full percentage-based training chart for every working set in your program. Best with sets of 2–10 reps.</p>
+    </div>
+</section>
+
+<!-- ============ CALCULATOR ============ -->
+<div class="calc-wrapper">
+
+    <div class="calc-card">
+        <div class="calc-card-header">
+            <h2>Enter Your Set</h2>
+            <p>Plug in the heaviest set you took close to failure. Math runs live as you type.</p>
+        </div>
+        <div class="calc-body">
+
+            <div class="form-group">
+                <label>Unit</label>
+                <div class="unit-toggle">
+                    <label><input type="radio" name="unit" value="lbs" checked onchange="calculate1RM()"><span>Pounds (lbs)</span></label>
+                    <label><input type="radio" name="unit" value="kg" onchange="calculate1RM()"><span>Kilograms (kg)</span></label>
+                </div>
+            </div>
+
+            <div class="input-grid">
+                <div class="form-group">
+                    <label for="liftType">Lift</label>
+                    <select id="liftType" onchange="calculate1RM()">
+                        <option value="Squat">Back Squat</option>
+                        <option value="Bench" selected>Bench Press</option>
+                        <option value="Deadlift">Deadlift</option>
+                        <option value="OHP">Overhead Press</option>
+                        <option value="Other">Other / Accessory</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Weight Lifted</label>
+                    <input type="number" id="weight" value="225" min="0" step="2.5" oninput="calculate1RM()">
+                </div>
+
+                <div class="form-group">
+                    <label for="reps">Reps Performed</label>
+                    <input type="number" id="reps" value="5" min="1" max="15" oninput="calculate1RM()">
+                    <span class="helper">2–10 reps = most accurate</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Result Hero -->
+        <div class="result-hero">
+            <div class="label">Estimated 1-Rep Max</div>
+            <div class="value" id="oneRMValue">253</div>
+            <div class="unit" id="oneRMUnit">lbs</div>
+            <div class="formula-note">
+                <span class="lift-name" id="liftLabel">Bench Press</span> ·
+                Brzycki: <span id="brzyckiVal">253</span> · Epley: <span id="epleyVal">253</span> ·
+                Avg: <span id="avgVal">253</span>
+            </div>
+        </div>
+
+        <!-- Training Table -->
+        <div class="training-table-wrap">
+            <h3>Your Training Percentages</h3>
+            <p class="sub">Use these for working sets, warm-ups, and program planning.</p>
+
+            <table class="training-table">
+                <thead>
+                    <tr>
+                        <th class="pct">% of 1RM</th>
+                        <th>Weight</th>
+                        <th class="center">Reps</th>
+                        <th>Training Zone</th>
+                    </tr>
+                </thead>
+                <tbody id="percentTable">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Plate Loader -->
+        <div class="plate-section">
+            <h3>Plate Breakdown</h3>
+            <p class="sub">How to load a standard 45 lb / 20 kg barbell to hit your 1RM. Shows one side of the bar.</p>
+
+            <div class="bar-visual" id="plateVisual">
+                <!-- Plates populated by JS -->
+            </div>
+            <div class="plate-summary" id="plateSummary">
+                Calculating...
+            </div>
+        </div>
+
+        <div class="verdict-info">
+            <h4>The Field-Tested Note</h4>
+            <p>Estimated maxes are a planning tool, not a chest-thumping number. Never test a true 1RM without a spotter, full warm-up, and dialed-in form. When in doubt, train at 80% — you'll get stronger faster than chasing a max every week.</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- ============ DISCLAIMER ============ -->
+<div class="disclaimer">
+    <div class="disclaimer-inner">
+        ⚕️ <strong>Field Tested, not FDA approved.</strong> This calculator uses the Brzycki and Epley equations averaged for accuracy. Lift smart, train hard, and check your ego at the door.
+    </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved. · <em>Field Tested</em> is a research blog series of The Stride Project.</p>
+    <div><a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a></div>
+</footer>
+
+<script>
+// Training % chart data
+const percentages = [
+    { pct: 100, reps: '1',     zone: 'strength',     label: 'Max Strength' },
+    { pct: 95,  reps: '2',     zone: 'strength',     label: 'Max Strength' },
+    { pct: 90,  reps: '3-4',   zone: 'strength',     label: 'Strength' },
+    { pct: 85,  reps: '5',     zone: 'strength',     label: 'Strength' },
+    { pct: 80,  reps: '6-8',   zone: 'power',        label: 'Power / Strength' },
+    { pct: 75,  reps: '8-10',  zone: 'hypertrophy',  label: 'Hypertrophy' },
+    { pct: 70,  reps: '10-12', zone: 'hypertrophy',  label: 'Hypertrophy' },
+    { pct: 65,  reps: '12-15', zone: 'hypertrophy',  label: 'Hypertrophy' },
+    { pct: 60,  reps: '15-20', zone: 'endurance',    label: 'Muscular Endurance' },
+    { pct: 50,  reps: '20+',   zone: 'endurance',    label: 'Endurance / Warmup' }
+];
+
+function calculate1RM() {
+    const weight = parseFloat(document.getElementById('weight').value);
+    const reps = parseInt(document.getElementById('reps').value);
+    const unit = document.querySelector('input[name="unit"]:checked').value;
+    const lift = document.getElementById('liftType').value;
+
+    // Validate
+    if (!weight || !reps || weight <= 0 || reps <= 0) {
+        document.getElementById('oneRMValue').textContent = '--';
+        return;
+    }
+
+    // If exactly 1 rep, that IS the 1RM
+    let oneRM, brzycki, epley;
+    if (reps === 1) {
+        oneRM = brzycki = epley = weight;
+    } else {
+        // Brzycki: weight × (36 / (37 - reps))
+        brzycki = weight * (36 / (37 - reps));
+        // Epley: weight × (1 + reps/30)
+        epley = weight * (1 + reps / 30);
+        // Average for best accuracy
+        oneRM = (brzycki + epley) / 2;
+    }
+
+    // Round to nearest sensible number
+    const roundTo = unit === 'kg' ? 0.5 : 1;
+    oneRM = Math.round(oneRM / roundTo) * roundTo;
+    brzycki = Math.round(brzycki / roundTo) * roundTo;
+    epley = Math.round(epley / roundTo) * roundTo;
+
+    // Update result hero
+    document.getElementById('oneRMValue').textContent = oneRM;
+    document.getElementById('oneRMUnit').textContent = unit;
+    document.getElementById('liftLabel').textContent = getLiftLabel(lift);
+    document.getElementById('brzyckiVal').textContent = brzycki;
+    document.getElementById('epleyVal').textContent = epley;
+    document.getElementById('avgVal').textContent = oneRM;
+
+    // Build percentage table
+    buildPercentTable(oneRM, unit);
+
+    // Build plate breakdown for the 1RM
+    buildPlateBreakdown(oneRM, unit);
+}
+
+function getLiftLabel(lift) {
+    const labels = {
+        'Squat': 'Back Squat',
+        'Bench': 'Bench Press',
+        'Deadlift': 'Deadlift',
+        'OHP': 'Overhead Press',
+        'Other': 'Lift'
+    };
+    return labels[lift] || 'Lift';
+}
+
+function buildPercentTable(oneRM, unit) {
+    const tbody = document.getElementById('percentTable');
+    tbody.innerHTML = '';
+
+    const roundTo = unit === 'kg' ? 0.5 : 5;
+
+    percentages.forEach(row => {
+        let weight = oneRM * (row.pct / 100);
+        weight = Math.round(weight / roundTo) * roundTo;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="pct">${row.pct}%</td>
+            <td class="weight">${weight} ${unit}</td>
+            <td class="reps">${row.reps}</td>
+            <td><span class="zone-tag zone-${row.zone}">${row.label}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function buildPlateBreakdown(targetWeight, unit) {
+    const visual = document.getElementById('plateVisual');
+    const summary = document.getElementById('plateSummary');
+    visual.innerHTML = '';
+
+    // Bar weights
+    const barWeight = unit === 'lbs' ? 45 : 20;
+
+    if (targetWeight < barWeight) {
+        visual.innerHTML = '<div class="bar"></div>';
+        summary.innerHTML = `<span class="empty">Target weight (${targetWeight} ${unit}) is less than the bar (${barWeight} ${unit}). No plates needed.</span>`;
+        return;
+    }
+
+    // Plates available per side
+    const platesLbs = [45, 35, 25, 10, 5, 2.5];
+    const platesKg  = [25, 20, 15, 10, 5, 2.5, 1.25];
+    const platesAvail = unit === 'lbs' ? platesLbs : platesKg;
+
+    // Per side weight
+    const perSide = (targetWeight - barWeight) / 2;
+    let remaining = perSide;
+    const used = [];
+
+    platesAvail.forEach(p => {
+        const count = Math.floor(remaining / p);
+        if (count > 0) {
+            used.push({ size: p, count: count });
+            remaining -= count * p;
+        }
+    });
+
+    // Build visual: left plates (heaviest first, going outward) | bar | right plates (mirror)
+    // Build left side: outermost = largest, inner = smallest
+    const leftPlates = [...used].reverse(); // smallest first when reading left-to-right
+    leftPlates.forEach(p => {
+        for (let i = 0; i < p.count; i++) {
+            const div = document.createElement('div');
+            div.className = `plate plate-${plateClass(p.size)}`;
+            div.textContent = p.size;
+            visual.appendChild(div);
+        }
+    });
+
+    // Bar in middle
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    visual.appendChild(bar);
+
+    // Right side: mirror (largest first going outward = smallest first reading left-to-right inverted)
+    used.forEach(p => {
+        for (let i = 0; i < p.count; i++) {
+            const div = document.createElement('div');
+            div.className = `plate plate-${plateClass(p.size)}`;
+            div.textContent = p.size;
+            visual.appendChild(div);
+        }
+    });
+
+    // Summary text
+    if (used.length === 0) {
+        summary.innerHTML = `Just the <strong>${barWeight} ${unit}</strong> bar — no plates needed.`;
+    } else {
+        const summaryParts = used.map(p => `${p.count}× <strong>${p.size}${unit}</strong>`).join(' + ');
+        const totalLoaded = barWeight + (perSide * 2) - (remaining * 2);
+        let extra = '';
+        if (remaining > 0.01) {
+            extra = ` <span class="empty">(${(remaining * 2).toFixed(1)} ${unit} short — closest loadable: ${totalLoaded} ${unit})</span>`;
+        }
+        summary.innerHTML = `Per side: ${summaryParts}<br>Total bar load: <strong>${barWeight + (perSide * 2) - (remaining * 2)} ${unit}</strong>${extra}`;
+    }
+}
+
+function plateClass(size) {
+    // Map to closest existing CSS class for visual
+    if (size >= 45 || size >= 25) return '45';
+    if (size >= 35) return '35';
+    if (size >= 20) return '25';
+    if (size >= 10) return '10';
+    if (size >= 5) return '5';
+    return '2';
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', calculate1RM);
+
+// ============ MOBILE NAV ============
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+});
+</script>
+
+</body>
+</html>

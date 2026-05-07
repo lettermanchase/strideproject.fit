@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beginner Consistency Guide · 7-Day Workout Plan | The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+/* ============ RESET & BASE (matches index.html) ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+/* ============ NAVIGATION (copied from index.html) ============ */
+.site-header {
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent);
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
+    display: flex; justify-content: space-between;
+    align-items: center; position: relative;
+}
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle {
+    color: var(--text-primary); background: none; border: none;
+    font-size: 0.95rem; cursor: pointer; font-family: inherit;
+    padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px;
+}
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+
+.nav-cta {
+    background: none; padding: 0.5rem 1rem !important;
+    border: 2px solid var(--accent); border-radius: 3px;
+    color: var(--accent) !important;
+}
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content {
+    display: none; position: absolute; top: 100%; left: 0;
+    background: white; min-width: 200px;
+    border: 1px solid var(--border); border-top: 2px solid var(--accent);
+    z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.dropdown-content a {
+    display: block; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+    text-transform: none; letter-spacing: 0;
+}
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle {
+    display: none; background: none; border: none; cursor: pointer;
+    flex-direction: column; gap: 5px; padding: 0.5rem;
+}
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+/* ============ PAGE HEADER ============ */
+.page-header {
+    background: linear-gradient(rgba(47, 107, 58, 0.85), rgba(31, 42, 35, 0.85));
+    padding: 4rem 2rem 3rem;
+    text-align: center; color: white;
+    border-bottom: 3px solid var(--accent-bright);
+}
+.page-header-inner { max-width: 900px; margin: 0 auto; }
+
+.page-eyebrow {
+    display: inline-block;
+    background: var(--accent-bright); color: white;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 3px; font-weight: bold;
+    margin-bottom: 1rem;
+}
+.page-header h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1rem; color: white;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+}
+.page-header p {
+    font-size: 1.05rem; color: rgba(255,255,255,0.9);
+    max-width: 720px; margin: 0 auto 2rem;
+}
+
+/* ============ PDF BUTTONS ============ */
+.pdf-btn {
+    display: inline-block; padding: 0.9rem 2rem;
+    background: var(--accent-bright); color: white;
+    text-transform: uppercase; letter-spacing: 2px;
+    font-weight: bold; font-size: 0.85rem;
+    border-radius: 3px; border: 2px solid var(--accent-bright);
+    cursor: pointer; font-family: inherit; transition: all 0.2s;
+}
+.pdf-btn:hover { background: white; color: var(--accent); border-color: white; }
+
+.pdf-btn-float {
+    position: fixed; bottom: 24px; right: 24px; z-index: 999;
+    background: var(--accent); color: white; border: none;
+    padding: 0.85rem 1.4rem; border-radius: 50px;
+    font-size: 0.8rem; font-weight: bold; letter-spacing: 1.5px;
+    text-transform: uppercase; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.35);
+    transition: transform 0.2s, background 0.2s; font-family: inherit;
+}
+.pdf-btn-float:hover { background: var(--accent-bright); transform: scale(1.05); }
+
+/* ============ META STATS BAR ============ */
+.meta-stats {
+    max-width: 1200px; margin: -2rem auto 0;
+    padding: 0 2rem; position: relative; z-index: 5;
+}
+.meta-stats-inner {
+    background: var(--bg-card); border-top: 3px solid var(--accent);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    padding: 1rem;
+}
+.meta-item {
+    padding: 1rem; border-right: 1px solid var(--border); text-align: center;
+}
+.meta-item:last-child { border-right: none; }
+.meta-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-secondary); margin-bottom: 0.4rem;
+}
+.meta-value { font-size: 1rem; font-weight: bold; color: var(--accent); margin-bottom: 0.2rem; }
+.meta-sub { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* ============ CONTENT LAYOUT ============ */
+.content-wrapper {
+    max-width: 1200px; margin: 3rem auto;
+    padding: 0 2rem;
+    display: grid; grid-template-columns: 1fr 300px; gap: 3rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem; margin-bottom: 2rem;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.section-intro {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* ============ DAY CARDS ============ */
+.day-card {
+    background: var(--bg-card);
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+}
+.day-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(47, 107, 58, 0.15);
+}
+.day-card-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--accent-soft);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 0.5rem;
+}
+.day-card-title { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.day-tag {
+    background: var(--accent); color: white;
+    padding: 0.2rem 0.6rem; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: bold;
+}
+.day-card h3 {
+    font-size: 1.2rem; color: var(--text-primary);
+    text-transform: uppercase; letter-spacing: 1.5px;
+}
+.day-card-meta { font-size: 0.8rem; color: var(--text-secondary); }
+.day-card-body { padding: 1.5rem; }
+.day-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; font-style: italic; }
+
+/* Rest day variant */
+.day-card.rest-day { border-left-color: var(--accent-bright); }
+.day-card.rest-day .day-card-header { background: #f0f6f1; }
+
+/* ============ TABLES ============ */
+table {
+    width: 100%; border-collapse: collapse;
+    margin-bottom: 1rem; font-size: 0.9rem;
+}
+thead { background: var(--accent-soft); }
+th {
+    text-align: left; padding: 0.75rem 1rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 1px; font-size: 0.75rem;
+    font-weight: bold; border-bottom: 2px solid var(--accent);
+}
+td {
+    text-align: left; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border); color: var(--text-primary);
+}
+tbody tr:hover { background: var(--accent-soft); }
+td:first-child { font-weight: bold; }
+td:nth-child(2) { color: var(--text-secondary); }
+
+/* ============ COACHING NOTES ============ */
+.coaching-notes {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem; margin-top: 1rem;
+}
+.coaching-notes-label {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent);
+    font-weight: bold; margin-bottom: 0.6rem;
+}
+.coaching-notes ul { list-style: none; }
+.coaching-notes li {
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    position: relative; color: var(--text-secondary);
+    font-size: 0.9rem; line-height: 1.5;
+}
+.coaching-notes li::before {
+    content: "→"; position: absolute; left: 0;
+    color: var(--accent); font-weight: bold;
+}
+
+/* ============ CONSISTENCY SYSTEM CARDS ============ */
+.system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+}
+.system-card {
+    background: var(--bg-card);
+    border-top: 3px solid var(--accent);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.system-number {
+    background: var(--accent); color: white;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; margin-bottom: 0.75rem;
+}
+.system-card h4 {
+    font-size: 1rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+.system-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ============ TIMELINE / EXPECTATIONS ============ */
+.timeline {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem; margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.timeline-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem; padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+}
+.timeline-row:last-child { border-bottom: none; }
+.timeline-period {
+    background: var(--accent-soft); color: var(--accent);
+    padding: 0.3rem 0.7rem; font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; text-align: center;
+    border-radius: 3px;
+}
+.timeline-text { font-size: 0.95rem; color: var(--text-primary); }
+
+/* ============ VERDICT BLOCK ============ */
+.verdict {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: white; padding: 2.5rem 2rem;
+    margin: 2rem 0; text-align: center;
+}
+.verdict-label {
+    font-size: 0.75rem; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(255,255,255,0.9);
+    margin-bottom: 1rem; font-weight: bold;
+}
+.verdict-quote {
+    font-size: 1.1rem; line-height: 1.55; color: white;
+    max-width: 700px; margin: 0 auto;
+}
+
+/* ============ DISCLAIMER ============ */
+.disclaimer {
+    text-align: center; color: var(--text-secondary);
+    font-size: 0.85rem; padding: 1.25rem;
+    border: 1px dashed var(--border); background: var(--bg-card);
+    margin-top: 1.5rem;
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar-block {
+    background: var(--bg-card); padding: 1.5rem;
+    margin-bottom: 1.5rem; border-top: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.sidebar-block h4 {
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 1rem; font-size: 0.9rem; color: var(--accent);
+}
+.sidebar-block p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.sidebar-block ul { list-style: none; }
+.sidebar-block li {
+    padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+.sidebar-block li:last-child { border-bottom: none; }
+.sidebar-block strong { color: var(--accent); }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag-cloud a {
+    background: var(--accent-soft); padding: 0.3rem 0.7rem;
+    font-size: 0.8rem; color: var(--accent);
+    border-radius: 3px; border: 1px solid var(--border);
+}
+.tag-cloud a:hover { background: var(--accent); color: white; }
+
+/* ============ NEWSLETTER ============ */
+.newsletter {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    padding: 4rem 2rem; text-align: center; color: white;
+}
+.newsletter-inner { max-width: 600px; margin: 0 auto; }
+.newsletter h2 {
+    font-size: 2rem; margin-bottom: 0.5rem;
+    text-transform: uppercase; letter-spacing: 3px; color: white;
+}
+.newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+    flex: 1; padding: 0.9rem; border: none;
+    background: rgba(255,255,255,0.95); color: var(--text-primary);
+    font-size: 1rem; border-radius: 3px;
+}
+.newsletter-form button {
+    padding: 0.9rem 1.5rem; background: var(--text-primary);
+    color: white; border: none; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; border-radius: 3px; font-family: inherit;
+}
+.newsletter-form button:hover { background: black; }
+
+/* ============ FOOTER ============ */
+.site-footer {
+    background: var(--text-primary); padding: 2rem;
+    text-align: center; color: rgba(255,255,255,0.8);
+    border-top: 3px solid var(--accent);
+}
+.site-footer a { color: var(--accent-bright); }
+.site-footer .footer-brand {
+    font-weight: 900; letter-spacing: 3px;
+    color: white; margin-bottom: 0.3rem;
+}
+.social { margin-top: 0.5rem; }
+
+/* ============ MOBILE ============ */
+@media (max-width: 900px) {
+    .content-wrapper { grid-template-columns: 1fr; }
+    .meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .meta-item:last-child { border-bottom: none; }
+    .timeline-row { grid-template-columns: 1fr; gap: 0.5rem; }
+}
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu {
+        display: none; position: absolute; top: 100%;
+        left: 0; right: 0; background: white;
+        flex-direction: column; gap: 0; padding: 1rem;
+        border-top: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle {
+        width: 100%; text-align: left; padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content {
+        position: static; width: 100%; border: none;
+        background: var(--accent-soft); box-shadow: none;
+    }
+    .newsletter-form { flex-direction: column; }
+}
+
+/* ============ PRINT STYLES ============ */
+@media print {
+    body { background: white; color: black; font-size: 10.5pt; line-height: 1.45; }
+    .site-header, .menu-toggle, .nav-menu, .newsletter, .site-footer,
+    .pdf-btn, .pdf-btn-float, .no-print, .sidebar { display: none !important; }
+    .content-wrapper { display: block; max-width: 100%; margin: 0; padding: 0 0.5in; }
+    .page-header {
+        background: white !important; color: black;
+        padding: 0.5in 0 0.3in;
+        border-bottom: 2px solid #2f6b3a;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .page-header h1, .page-header p { color: black !important; text-shadow: none; }
+    .page-eyebrow { background: #2f6b3a !important; color: white !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .meta-stats { margin-top: 1rem; }
+    .meta-stats-inner { box-shadow: none; border: 1px solid #ccc; }
+    .day-card, .system-card, .timeline, .coaching-notes, table {
+        page-break-inside: avoid; box-shadow: none !important;
+    }
+    .day-card { border: 1px solid #ccc; border-left: 3px solid #2f6b3a; margin-bottom: 0.75rem; }
+    .day-card-header { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { background: #e8f1ea !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .verdict { background: #e8f1ea !important; color: black !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        border-left: 3px solid #2f6b3a; }
+    .verdict-label, .verdict-quote { color: black !important; }
+    h2, h3 { page-break-after: avoid; }
+    a { color: black; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="page-header">
+    <div class="page-header-inner">
+        <span class="page-eyebrow">Beginner Guide · Workout Plan</span>
+        <h1>The Beginner Consistency Plan</h1>
+        <p>A realistic 7-day fitness plan for total beginners. The goal isn't perfection — it's building consistency, confidence, and momentum. Most workouts take 45–60 minutes. Show up, do your best, repeat.</p>
+        <button onclick="window.print()" class="pdf-btn no-print">📄 Download Printable PDF</button>
+    </div>
+</section>
+
+<!-- ============ META STATS BAR ============ -->
+<div class="meta-stats">
+    <div class="meta-stats-inner">
+        <div class="meta-item">
+            <div class="meta-label">Days / Week</div>
+            <div class="meta-value">5 + 2 Recovery</div>
+            <div class="meta-sub">Sustainable pace</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Session Time</div>
+            <div class="meta-value">45–60 min</div>
+            <div class="meta-sub">Realistic length</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Level</div>
+            <div class="meta-value">Total Beginner</div>
+            <div class="meta-sub">No experience needed</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Equipment</div>
+            <div class="meta-value">Basic Gym</div>
+            <div class="meta-sub">DBs + machines</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Focus</div>
+            <div class="meta-value">Consistency First</div>
+            <div class="meta-sub">Habits over PRs</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="content-wrapper">
+
+    <section>
+        <h2 class="section-title">The 7-Day Plan</h2>
+        <p class="section-intro">Five workouts, two recovery days. If you miss a day, just pick up where you left off — never miss two days in a row.</p>
+
+        <!-- DAY 1 -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 1</span>
+                    <h3>Full Body</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~45 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Get the whole body moving · Build the habit</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th></tr></thead>
+                    <tbody>
+                        <tr><td>Goblet Squats</td><td>3 × 10</td></tr>
+                        <tr><td>Pushups (or knee pushups)</td><td>3 × 8–12</td></tr>
+                        <tr><td>Seated Cable Rows</td><td>3 × 10</td></tr>
+                        <tr><td>Dumbbell Shoulder Press</td><td>3 × 10</td></tr>
+                        <tr><td>Plank</td><td>3 × 30 sec</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Start lighter than you think — the goal today is finishing, not failing.</li>
+                        <li>Knee pushups are 100% okay. Build up gradually.</li>
+                        <li>Rest 60–90 seconds between sets. No rush.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 2 -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 2</span>
+                    <h3>Active Recovery</h3>
+                </div>
+                <span class="day-card-meta">🚶 ~45 min total</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Move, stretch, hydrate · Don't skip this</p>
+                <table>
+                    <thead><tr><th>Activity</th><th>Goal</th></tr></thead>
+                    <tbody>
+                        <tr><td>🚶 Walking</td><td>30–45 min</td></tr>
+                        <tr><td>🧘 Stretching</td><td>10 min</td></tr>
+                        <tr><td>💧 Hydration</td><td>Drink water consistently</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Walking outside beats walking on a treadmill — get sunlight if you can.</li>
+                        <li>Recovery days build the muscle. Skipping them slows you down.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 3 -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 3</span>
+                    <h3>Upper Body</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~50 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Push, pull, and shape the upper body</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th></tr></thead>
+                    <tbody>
+                        <tr><td>Incline Dumbbell Press</td><td>3 × 10</td></tr>
+                        <tr><td>Lat Pulldown</td><td>3 × 10</td></tr>
+                        <tr><td>Dumbbell Rows</td><td>3 × 10</td></tr>
+                        <tr><td>Lateral Raises</td><td>3 × 12</td></tr>
+                        <tr><td>Bicep Curls</td><td>3 × 12</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Form first, weight second. Watch yourself in the mirror.</li>
+                        <li>Lateral raises feel awkward at first — keep them lighter than you'd think.</li>
+                        <li>If 10 reps feels easy, add a small bump in weight next session.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 4 -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 4</span>
+                    <h3>Lower Body</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~50 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Build strong legs and a stable foundation</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th></tr></thead>
+                    <tbody>
+                        <tr><td>Bodyweight Squats</td><td>3 × 12</td></tr>
+                        <tr><td>Walking Lunges</td><td>3 × 10 each leg</td></tr>
+                        <tr><td>Romanian Deadlifts</td><td>3 × 10</td></tr>
+                        <tr><td>Calf Raises</td><td>3 × 15</td></tr>
+                        <tr><td>Crunches</td><td>3 × 15</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Squat down like you're sitting in a chair — knees track over toes.</li>
+                        <li>Romanian deadlifts: keep a slight knee bend, push your hips back, feel it in the hamstrings.</li>
+                        <li>Soreness on Day 5 is normal. It will fade as your body adapts.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 5 -->
+        <article class="day-card">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 5</span>
+                    <h3>Full Body + Core</h3>
+                </div>
+                <span class="day-card-meta">🏋️ 5 exercises · ⏱ ~50 min</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Tie it all together · Finish the week strong</p>
+                <table>
+                    <thead><tr><th>Exercise</th><th>Sets × Reps</th></tr></thead>
+                    <tbody>
+                        <tr><td>Step-Ups</td><td>3 × 10</td></tr>
+                        <tr><td>Pushups</td><td>3 × 10</td></tr>
+                        <tr><td>Lat Pulldown</td><td>3 × 10</td></tr>
+                        <tr><td>Dumbbell Shoulder Press</td><td>3 × 10</td></tr>
+                        <tr><td>Plank</td><td>3 × 45 sec</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Step-ups: use a sturdy bench. Drive through the heel of the lead foot.</li>
+                        <li>Plank: keep a straight line from head to heels. No sagging hips.</li>
+                        <li>You finished a full week — that's the win.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 6 -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 6</span>
+                    <h3>Cardio + Mobility</h3>
+                </div>
+                <span class="day-card-meta">🏃 ~40 min total</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">Light effort · Loosen up · Reset for next week</p>
+                <table>
+                    <thead><tr><th>Activity</th><th>Goal</th></tr></thead>
+                    <tbody>
+                        <tr><td>🏃 Fast Walking or Light Jog</td><td>20–30 min</td></tr>
+                        <tr><td>🧘 Stretching</td><td>10–15 min</td></tr>
+                        <tr><td>🌀 Foam Rolling (optional)</td><td>5–10 min</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>If jogging hurts your knees, stick to fast walking. No ego here.</li>
+                        <li>Stretch the muscles you trained this week — hips, shoulders, hamstrings.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- DAY 7 -->
+        <article class="day-card rest-day">
+            <div class="day-card-header">
+                <div class="day-card-title">
+                    <span class="day-tag">Day 7</span>
+                    <h3>Rest Day</h3>
+                </div>
+                <span class="day-card-meta">😴 Full recovery</span>
+            </div>
+            <div class="day-card-body">
+                <p class="day-subtitle">No workout · Reset for next week</p>
+                <table>
+                    <thead><tr><th>Focus</th><th>Reminder</th></tr></thead>
+                    <tbody>
+                        <tr><td>😴 Recovery</td><td>Sleep 7–9 hours and hydrate well</td></tr>
+                        <tr><td>🍽️ Nutrition</td><td>Eat balanced meals — protein + veggies + carbs</td></tr>
+                        <tr><td>🧠 Mindset</td><td>Plan and prepare for next week</td></tr>
+                    </tbody>
+                </table>
+                <div class="coaching-notes">
+                    <div class="coaching-notes-label">Field Notes</div>
+                    <ul>
+                        <li>Rest is not laziness — it's when the body actually rebuilds stronger.</li>
+                        <li>Use today to pack a gym bag, plan meals, and set the week up for success.</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- ============ THE CONSISTENCY SYSTEM ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">The Beginner Consistency System</h2>
+        <p class="section-intro">Workouts don't change your life. Habits do. These five rules are the actual foundation of every transformation you've ever seen.</p>
+
+        <div class="system-grid">
+            <div class="system-card">
+                <div class="system-number">1</div>
+                <h4>Never Miss Two In A Row</h4>
+                <p>Missing one workout is normal. Missing two is how habits die. Always restart quickly.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">2</div>
+                <h4>Focus On Showing Up</h4>
+                <p>Some workouts will feel amazing. Some won't. Success comes from building the habit first — not perfection.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">3</div>
+                <h4>Small Wins Matter</h4>
+                <p>More reps. Better form. Better energy. Better sleep. Progress isn't only about the scale.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">4</div>
+                <h4>Stop Comparing Yourself</h4>
+                <p>Fitness is personal. Your only competition is becoming stronger than you were last month.</p>
+            </div>
+            <div class="system-card">
+                <div class="system-number">5</div>
+                <h4>Keep It Simple</h4>
+                <p>You don't need the perfect plan, supplements, or fancy routines. Consistency beats perfection — every time.</p>
+            </div>
+        </div>
+
+        <!-- ============ MOTIVATION RULES ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">Beginner Motivation Rules</h2>
+        <table>
+            <thead><tr><th>Rule</th><th>Why It Matters</th></tr></thead>
+            <tbody>
+                <tr><td>📸 Take Progress Photos</td><td>Visual progress keeps motivation high when the scale lies</td></tr>
+                <tr><td>📓 Track Your Workouts</td><td>Seeing weight or reps go up builds real confidence</td></tr>
+                <tr><td>💪 Train Even When Motivation Is Low</td><td>Discipline creates long-term results — motivation is a bonus</td></tr>
+                <tr><td>🎉 Celebrate Small Wins</td><td>Momentum is what keeps habits alive</td></tr>
+                <tr><td>🎯 Remember Your "Why"</td><td>Purpose is what keeps you consistent on the hard days</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ============ WHAT TO EXPECT ============ -->
+        <h2 class="section-title" style="margin-top: 3rem;">What To Expect</h2>
+        <p class="section-intro">Realistic timelines so you don't quit at week 3 expecting six-pack abs.</p>
+
+        <div class="timeline">
+            <div class="timeline-row">
+                <div class="timeline-period">Weeks 1–2</div>
+                <div class="timeline-text">Learning the exercises and building confidence in the gym. Soreness is normal — push through it.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="timeline-period">Weeks 3–4</div>
+                <div class="timeline-text">Better energy, improved endurance, and the workouts start to feel routine instead of intimidating.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="timeline-period">Weeks 5–8</div>
+                <div class="timeline-text">Noticeable strength gains and visible physique improvements. You'll start seeing what your body can become.</div>
+            </div>
+            <div class="timeline-row">
+                <div class="timeline-period">Months 3–6</div>
+                <div class="timeline-text">Significant body composition changes and lifestyle transformation. This is where consistency pays off.</div>
+            </div>
+        </div>
+
+        <!-- VERDICT -->
+        <div class="verdict">
+            <div class="verdict-label">The Field-Tested Verdict</div>
+            <p class="verdict-quote"><strong>The people who transform their bodies are usually not the most talented.</strong> They're the ones who stayed consistent long enough to see results. Show up, keep it simple, and trust the process — one stride at a time.</p>
+        </div>
+
+        <div class="disclaimer">
+            ⚕️ Field Tested, not FDA approved. Built from real-world training — not a medical prescription. Consult a professional before starting any new fitness program.
+        </div>
+
+    </section>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+        <div class="sidebar-block">
+            <h4>Quick Actions</h4>
+            <button onclick="window.print()" class="pdf-btn" style="width: 100%; margin-top: 0.5rem;">📄 Save as PDF</button>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Program Difficulty</h4>
+            <p style="font-size: 1rem; font-weight: bold; color: var(--accent);">🟢 Beginner Friendly</p>
+            <p style="font-size: 0.85rem;">Designed for total beginners. No experience required — just show up.</p>
+        </div>
+
+        <div class="sidebar-block stats">
+            <h4>Program Stats</h4>
+            <ul>
+                <li><strong>5</strong> Workout days</li>
+                <li><strong>2</strong> Recovery days</li>
+                <li><strong>5</strong> Exercises per workout</li>
+                <li><strong>~50</strong> Min per session</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Helpful Tools</h4>
+            <div class="tag-cloud">
+                <a href="cal-calc.html">Calorie Calc</a>
+                <a href="bmi-calc.html">BMI Estimator</a>
+                <a href="meal-calc.html">Meal Planner</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>Next Step Plans</h4>
+            <p style="font-size: 0.85rem;">When you're ready to level up:</p>
+            <div class="tag-cloud">
+                <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                <a href="#">Military PT Prep</a>
+                <a href="#">HIIT & Conditioning</a>
+            </div>
+        </div>
+
+        <div class="sidebar-block">
+            <h4>The Beginner Mantra</h4>
+            <p style="font-size: 0.95rem; font-style: italic; color: var(--text-primary);">"Consistency beats perfection."</p>
+        </div>
+    </aside>
+</main>
+
+<!-- ============ NEWSLETTER ============ -->
+<section id="newsletter" class="newsletter">
+    <div class="newsletter-inner">
+        <h2>Get the Field Report</h2>
+        <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit">Enlist →</button>
+        </form>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved.</p>
+    <div class="social">
+        <a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a>
+    </div>
+</footer>
+
+<!-- ============ FLOATING PDF BUTTON ============ -->
+<button onclick="window.print()" class="pdf-btn-float no-print" aria-label="Download as PDF">📄 PDF</button>
+
+<!-- ============ NAV SCRIPT ============ -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            navMenu.classList.remove('active');
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                d.classList.remove('open');
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
