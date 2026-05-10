@@ -289,6 +289,21 @@ a:hover { color: var(--accent-bright); }
     letter-spacing: 1px;
 }
 
+.tag-new {
+    background: #c8521a;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    animation: pulse-new 2s ease-in-out infinite;
+}
+@keyframes pulse-new {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
 .read-time { color: var(--text-secondary); }
 
 .post-card h3 { margin: 0.3rem 0; }
@@ -528,6 +543,22 @@ a:hover { color: var(--accent-bright); }
     <section class="posts-section">
         <h2 class="section-title">Research Log</h2>
 
+        <!-- ===== ENTRY #5 — NEWEST ===== -->
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag-new">★ New</span>
+                    <span class="tag">Nutrition</span>
+                    <span class="read-time">⏱ 5 min read</span>
+                </div>
+                <h3><a href="post5.html">Deployment Nutrition: Fueling the Cut</a></h3>
+                <p class="post-date">Field Tested · Entry #5 · May 10, 2026</p>
+                <p class="post-excerpt">Bulking is a chore. Cutting is a grind. Throw a deployment in the mix and the whole equation gets harder — here's exactly how I plate my meals at the DFAC to hit my macros while on a cut.</p>
+                <a href="post5.html" class="read-more">Read More →</a>
+            </div>
+        </article>
+
         <article class="post-card">
             <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800');"></div>
             <div class="post-content">
@@ -590,7 +621,7 @@ a:hover { color: var(--accent-bright); }
 
         <div class="sidebar-block">
             <h4>Currently Testing</h4>
-            <p class="testing-now">🧪 Deployment Workouts</p>
+            <p class="testing-now">🍽 Deployment Cut</p>
             <p class="testing-week">Week 8 of 40</p>
             <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
         </div>
@@ -598,8 +629,8 @@ a:hover { color: var(--accent-bright); }
         <div class="sidebar-block stats">
             <h4>Field Tested Stats</h4>
             <ul>
-                <li><strong>4</strong> Entries Published</li>
-                <li><strong>5</strong> Topics Covered</li>
+                <li><strong>5</strong> Entries Published</li>
+                <li><strong>6</strong> Topics Covered</li>
                 <li><strong>1</strong> Active Experiment</li>
             </ul>
         </div>
@@ -612,6 +643,7 @@ a:hover { color: var(--accent-bright); }
                 <a href="#">Recovery</a>
                 <a href="#">Nutrition</a>
                 <a href="#">Productivity</a>
+                <a href="#">Deployment</a>
             </div>
         </div>
 
