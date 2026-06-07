@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Stride Project — Field Tested</title>
+    <link>https://thestrideproject.com/</link>
+    <atom:link href="https://thestrideproject.com/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Real-world experiments in human performance — written from the dirt patch, not the laboratory. I'm the test subject. You get the verdict.</description>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 May 2026 09:00:00 +0000</lastBuildDate>
+
+    <item>
+      <title>Building the Foundation: Youth Athlete Protocol</title>
+      <link>https://thestrideproject.com/post7.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post7.html</guid>
+      <pubDate>Tue, 20 May 2026 09:00:00 +0000</pubDate>
+      <category>Programming</category>
+      <description>My younger brother asked me to build him a workout program for high school sports. Here's the simple, foundation-first 3-day athlete split I designed — and why simplicity beats complexity at this stage.</description>
+    </item>
+
+    <item>
+      <title>The 33-Day Deployment Cut: Chaos, Creatine, and Data</title>
+      <link>https://thestrideproject.com/post6.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post6.html</guid>
+      <pubDate>Fri, 15 May 2026 09:00:00 +0000</pubDate>
+      <category>Nutrition</category>
+      <description>Thirty-three days into the deployment cut — here's the full daily log. Weight, body fat, the training shift, and what the raw data taught me about cutting when you can't control the kitchen.</description>
+    </item>
+
+    <item>
+      <title>Deployment Nutrition: Fueling the Cut</title>
+      <link>https://thestrideproject.com/post5.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post5.html</guid>
+      <pubDate>Sat, 10 May 2026 09:00:00 +0000</pubDate>
+      <category>Nutrition</category>
+      <description>Bulking is a chore. Cutting is a grind. Throw a deployment in the mix and the whole equation gets harder — here's exactly how I plate my meals at the DFAC to hit my macros while on a cut.</description>
+    </item>
+
+    <item>
+      <title>Bypassing the Burnout: Finding Time to Train</title>
+      <link>https://thestrideproject.com/post4.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post4.html</guid>
+      <pubDate>Mon, 05 May 2026 09:00:00 +0000</pubDate>
+      <category>Productivity</category>
+      <description>How to drop the caffeine crutch, defeat late-day fatigue, and exploit hidden windows in your schedule to get the work done.</description>
+    </item>
+
+    <item>
+      <title>The Science of the Outdoor Grind</title>
+      <link>https://thestrideproject.com/post3.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post3.html</guid>
+      <pubDate>Sun, 04 May 2026 09:00:00 +0000</pubDate>
+      <category>Outdoor Training</category>
+      <description>From deployment dirt patches to the science of sunlight: why skipping the conventional gym might just lower your cortisol and fix your sleep.</description>
+    </item>
+
+    <item>
+      <title>Nature's Obstacle Course</title>
+      <link>https://thestrideproject.com/post2.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post2.html</guid>
+      <pubDate>Fri, 02 May 2026 09:00:00 +0000</pubDate>
+      <category>Outdoor Training</category>
+      <description>From the buoyancy of the Dead Sea to the rugged canyons of the Mujib Nature Reserve, exploring how functional fitness lets us experience the world's most incredible spectacles.</description>
+    </item>
+
+    <item>
+      <title>The Spark of Performance</title>
+      <link>https://thestrideproject.com/post1.html</link>
+      <guid isPermaLink="true">https://thestrideproject.com/post1.html</guid>
+      <pubDate>Thu, 01 May 2026 09:00:00 +0000</pubDate>
+      <category>Military Mindset</category>
+      <description>Why I started this journey, my time in the military, and the commitment to finding the gap between average and exceptional.</description>
+    </item>
+
+  </channel>
+</rss>
