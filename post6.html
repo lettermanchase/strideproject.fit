@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 33-Day Deployment Cut: Chaos, Creatine, and Data | Field Tested — The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg-light); color: var(--text-primary); line-height: 1.8; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+.progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: transparent; z-index: 1100; }
+.progress-bar-read { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-bright)); transition: width 0.1s; }
+
+.site-header { background: var(--bg-header); border-bottom: 2px solid var(--accent); position: sticky; top: 4px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle { color: var(--text-primary); background: none; border: none; font-size: 0.95rem; cursor: pointer; font-family: inherit; padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+.nav-cta { background: none; padding: 0.5rem 1rem !important; border: 2px solid var(--accent); border-radius: 3px; color: var(--accent) !important; }
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; border: 1px solid var(--border); border-top: 2px solid var(--accent); z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.dropdown-content a { display: block; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-primary); text-transform: none; letter-spacing: 0; }
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 0.5rem; }
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+.post-hero {
+    height: 60vh;
+    min-height: 400px;
+    background: linear-gradient(rgba(31, 42, 35, 0.45), rgba(31, 42, 35, 0.88)),
+                url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=1600') center/cover;
+    display: flex; align-items: flex-end; padding: 4rem 2rem; color: white;
+}
+.post-hero-inner { max-width: 800px; margin: 0 auto; width: 100%; }
+
+.series-badge { display: inline-block; background: var(--accent-bright); color: white; padding: 0.4rem 1rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; margin-bottom: 1rem; }
+.series-badge .series-name { font-weight: 900; }
+.series-badge .entry-num { opacity: 0.85; margin-left: 0.5rem; }
+
+.post-hero .tag { background: rgba(255,255,255,0.2); color: white; padding: 0.3rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-bottom: 1rem; margin-left: 0.5rem; border: 1px solid rgba(255,255,255,0.4); }
+.post-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); }
+.post-hero-meta { display: flex; gap: 1.5rem; align-items: center; color: rgba(255,255,255,0.95); font-size: 0.9rem; flex-wrap: wrap; }
+
+.post-container { max-width: 750px; margin: 3rem auto; padding: 0 2rem; }
+.author-byline { display: flex; align-items: center; gap: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.author-byline-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); flex-shrink: 0; }
+.author-byline-info { font-size: 0.9rem; }
+.author-byline-info strong { display: block; color: var(--text-primary); }
+.author-byline-info span { color: var(--text-secondary); }
+
+.post-body { font-size: 1.1rem; color: #2c3a30; }
+.post-body p { margin-bottom: 1.5rem; }
+.post-body > p:first-of-type::first-letter { float: left; font-size: 4.5rem; line-height: 1; padding: 0.4rem 0.7rem 0 0; color: var(--accent); font-weight: 900; }
+.post-body h2 { font-size: 1.8rem; margin: 2.5rem 0 1rem; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 1rem; }
+.post-body h3 { font-size: 1.25rem; margin: 1.5rem 0 0.6rem; color: var(--text-primary); }
+.post-body ul.bullet-list { margin: 0 0 1.5rem 1.5rem; }
+.post-body ul.bullet-list li { margin-bottom: 0.6rem; }
+
+.pull-quote { font-size: 1.5rem; line-height: 1.4; color: var(--accent); font-style: italic; font-weight: 300; border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); padding: 2rem 0; margin: 2.5rem 0; text-align: center; }
+
+/* STAT CARD STRIP */
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2.5rem 0; }
+.stat-card { background: var(--bg-card); border-top: 3px solid var(--accent); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-radius: 0 0 4px 4px; }
+.stat-card .stat-num { font-size: 1.7rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+.stat-card .stat-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-top: 0.4rem; }
+.stat-card .stat-sub { font-size: 0.75rem; color: var(--accent-bright); margin-top: 0.3rem; font-weight: bold; }
+
+/* SCROLLABLE DATA TABLE */
+.table-heading { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-secondary); margin: 2rem 0 0.6rem; font-weight: bold; }
+.table-scroll { max-height: 420px; overflow-y: auto; margin: 0.6rem 0 0.6rem; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); scrollbar-width: thin; scrollbar-color: var(--accent-bright) var(--accent-soft); }
+.table-scroll::-webkit-scrollbar { width: 10px; }
+.table-scroll::-webkit-scrollbar-track { background: var(--accent-soft); }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--accent-bright); border-radius: 5px; }
+.table-scroll::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.data-table { width: 100%; border-collapse: collapse; margin: 0; font-size: 0.92rem; text-align: left; background: var(--bg-card); }
+.data-table th, .data-table td { padding: 10px 14px; border: 1px solid var(--border); white-space: nowrap; }
+.data-table thead th { background: var(--accent); color: #ffffff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.78rem; position: sticky; top: 0; z-index: 2; }
+.data-table tbody tr:nth-child(even) { background: var(--accent-soft); }
+.data-table tbody tr:hover { background: #dcebe0; }
+.data-table .status-complete { color: var(--accent); font-weight: bold; }
+.data-table .status-nolog { color: var(--text-secondary); font-style: italic; }
+.data-table .row-nolog td { background: #eef1ee; color: var(--text-secondary); }
+.data-table .weight-cell { color: var(--accent); font-weight: bold; }
+.data-table tfoot .row-avg td { background: #3f7e4a; color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; position: sticky; bottom: 0; z-index: 2; }
+.data-table tfoot .row-avg td:first-child { text-align: left; }
+.table-note { font-size: 0.82rem; color: var(--text-secondary); font-style: italic; margin: 0.4rem 0 2rem; }
+
+/* SUMMARY GRID */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2.5rem 0; }
+.summary-box { background: var(--bg-card); border-left: 3px solid var(--accent-bright); padding: 1.3rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.summary-box h4 { color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; margin-bottom: 0.5rem; }
+.summary-box p { font-size: 0.98rem; margin: 0; color: var(--text-primary); }
+
+.verdict { background: var(--accent-soft); border-left: 5px solid var(--accent); padding: 1.5rem 2rem; margin: 2.5rem 0; border-radius: 0 4px 4px 0; }
+.verdict h4 { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 0.8rem; }
+.verdict p { font-size: 1.15rem; margin: 0; color: var(--text-primary); }
+
+.challenge { background: var(--accent); color: white; padding: 2rem; margin: 2.5rem 0; border-radius: 4px; text-align: center; }
+.challenge h4 { text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.8rem; color: rgba(255,255,255,0.85); }
+.challenge p { font-size: 1.2rem; margin: 0; font-weight: 500; }
+
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 3rem 0 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.post-tags a { background: var(--accent-soft); color: var(--accent); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border); }
+.post-tags a:hover { background: var(--accent); color: white; }
+
+.share-bar { display: flex; gap: 1rem; align-items: center; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1rem 0 2rem; flex-wrap: wrap; }
+.share-bar > span { color: var(--text-secondary); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold; }
+.share-bar a { background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 3px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+.share-bar a:hover { background: var(--accent-bright); color: white; }
+
+.author-card { display: flex; gap: 1.5rem; background: var(--bg-card); padding: 2rem; border-left: 3px solid var(--accent); margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.author-avatar { width: 90px; height: 90px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); border-radius: 50%; flex-shrink: 0; }
+.author-info h4 { margin-bottom: 0.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+.author-info p { color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+.related-section { background: var(--bg-card); padding: 3rem 2rem; margin-top: 3rem; border-top: 3px solid var(--accent); }
+.related-inner { max-width: 1100px; margin: 0 auto; }
+.related-section h3 { text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.3rem; text-align: center; }
+.related-section .related-sub { text-align: center; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.related-card { background: var(--bg-light); overflow: hidden; border-left: 3px solid var(--accent); transition: transform 0.2s; }
+.related-card:hover { transform: translateY(-3px); }
+.related-thumb { height: 150px; background-size: cover; background-position: center; }
+.related-content { padding: 1rem; }
+.related-content .tag { background: var(--accent); color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.related-content h4 { margin: 0.5rem 0; font-size: 1rem; }
+.related-content h4 a { color: var(--text-primary); }
+.related-content h4 a:hover { color: var(--accent); }
+.related-content .date { color: var(--text-secondary); font-size: 0.8rem; }
+
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1100px; margin: 3rem auto; padding: 0 2rem; }
+.post-nav a { background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; }
+.post-nav a:hover { transform: translateY(-2px); }
+.post-nav .label { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem; }
+.post-nav .title { color: var(--text-primary); font-weight: bold; font-size: 1.05rem; }
+.post-nav .next { text-align: right; }
+.post-nav .disabled-block { background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--border); display: block; opacity: 0.5; }
+
+.site-footer { background: var(--text-primary); padding: 2rem; text-align: center; color: rgba(255,255,255,0.8); border-top: 3px solid var(--accent); }
+.site-footer .footer-brand { font-weight: 900; letter-spacing: 3px; color: white; margin-bottom: 0.3rem; }
+.site-footer a { color: var(--accent-bright); }
+
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; border-top: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle { width: 100%; text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content { position: static; border: none; background: var(--accent-soft); box-shadow: none; }
+    .related-grid { grid-template-columns: 1fr; }
+    .post-nav { grid-template-columns: 1fr; }
+    .post-nav .next { text-align: left; }
+    .post-body > p:first-of-type::first-letter { font-size: 3.5rem; }
+    .pull-quote { font-size: 1.2rem; }
+    .author-card { flex-direction: column; text-align: center; }
+    .author-avatar { margin: 0 auto; }
+    .post-hero .tag { margin-left: 0; margin-top: 0.3rem; }
+    .stat-strip { grid-template-columns: 1fr 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .table-scroll { max-height: 360px; }
+    .data-table { font-size: 0.8rem; }
+    .data-table th, .data-table td { padding: 7px 9px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-container"><div class="progress-bar-read" id="progressBar"></div></div>
+
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+        <button class="menu-toggle"><span></span><span></span><span></span></button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<section class="post-hero">
+    <div class="post-hero-inner">
+        <span class="series-badge">
+            <span class="series-name">Field Tested</span>
+            <span class="entry-num">· Entry #6</span>
+        </span>
+        <span class="tag">Nutrition</span>
+        <h1>The 33-Day Deployment Cut: Chaos, Creatine, and Data</h1>
+        <div class="post-hero-meta">
+            <span>📅 May 15, 2026</span>
+            <span>⏱ 6 min read</span>
+        </div>
+    </div>
+</section>
+
+<article class="post-container">
+
+    <div class="author-byline">
+        <img src="images/avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-byline-info">
+            <strong>The Stride Project</strong>
+            <span>Field Tested Series · Veteran · Researcher · Test Subject</span>
+        </div>
+    </div>
+
+    <div class="post-body">
+        <p>Cutting on a deployment is a strange paradox: the structured routine makes it easier, but the lack of control over your food makes it a daily battle. I've officially completed 33 days of my deployment cut so far, and it has been a massive learning experience. There have been a lot of variables, and I have some things I'll need to tighten up for the next 60 days, but here is the operational rundown so far.</p>
+
+        <div class="stat-strip">
+            <div class="stat-card">
+                <div class="stat-num">33</div>
+                <div class="stat-label">Days Logged</div>
+                <div class="stat-sub">+ 4 mission days</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">187 → 183</div>
+                <div class="stat-label">Weight (lb)</div>
+                <div class="stat-sub">−4 lb net</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">9.6%</div>
+                <div class="stat-label">Body Fat (InBody)</div>
+                <div class="stat-sub">~11% true est.</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">~172g</div>
+                <div class="stat-label">Avg. Protein</div>
+                <div class="stat-sub">non-negotiable</div>
+            </div>
+        </div>
+
+        <blockquote class="pull-quote">"Adapt to the chaos, protect the protein, and execute anyway."</blockquote>
+
+        <h2>The Training Shift</h2>
+        <p>At the beginning of this cut, I was on the tail end of a strict 8-week strength training split, lifting 5-6 days a week. For the last three weeks, I transitioned into a Full-Body / Engine Training split. This shift has successfully maintained the baseline strength I earned during my heavy lifting block, while actively increasing my athleticism, conditioning, and overall health to match the cut.</p>
+
+        <h2>The Metrics & The Mess</h2>
+        <p>I know the data looks a little messy right now. I wasn't able to launch all of these tracking metrics perfectly on Day 1, and on some days, I couldn't log anything at all because mission tasks simply had to take priority. But I logged what I could, stayed as consistent as possible, and balanced out the variables as they came. Here is where the numbers sit:</p>
+
+        <ul class="bullet-list">
+            <li><strong>Starting Weight:</strong> 186-188 lbs (daily walking-around weight)</li>
+            <li><strong>The Drop:</strong> 181 lbs (after the initial hard cut and glycogen depletion)</li>
+            <li><strong>Current Weight:</strong> 183-184 lbs (finally creatine loaded and stabilized)</li>
+            <li><strong>Body Fat:</strong> My fasted InBody scan put me at 9.6%, though realistically, I estimate my true body fat is probably closer to 11%.</li>
+        </ul>
+
+        <h2>The Daily Log</h2>
+        <p>My goal has been to stay under 2,500 calories a day. Since DFAC food is essentially random and my calculations are often "best guesses," I'd say we did a pretty solid job staying on target. As you can see in the full log below, my non-negotiable metric was protein — I kept it high regardless of the overall calorie count because I firmly believe in a slow cut to retain as much muscle mass as possible. The four blank days are mission days where logging simply wasn't possible.</p>
+
+        <div class="table-heading">33-Day Deployment Cut · Daily Log</div>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Status</th>
+                        <th>Calories</th>
+                        <th>Protein (g)</th>
+                        <th>Carbs (g)</th>
+                        <th>Fat (g)</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Day 01</td><td class="status-complete">Complete</td><td>1,980</td><td>193</td><td>177</td><td>62</td><td class="weight-cell">186 lb</td></tr>
+                    <tr><td>Day 02</td><td class="status-complete">Complete</td><td>2,130</td><td>202</td><td>230</td><td>48</td><td></td></tr>
+                    <tr><td>Day 03</td><td class="status-complete">Complete</td><td>2,405</td><td>206</td><td>187</td><td>88</td><td></td></tr>
+                    <tr><td>Day 04</td><td class="status-complete">Complete</td><td>2,230</td><td>162</td><td>241</td><td>62</td><td></td></tr>
+                    <tr><td>Day 05</td><td class="status-complete">Complete</td><td>2,205</td><td>154</td><td>190</td><td>73</td><td></td></tr>
+                    <tr><td>Day 06</td><td class="status-complete">Complete</td><td>2,205</td><td>145</td><td>239</td><td>64</td><td class="weight-cell">182 lb</td></tr>
+                    <tr><td>Day 07</td><td class="status-complete">Complete</td><td>2,065</td><td>184</td><td>178</td><td>54</td><td></td></tr>
+                    <tr><td>Day 08</td><td class="status-complete">Complete</td><td>2,285</td><td>191</td><td>190</td><td>64</td><td></td></tr>
+                    <tr><td>Day 09</td><td class="status-complete">Complete</td><td>2,850</td><td>185</td><td>260</td><td>95</td><td></td></tr>
+                    <tr><td>Day 10</td><td class="status-complete">Complete</td><td>1,995</td><td>142</td><td>184</td><td>76</td><td class="weight-cell">182 lb</td></tr>
+                    <tr><td>Day 11</td><td class="status-complete">Complete</td><td>2,250</td><td>160</td><td>200</td><td>70</td><td></td></tr>
+                    <tr><td>Day 12</td><td class="status-complete">Complete</td><td>2,850</td><td>185</td><td>260</td><td>95</td><td class="weight-cell">181.6 lb</td></tr>
+                    <tr><td>Day 13</td><td class="status-complete">Complete</td><td>2,275</td><td>145</td><td>257</td><td>63</td><td></td></tr>
+                    <tr><td>Day 14</td><td class="status-complete">Complete</td><td>2,865</td><td>177</td><td>297</td><td>104</td><td class="weight-cell">181.6 lb</td></tr>
+                    <tr><td>Day 15</td><td class="status-complete">Complete</td><td>2,600</td><td>181</td><td>245</td><td>102</td><td></td></tr>
+                    <tr class="row-nolog"><td>Day 16</td><td class="status-nolog">Unable to Log</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr class="row-nolog"><td>Day 17</td><td class="status-nolog">Unable to Log</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr class="row-nolog"><td>Day 18</td><td class="status-nolog">Unable to Log</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr class="row-nolog"><td>Day 19</td><td class="status-nolog">Unable to Log</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>Day 20</td><td class="status-complete">Complete</td><td>2,450</td><td>150</td><td>270</td><td>80</td><td></td></tr>
+                    <tr><td>Day 21</td><td class="status-complete">Complete</td><td>2,250</td><td>160</td><td>200</td><td>75</td><td></td></tr>
+                    <tr><td>Day 22</td><td class="status-complete">Complete</td><td>2,400</td><td>170</td><td>220</td><td>80</td><td></td></tr>
+                    <tr><td>Day 23</td><td class="status-complete">Complete</td><td>2,200</td><td>150</td><td>230</td><td>70</td><td></td></tr>
+                    <tr><td>Day 24</td><td class="status-complete">Complete</td><td>2,450</td><td>205</td><td>180</td><td>80</td><td></td></tr>
+                    <tr><td>Day 25</td><td class="status-complete">Complete</td><td>2,050</td><td>150</td><td>200</td><td>75</td><td></td></tr>
+                    <tr><td>Day 26</td><td class="status-complete">Complete</td><td>2,200</td><td>150</td><td>230</td><td>70</td><td></td></tr>
+                    <tr><td>Day 27</td><td class="status-complete">Complete</td><td>2,950</td><td>206</td><td>230</td><td>112</td><td></td></tr>
+                    <tr><td>Day 28</td><td class="status-complete">Complete</td><td>2,200</td><td>150</td><td>230</td><td>70</td><td></td></tr>
+                    <tr><td>Day 29</td><td class="status-complete">Complete</td><td>2,050</td><td>155</td><td>195</td><td>75</td><td></td></tr>
+                    <tr><td>Day 30</td><td class="status-complete">Complete</td><td>2,100</td><td>150</td><td>190</td><td>75</td><td></td></tr>
+                    <tr><td>Day 31</td><td class="status-complete">Complete</td><td>2,450</td><td>178</td><td>219</td><td>83</td><td></td></tr>
+                    <tr><td>Day 32</td><td class="status-complete">Complete</td><td>1,970</td><td>156</td><td>218</td><td>42</td><td></td></tr>
+                    <tr><td>Day 33</td><td class="status-complete">Complete</td><td>2,205</td><td>206</td><td>197</td><td>63</td><td class="weight-cell">183.6 lb</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr class="row-avg">
+                        <td colspan="2">AVG — Logged Days</td>
+                        <td>2,302</td>
+                        <td>172</td>
+                        <td>219</td>
+                        <td>75</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <p class="table-note">Averages are calculated across the 29 logged days (Days 16–19 excluded — mission tasks took priority).</p>
+
+        <div class="summary-grid">
+            <div class="summary-box">
+                <h4>What Worked</h4>
+                <p>Anchoring every day to a high-protein floor kept muscle on the frame even when total calories bounced around with random DFAC menus.</p>
+            </div>
+            <div class="summary-box">
+                <h4>What I'll Tighten</h4>
+                <p>The high-calorie spikes (Days 9, 12, 14, 27) need reigning in. Better pre-planning on chow-hall days will smooth out the next 60.</p>
+            </div>
+        </div>
+
+        <p>For the first 30 days, I had to avoid posting progress pictures and workout videos for operational reasons, but I am hoping to start sharing more visual data over the final 60 days of this journey.</p>
+
+        <p>This challenge has been incredibly informative. I've learned a ton about how my body responds to specific stressors, and I love the friction it brings. I hope this transparency helps some of you navigate your own cuts or fitness hurdles. I'll keep the updates coming.</p>
+
+        <aside class="verdict">
+            <h4>The Field-Tested Verdict</h4>
+            <p>Conditions will rarely be perfect, but the standard doesn't care. Adapt to the chaos, protect the protein, and execute anyway.</p>
+        </aside>
+
+        <div class="challenge">
+            <h4>This Week's Challenge</h4>
+            <p>Pick one non-negotiable metric — protein, steps, or sleep — and hit it for 7 straight days, no matter how chaotic the day gets.</p>
+        </div>
+    </div>
+
+    <div class="post-tags">
+        <a href="#">#Nutrition</a>
+        <a href="#">#Cutting</a>
+        <a href="#">#Deployment</a>
+        <a href="#">#Creatine</a>
+        <a href="#">#Data</a>
+        <a href="#">#MilitaryFitness</a>
+    </div>
+
+    <div class="share-bar">
+        <span>Share this:</span>
+        <a href="#">Twitter</a>
+        <a href="https://www.reddit.com/user/cheeseletterham">Reddit</a>
+        <a href="#">Facebook</a>
+        <a href="#">Copy Link</a>
+    </div>
+
+    <div class="author-card">
+        <img src="images/avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-info">
+            <h4>About the Field Tester</h4>
+            <p>The Stride Project is built on a simple idea: real fitness research shouldn't live in journals — it should live in the dirt, the gym, and the trail. Field Tested is the blog series where I run experiments on my own body and report back with the raw, unfiltered data.</p>
+            <a href="index.html#field-tested">More Field Tested entries →</a>
+        </div>
+    </div>
+
+</article>
+
+<section class="related-section">
+    <div class="related-inner">
+        <h3>Keep Reading</h3>
+        <p class="related-sub">More from the Field Tested Series</p>
+        <div class="related-grid">
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Nutrition</span>
+                    <h4><a href="post5.html">Deployment Nutrition: Fueling the Cut</a></h4>
+                    <span class="date">Entry #5 · May 10, 2026</span>
+                </div>
+            </article>
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Productivity</span>
+                    <h4><a href="post4.html">Bypassing the Burnout</a></h4>
+                    <span class="date">Entry #4 · May 5, 2026</span>
+                </div>
+            </article>
+
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Outdoor Training</span>
+                    <h4><a href="post3.html">The Science of the Outdoor Grind</a></h4>
+                    <span class="date">Entry #3 · May 4, 2026</span>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<nav class="post-nav">
+    <a href="post5.html" class="prev">
+        <span class="label">← Previous Field Tested Entry</span>
+        <span class="title">Deployment Nutrition: Fueling the Cut</span>
+    </a>
+    <span class="disabled-block next">
+        <span class="label" style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem; text-align: right;">Next Entry →</span>
+        <span class="title" style="color: var(--text-secondary); font-weight: bold; font-size: 1.05rem; text-align: right; display: block;">Coming soon</span>
+    </span>
+</nav>
+
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved. · <em>Field Tested</em> is a research blog series of The Stride Project.</p>
+    <div><a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a></div>
+</footer>
+
+<script>
+window.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
