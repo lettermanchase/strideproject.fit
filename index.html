@@ -15,7 +15,6 @@
     ml('account', '2414526');
 </script>
 <!-- End MailerLite Universal -->
-<!-- End MailerLite Universal -->
 
 <style>
 /* ============ RESET & BASE ============ */
@@ -379,24 +378,47 @@ a:hover { color: var(--accent-bright); }
 }
 .tag-cloud a:hover { background: var(--accent); color: white; }
 
-<!-- ============ NEWSLETTER ============ -->
-<section id="newsletter" class="newsletter">
-    <div class="newsletter-inner">
-        <h2>Get the Field Report</h2>
-        <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
-        
-        <form class="newsletter-form" 
-              id="strideSubscribeForm"
-              action="https://assets.mailerlite.com/jsonp/2414526/forms/190177626191561885/subscribe" 
-              method="post">
-            <input type="email" name="fields[email]" placeholder="your@email.com" required aria-label="Email" autocomplete="email">
-            <input type="hidden" name="ml-submit" value="1">
-            <input type="hidden" name="anticsrf" value="true">
-            <button type="submit" id="strideSubmitBtn">Enlist →</button>
-        </form>
-        <p id="strideFormMessage" style="margin-top: 1rem; display: none; font-weight: bold; font-size: 1rem;"></p>
-    </div>
-</section>
+/* ============ NEWSLETTER ============ */
+.newsletter {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+}
+.newsletter-inner { max-width: 600px; margin: 0 auto; }
+.newsletter h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: white;
+}
+.newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+
+.newsletter-form { display: flex; gap: 0.5rem; }
+.newsletter-form input {
+    flex: 1;
+    padding: 0.9rem;
+    border: none;
+    background: rgba(255,255,255,0.95);
+    color: var(--text-primary);
+    font-size: 1rem;
+    border-radius: 3px;
+}
+.newsletter-form input::placeholder { color: var(--text-secondary); }
+.newsletter-form button {
+    padding: 0.9rem 1.5rem;
+    background: var(--text-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+.newsletter-form button:hover { background: black; }
+.newsletter-form button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* ============ FOOTER ============ */
 .site-footer {
@@ -532,7 +554,6 @@ a:hover { color: var(--accent-bright); }
     <section class="posts-section">
         <h2 class="section-title">Research Log</h2>
 
-        <!-- ===== ENTRY #7 — NEWEST ===== -->
         <article class="post-card">
             <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800');"></div>
             <div class="post-content">
@@ -548,7 +569,6 @@ a:hover { color: var(--accent-bright); }
             </div>
         </article>
 
-        <!-- ===== ENTRY #6 ===== -->
         <article class="post-card">
             <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800');"></div>
             <div class="post-content">
@@ -563,7 +583,6 @@ a:hover { color: var(--accent-bright); }
             </div>
         </article>
 
-        <!-- ===== ENTRY #5 ===== -->
         <article class="post-card">
             <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800');"></div>
             <div class="post-content">
@@ -670,15 +689,22 @@ a:hover { color: var(--accent-bright); }
     </aside>
 </main>
 
-<!-- ============ NEWSLETTER ============ -->
+<!-- ============ NEWSLETTER (MailerLite Connected) ============ -->
 <section id="newsletter" class="newsletter">
     <div class="newsletter-inner">
         <h2>Get the Field Report</h2>
         <p>One unfiltered, no-fluff Field Tested entry delivered to your inbox. No spam. Ever.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-            <input type="email" placeholder="your@email.com" required>
-            <button type="submit">Enlist →</button>
+        
+        <form class="newsletter-form" 
+              id="strideSubscribeForm"
+              action="https://assets.mailerlite.com/jsonp/2414526/forms/190177626191561885/subscribe" 
+              method="post">
+            <input type="email" name="fields[email]" placeholder="your@email.com" required aria-label="Email" autocomplete="email">
+            <input type="hidden" name="ml-submit" value="1">
+            <input type="hidden" name="anticsrf" value="true">
+            <button type="submit" id="strideSubmitBtn">Enlist →</button>
         </form>
+        <p id="strideFormMessage" style="margin-top: 1rem; display: none; font-weight: bold; font-size: 1rem;"></p>
     </div>
 </section>
 
@@ -691,6 +717,7 @@ a:hover { color: var(--accent-bright); }
     </div>
 </footer>
 
+<!-- ============ NAVIGATION SCRIPT ============ -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
@@ -733,47 +760,52 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<!-- ============ MAILERLITE SUBSCRIBE SCRIPT ============ -->
 <script>
-// Handle MailerLite subscription with custom styled form
-document.getElementById('strideSubscribeForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const formData = new FormData(form);
-    const message = document.getElementById('strideFormMessage');
-    const button = document.getElementById('strideSubmitBtn');
-    const emailInput = form.querySelector('input[type="email"]');
-    const originalBtnText = button.textContent;
-    
-    // Loading state
-    button.textContent = 'Sending...';
-    button.disabled = true;
-    message.style.display = 'none';
-    
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-    })
-    .then(() => {
-        // Success
-        message.style.display = 'block';
-        message.style.color = 'white';
-        message.innerHTML = '✓ <strong>Welcome aboard.</strong> Check your inbox to confirm your subscription.';
-        emailInput.value = '';
-        button.textContent = originalBtnText;
-        button.disabled = false;
-    })
-    .catch(() => {
-        // Error
-        message.style.display = 'block';
-        message.style.color = '#ffd6d6';
-        message.textContent = '✗ Something went wrong. Please try again.';
-        button.textContent = originalBtnText;
-        button.disabled = false;
+document.addEventListener('DOMContentLoaded', function () {
+    const subscribeForm = document.getElementById('strideSubscribeForm');
+    if (!subscribeForm) return;
+
+    subscribeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        const message = document.getElementById('strideFormMessage');
+        const button = document.getElementById('strideSubmitBtn');
+        const emailInput = form.querySelector('input[type="email"]');
+        const originalBtnText = button.textContent;
+        
+        // Loading state
+        button.textContent = 'Sending...';
+        button.disabled = true;
+        message.style.display = 'none';
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        })
+        .then(() => {
+            // Success
+            message.style.display = 'block';
+            message.style.color = 'white';
+            message.innerHTML = '✓ <strong>Welcome aboard.</strong> Check your inbox to confirm your subscription.';
+            emailInput.value = '';
+            button.textContent = originalBtnText;
+            button.disabled = false;
+        })
+        .catch(() => {
+            // Error
+            message.style.display = 'block';
+            message.style.color = '#ffd6d6';
+            message.textContent = '✗ Something went wrong. Please try again.';
+            button.textContent = originalBtnText;
+            button.disabled = false;
+        });
     });
 });
 </script>
-    
+
 </body>
 </html>
