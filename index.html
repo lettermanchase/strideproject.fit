@@ -734,44 +734,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
-// Bridge the custom form to the hidden MailerLite form
-document.addEventListener('DOMContentLoaded', function () {
-    const customForm = document.getElementById('strideSubscribeForm');
-    const emailInput = document.getElementById('strideEmail');
-    const message = document.getElementById('strideFormMessage');
-
-    customForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const email = emailInput.value.trim();
-        if (!email) return;
-
-        // Wait for the MailerLite form to be ready, then inject email and submit
-        const checkML = setInterval(function () {
-            const mlForm = document.querySelector('.ml-embedded form');
-            const mlEmail = document.querySelector('.ml-embedded input[type="email"]');
-            const mlSubmit = document.querySelector('.ml-embedded button[type="submit"]');
-
-            if (mlForm && mlEmail && mlSubmit) {
-                clearInterval(checkML);
-                mlEmail.value = email;
-                mlEmail.dispatchEvent(new Event('input', { bubbles: true }));
-                mlSubmit.click();
-
-                // Show success message
-                message.style.display = 'block';
-                message.style.color = 'white';
-                message.textContent = '✓ Welcome aboard. Check your inbox to confirm.';
-                customForm.reset();
-            }
-        }, 200);
-
-        // Safety timeout (5 seconds)
-        setTimeout(function () { clearInterval(checkML); }, 5000);
-    });
-});
-</script>
-
-<script>
 // Handle MailerLite subscription with custom styled form
 document.getElementById('strideSubscribeForm').addEventListener('submit', function(e) {
     e.preventDefault();
