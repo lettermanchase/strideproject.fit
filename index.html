@@ -19,7 +19,6 @@
 <style>
 /* ============ RESET & BASE ============ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 :root {
     --bg-light: #f5f7f3;
     --bg-card: #ffffff;
@@ -31,14 +30,12 @@
     --text-secondary: #5c6b60;
     --border: #d8e0da;
 }
-
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg-light);
     color: var(--text-primary);
     line-height: 1.7;
 }
-
 a { color: var(--accent); text-decoration: none; }
 a:hover { color: var(--accent-bright); }
 
@@ -51,7 +48,6 @@ a:hover { color: var(--accent-bright); }
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -61,7 +57,6 @@ a:hover { color: var(--accent-bright); }
     align-items: center;
     position: relative;
 }
-
 .logo {
     display: flex;
     flex-direction: column;
@@ -80,13 +75,11 @@ a:hover { color: var(--accent-bright); }
     text-transform: uppercase;
     margin-top: 2px;
 }
-
 .nav-menu {
     display: flex;
     gap: 1.5rem;
     align-items: center;
 }
-
 .nav-menu a, .dropdown-toggle {
     color: var(--text-primary);
     background: none;
@@ -99,7 +92,6 @@ a:hover { color: var(--accent-bright); }
     letter-spacing: 1px;
 }
 .nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
-
 .nav-cta {
     background: none;
     padding: 0.5rem 1rem !important;
@@ -108,7 +100,6 @@ a:hover { color: var(--accent-bright); }
     color: var(--accent) !important;
 }
 .nav-cta:hover { background: var(--accent); color: white !important; }
-
 .dropdown { position: relative; }
 .dropdown-content {
     display: none;
@@ -133,7 +124,6 @@ a:hover { color: var(--accent-bright); }
 .dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
 .dropdown:hover .dropdown-content { display: block; }
 .dropdown.open .dropdown-content { display: block; }
-
 .menu-toggle {
     display: none;
     background: none;
@@ -163,9 +153,7 @@ a:hover { color: var(--accent-bright); }
     padding: 2rem;
     color: white;
 }
-
 .hero-overlay { max-width: 800px; }
-
 .hero h1 {
     font-size: clamp(2.5rem, 8vw, 5rem);
     letter-spacing: 6px;
@@ -174,7 +162,6 @@ a:hover { color: var(--accent-bright); }
     color: white;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
-
 .hero-tagline {
     font-size: 1.1rem;
     color: #b8e0c0;
@@ -183,14 +170,12 @@ a:hover { color: var(--accent-bright); }
     margin-bottom: 1rem;
     font-weight: bold;
 }
-
 .hero-sub {
     font-size: 1.1rem;
     color: rgba(255,255,255,0.9);
     max-width: 600px;
     margin: 0 auto 2rem;
 }
-
 .hero-cta {
     display: inline-block;
     padding: 1rem 2.5rem;
@@ -245,7 +230,6 @@ a:hover { color: var(--accent-bright); }
     grid-template-columns: 1fr 300px;
     gap: 3rem;
 }
-
 .section-title {
     font-size: 1.4rem;
     border-bottom: 2px solid var(--accent);
@@ -272,15 +256,12 @@ a:hover { color: var(--accent-bright); }
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(47, 107, 58, 0.15);
 }
-
 .post-thumb {
     background-size: cover;
     background-position: center;
     min-height: 200px;
 }
-
 .post-content { padding: 1.5rem 1.5rem 1.5rem 0; }
-
 .post-meta {
     display: flex;
     gap: 1rem;
@@ -289,7 +270,6 @@ a:hover { color: var(--accent-bright); }
     font-size: 0.85rem;
     flex-wrap: wrap;
 }
-
 .tag {
     background: var(--accent);
     color: white;
@@ -298,7 +278,6 @@ a:hover { color: var(--accent-bright); }
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
 .tag-new {
     background: #c8521a;
     color: white;
@@ -313,16 +292,12 @@ a:hover { color: var(--accent-bright); }
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
-
 .read-time { color: var(--text-secondary); }
-
 .post-card h3 { margin: 0.3rem 0; }
 .post-card h3 a { color: var(--text-primary); font-size: 1.3rem; }
 .post-card h3 a:hover { color: var(--accent); }
-
 .post-date { color: var(--text-secondary); font-size: 0.85rem; margin: 0.3rem 0; }
 .post-excerpt { margin: 0.8rem 0; color: var(--text-secondary); }
-
 .read-more {
     font-weight: bold;
     text-transform: uppercase;
@@ -340,7 +315,6 @@ a:hover { color: var(--accent-bright); }
     border-top: 3px solid var(--accent);
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-
 .sidebar-block h4 {
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -348,10 +322,8 @@ a:hover { color: var(--accent-bright); }
     font-size: 0.9rem;
     color: var(--accent);
 }
-
 .testing-now { font-size: 1.1rem; font-weight: bold; }
 .testing-week { color: var(--text-secondary); font-size: 0.85rem; margin: 0.5rem 0; }
-
 .progress-bar {
     background: var(--accent-soft);
     height: 8px;
@@ -362,11 +334,9 @@ a:hover { color: var(--accent-bright); }
     background: linear-gradient(90deg, var(--accent), var(--accent-bright));
     height: 100%;
 }
-
 .sidebar-block.stats ul { list-style: none; }
 .sidebar-block.stats li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
 .sidebar-block.stats strong { color: var(--accent); font-size: 1.3rem; margin-right: 0.5rem; }
-
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tag-cloud a {
     background: var(--accent-soft);
@@ -394,7 +364,6 @@ a:hover { color: var(--accent-bright); }
     color: white;
 }
 .newsletter p { margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
-
 .newsletter-form { display: flex; gap: 0.5rem; }
 .newsletter-form input {
     flex: 1;
@@ -444,10 +413,8 @@ a:hover { color: var(--accent-bright); }
     .post-thumb { min-height: 200px; }
     .post-content { padding: 0 1.5rem 1.5rem; }
 }
-
 @media (max-width: 768px) {
     .menu-toggle { display: flex; }
-
     .nav-menu {
         display: none;
         position: absolute;
@@ -461,19 +428,15 @@ a:hover { color: var(--accent-bright); }
         border-top: 1px solid var(--border);
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-
     .nav-menu.active { display: flex; }
-
     .nav-menu a, .dropdown-toggle {
         width: 100%;
         text-align: left;
         padding: 1rem;
         border-bottom: 1px solid var(--border);
     }
-
     .dropdown:hover .dropdown-content { display: none; }
     .dropdown.open .dropdown-content { display: block; }
-
     .dropdown { width: 100%; }
     .dropdown-content {
         position: static;
@@ -482,7 +445,6 @@ a:hover { color: var(--accent-bright); }
         background: var(--accent-soft);
         box-shadow: none;
     }
-
     .newsletter-form { flex-direction: column; }
     .hero h1 { letter-spacing: 4px; }
 }
@@ -497,12 +459,9 @@ a:hover { color: var(--accent-bright); }
             <span class="logo-main">THE STRIDE PROJECT</span>
             <span class="logo-sub">Health · Fitness · Human Performance</span>
         </a>
-
         <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
-
         <nav class="nav-menu">
             <a href="index.html">Home</a>
-
             <div class="dropdown">
                 <button class="dropdown-toggle">Workout Plans ▾</button>
                 <div class="dropdown-content">
@@ -513,7 +472,6 @@ a:hover { color: var(--accent-bright); }
                     <a href="hiit-workout.html">HIIT & Conditioning</a>
                 </div>
             </div>
-
             <div class="dropdown">
                 <button class="dropdown-toggle">Tools ▾</button>
                 <div class="dropdown-content">
@@ -523,7 +481,6 @@ a:hover { color: var(--accent-bright); }
                     <a href="meal-calc.html">Meal Planner</a>
                 </div>
             </div>
-
             <a href="#field-tested">Field Tested</a>
             <a href="about.html">About</a>
             <a href="#newsletter" class="nav-cta">Subscribe</a>
@@ -550,15 +507,29 @@ a:hover { color: var(--accent-bright); }
 
 <!-- ============ MAIN CONTENT ============ -->
 <main class="content-wrapper">
-
     <section class="posts-section">
         <h2 class="section-title">Research Log</h2>
+
+        <!-- ENTRY #8 -->
+        <article class="post-card">
+            <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=800');"></div>
+            <div class="post-content">
+                <div class="post-meta">
+                    <span class="tag-new">★ New</span>
+                    <span class="tag">Heat Conditioning</span>
+                    <span class="read-time">⏱ 5 min read</span>
+                </div>
+                <h3><a href="post8.html">Rucked Up: High-Heat Conditioning</a></h3>
+                <p class="post-date">Field Tested · Entry #8 · May 25, 2026</p>
+                <p class="post-excerpt">Twelve miles in 94°F heat and 80% humidity during the Danish Flyver in Qatar. Here is what the science says about plasma volume expansion, heat shock proteins, and surviving the thermal redline.</p>
+                <a href="post8.html" class="read-more">Read More →</a>
+            </div>
+        </article>
 
         <article class="post-card">
             <div class="post-thumb" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800');"></div>
             <div class="post-content">
                 <div class="post-meta">
-                    <span class="tag-new">★ New</span>
                     <span class="tag">Programming</span>
                     <span class="read-time">⏱ 5 min read</span>
                 </div>
@@ -656,7 +627,6 @@ a:hover { color: var(--accent-bright); }
 
     <!-- ============ SIDEBAR ============ -->
     <aside class="sidebar">
-
         <div class="sidebar-block">
             <h4>Currently Testing</h4>
             <p class="testing-now">🍽 Deployment Cut</p>
@@ -667,8 +637,8 @@ a:hover { color: var(--accent-bright); }
         <div class="sidebar-block stats">
             <h4>Field Tested Stats</h4>
             <ul>
-                <li><strong>7</strong> Entries Published</li>
-                <li><strong>7</strong> Topics Covered</li>
+                <li><strong>8</strong> Entries Published</li>
+                <li><strong>8</strong> Topics Covered</li>
                 <li><strong>2</strong> Active Experiments</li>
             </ul>
         </div>
@@ -683,9 +653,9 @@ a:hover { color: var(--accent-bright); }
                 <a href="#">Productivity</a>
                 <a href="#">Deployment</a>
                 <a href="#">Programming</a>
+                <a href="#">Heat Acclimation</a>
             </div>
         </div>
-
     </aside>
 </main>
 
@@ -722,7 +692,6 @@ a:hover { color: var(--accent-bright); }
 document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
-
     menuToggle.addEventListener('click', function (e) {
         e.stopPropagation();
         navMenu.classList.toggle('active');
@@ -806,6 +775,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-
 </body>
 </html>

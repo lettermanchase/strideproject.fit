@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rucked Up: High-Heat Conditioning | Field Tested — The Stride Project</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --bg-light: #f5f7f3;
+    --bg-card: #ffffff;
+    --bg-header: #ffffff;
+    --accent: #2f6b3a;
+    --accent-bright: #4a9c5a;
+    --accent-soft: #e8f1ea;
+    --text-primary: #1f2a23;
+    --text-secondary: #5c6b60;
+    --border: #d8e0da;
+}
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg-light); color: var(--text-primary); line-height: 1.8; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-bright); }
+
+.progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: transparent; z-index: 1100; }
+.progress-bar-read { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-bright)); transition: width 0.1s; }
+
+.site-header { background: var(--bg-header); border-bottom: 2px solid var(--accent); position: sticky; top: 4px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-main { font-weight: 900; font-size: 1.4rem; letter-spacing: 3px; color: var(--accent); }
+.logo-sub { font-size: 0.7rem; letter-spacing: 2px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+.nav-menu { display: flex; gap: 1.5rem; align-items: center; }
+.nav-menu a, .dropdown-toggle { color: var(--text-primary); background: none; border: none; font-size: 0.95rem; cursor: pointer; font-family: inherit; padding: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.nav-menu a:hover, .dropdown-toggle:hover { color: var(--accent); }
+.nav-cta { background: none; padding: 0.5rem 1rem !important; border: 2px solid var(--accent); border-radius: 3px; color: var(--accent) !important; }
+.nav-cta:hover { background: var(--accent); color: white !important; }
+
+.dropdown { position: relative; }
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 200px; border: 1px solid var(--border); border-top: 2px solid var(--accent); z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.dropdown-content a { display: block; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-primary); text-transform: none; letter-spacing: 0; }
+.dropdown-content a:hover { background: var(--accent-soft); color: var(--accent); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown.open .dropdown-content { display: block; }
+
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 0.5rem; }
+.menu-toggle span { display: block; width: 25px; height: 3px; background: var(--accent); }
+
+.post-hero {
+    height: 60vh;
+    min-height: 400px;
+    background: linear-gradient(rgba(31, 42, 35, 0.45), rgba(31, 42, 35, 0.88)),
+                url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=1600') center/cover;
+    display: flex; align-items: flex-end; padding: 4rem 2rem; color: white;
+}
+.post-hero-inner { max-width: 800px; margin: 0 auto; width: 100%; }
+.series-badge { display: inline-block; background: var(--accent-bright); color: white; padding: 0.4rem 1rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; margin-bottom: 1rem; }
+.series-badge .series-name { font-weight: 900; }
+.series-badge .entry-num { opacity: 0.85; margin-left: 0.5rem; }
+.post-hero .tag { background: rgba(255,255,255,0.2); color: white; padding: 0.3rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; display: inline-block; margin-bottom: 1rem; margin-left: 0.5rem; border: 1px solid rgba(255,255,255,0.4); }
+.post-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin-bottom: 1rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); }
+.post-hero-meta { display: flex; gap: 1.5rem; align-items: center; color: rgba(255,255,255,0.95); font-size: 0.9rem; flex-wrap: wrap; }
+
+.post-container { max-width: 750px; margin: 3rem auto; padding: 0 2rem; }
+.author-byline { display: flex; align-items: center; gap: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.author-byline-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); flex-shrink: 0; }
+.author-byline-info { font-size: 0.9rem; }
+.author-byline-info strong { display: block; color: var(--text-primary); }
+.author-byline-info span { color: var(--text-secondary); }
+
+.post-body { font-size: 1.1rem; color: #2c3a30; }
+.post-body p { margin-bottom: 1.5rem; }
+.post-body > p:first-of-type::first-letter { float: left; font-size: 4.5rem; line-height: 1; padding: 0.4rem 0.7rem 0 0; color: var(--accent); font-weight: 900; }
+.post-body h2 { font-size: 1.8rem; margin: 2.5rem 0 1rem; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 1rem; }
+.post-body h3 { font-size: 1.25rem; margin: 1.5rem 0 0.6rem; color: var(--text-primary); }
+
+.pull-quote { font-size: 1.5rem; line-height: 1.4; color: var(--accent); font-style: italic; font-weight: 300; border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); padding: 2rem 0; margin: 2.5rem 0; text-align: center; }
+
+/* PROTOCOL / ADAPTATION LIST */
+.protocol-list { list-style: none; margin: 1.5rem 0; padding: 0; }
+.protocol-list li { background: var(--bg-card); margin-bottom: 1rem; padding: 1.3rem 1.5rem; border-left: 4px solid var(--accent-bright); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.protocol-list li .day-title { display: block; color: var(--accent); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; font-size: 1.05rem; margin-bottom: 0.5rem; }
+.protocol-list li .day-when { display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; background: var(--accent-soft); color: var(--accent); padding: 0.15rem 0.6rem; border-radius: 3px; margin-left: 0.5rem; font-weight: bold; }
+
+.verdict { background: var(--accent-soft); border-left: 5px solid var(--accent); padding: 1.5rem 2rem; margin: 2.5rem 0; border-radius: 0 4px 4px 0; }
+.verdict h4 { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 0.8rem; }
+.verdict p { font-size: 1.15rem; margin: 0; color: var(--text-primary); }
+
+.challenge { background: var(--accent); color: white; padding: 2rem; margin: 2.5rem 0; border-radius: 4px; text-align: center; }
+.challenge h4 { text-transform: uppercase; letter-spacing: 3px; font-size: 0.85rem; margin-bottom: 0.8rem; color: rgba(255,255,255,0.85); }
+.challenge p { font-size: 1.2rem; margin: 0; font-weight: 500; }
+
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 3rem 0 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.post-tags a { background: var(--accent-soft); color: var(--accent); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--border); }
+.post-tags a:hover { background: var(--accent); color: white; }
+
+.share-bar { display: flex; gap: 1rem; align-items: center; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1rem 0 2rem; flex-wrap: wrap; }
+.share-bar > span { color: var(--text-secondary); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold; }
+.share-bar a { background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 3px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+.share-bar a:hover { background: var(--accent-bright); color: white; }
+
+.author-card { display: flex; gap: 1.5rem; background: var(--bg-card); padding: 2rem; border-left: 3px solid var(--accent); margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.author-avatar { width: 90px; height: 90px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); border-radius: 50%; flex-shrink: 0; }
+.author-info h4 { margin-bottom: 0.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+.author-info p { color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+.related-section { background: var(--bg-card); padding: 3rem 2rem; margin-top: 3rem; border-top: 3px solid var(--accent); }
+.related-inner { max-width: 1100px; margin: 0 auto; }
+.related-section h3 { text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 0.3rem; text-align: center; }
+.related-section .related-sub { text-align: center; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.related-card { background: var(--bg-light); overflow: hidden; border-left: 3px solid var(--accent); transition: transform 0.2s; }
+.related-card:hover { transform: translateY(-3px); }
+.related-thumb { height: 150px; background-size: cover; background-position: center; }
+.related-content { padding: 1rem; }
+.related-content .tag { background: var(--accent); color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.related-content h4 { margin: 0.5rem 0; font-size: 1rem; }
+.related-content h4 a { color: var(--text-primary); }
+.related-content h4 a:hover { color: var(--accent); }
+.related-content .date { color: var(--text-secondary); font-size: 0.8rem; }
+
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1100px; margin: 3rem auto; padding: 0 2rem; }
+.post-nav a { background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.2s; }
+.post-nav a:hover { transform: translateY(-2px); }
+.post-nav .label { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem; }
+.post-nav .title { color: var(--text-primary); font-weight: bold; font-size: 1.05rem; }
+.post-nav .next { text-align: right; }
+.post-nav .disabled-block { background: var(--bg-card); padding: 1.5rem; border-left: 3px solid var(--border); display: block; opacity: 0.5; }
+
+.site-footer { background: var(--text-primary); padding: 2rem; text-align: center; color: rgba(255,255,255,0.8); border-top: 3px solid var(--accent); }
+.site-footer .footer-brand { font-weight: 900; letter-spacing: 3px; color: white; margin-bottom: 0.3rem; }
+.site-footer a { color: var(--accent-bright); }
+
+@media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 1rem; border-top: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .nav-menu.active { display: flex; }
+    .nav-menu a, .dropdown-toggle { width: 100%; text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
+    .dropdown:hover .dropdown-content { display: none; }
+    .dropdown.open .dropdown-content { display: block; }
+    .dropdown { width: 100%; }
+    .dropdown-content { position: static; border: none; background: var(--accent-soft); box-shadow: none; }
+    .related-grid { grid-template-columns: 1fr; }
+    .post-nav { grid-template-columns: 1fr; }
+    .post-nav .next { text-align: left; }
+    .post-body > p:first-of-type::first-letter { font-size: 3.5rem; }
+    .pull-quote { font-size: 1.2rem; }
+    .author-card { flex-direction: column; text-align: center; }
+    .author-avatar { margin: 0 auto; }
+    .post-hero .tag { margin-left: 0; margin-top: 0.3rem; }
+    .protocol-list li { padding: 1rem 1.2rem; }
+    .protocol-list li .day-when { margin-left: 0; margin-top: 0.4rem; display: inline-block; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-container"><div class="progress-bar-read" id="progressBar"></div></div>
+
+<header class="site-header">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-main">THE STRIDE PROJECT</span>
+            <span class="logo-sub">Health · Fitness · Human Performance</span>
+        </a>
+        <button class="menu-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Workout Plans ▾</button>
+                <div class="dropdown-content">
+                    <a href="bg-workout.html">Beginner Bodyweight</a>
+                    <a href="mil-workout.html">Military PT Prep</a>
+                    <a href="#">Outdoor / Trail Workouts</a>
+                    <a href="cbl-workout.html">Strength & Hypertrophy</a>
+                    <a href="hiit-workout.html">HIIT & Conditioning</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Tools ▾</button>
+                <div class="dropdown-content">
+                    <a href="cal-calc.html">Calorie Calculator</a>
+                    <a href="1rm-calc.html">1-Rep Max Calculator</a>
+                    <a href="bmi-calc.html">BMI / Body Fat Estimator</a>
+                    <a href="meal-calc.html">Meal Planner</a>
+                </div>
+            </div>
+            <a href="index.html#field-tested">Field Tested</a>
+            <a href="about.html">About</a>
+            <a href="index.html#newsletter" class="nav-cta">Subscribe</a>
+        </nav>
+    </div>
+</header>
+
+<section class="post-hero">
+    <div class="post-hero-inner">
+        <span class="series-badge">
+            <span class="series-name">Field Tested</span>
+            <span class="entry-num">· Entry #8</span>
+        </span>
+        <span class="tag">Rucking & Conditioning</span>
+        <h1>Rucked Up: The Science and Survival of High-Heat Conditioning</h1>
+        <div class="post-hero-meta">
+            <span>📅 May 25, 2026</span>
+            <span>⏱ 5 min read</span>
+        </div>
+    </div>
+</section>
+
+<article class="post-container">
+    <div class="author-byline">
+        <img src="images/avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-byline-info">
+            <strong>The Stride Project</strong>
+            <span>Field Tested Series · Veteran · Researcher · Test Subject</span>
+        </div>
+    </div>
+
+    <div class="post-body">
+        <p>The U.S. Army recently authorized a new foreign military badge event that has gained massive traction across the force: the <strong>Danish Flyver Ruck March</strong>. While deployed to Qatar, I had the opportunity to complete the 12-mile challenge under some of the most punishing climate conditions on the planet. Stepping out onto the route at <strong>94°F (34.4°C) with 80% relative humidity</strong> made every single mile feel like a multi-stage slugfest.</p>
+
+        <p>I had never tackled a loaded march in that level of ambient heat and moisture. But once the march was completed and the post-event recovery began, I started digging into the exercise science behind the misery: <em>What actual physiological benefits come from training under extreme heat, and how do we harness them without breaking the machine?</em></p>
+
+        <blockquote class="pull-quote">"Heat is the poor man’s altitude — master the thermal stress, and everything else becomes easy."</blockquote>
+
+        <h2>The Biological Payoff: Heat Adaptations Under Load</h2>
+
+        <p>Training in extreme temperatures triggers structural and cellular shifts that elevate your baseline conditioning faster than nearly any other training stimulus. When you operate under high heat index values, your body executes four major adaptations:</p>
+
+        <ul class="protocol-list">
+            <li>
+                <span class="day-title">1. Plasma Volume Expansion <span class="day-when">Cardiovascular</span></span>
+                Sustained heat stress forces the kidneys and vascular system to expand total blood plasma volume within days. This increase directly boosts cardiac stroke volume, stabilizes blood pressure, and lowers your working heart rate at any given pace.
+            </li>
+            <li>
+                <span class="day-title">2. Heat Shock Protein (HSP) Production <span class="day-when">Cellular Defense</span></span>
+                Thermal stress stimulates the synthesis of Heat Shock Proteins. These molecular chaperones protect muscle tissue from cellular damage, speed up muscular recovery, and build intense psychological tolerance to fatigue.
+            </li>
+            <li>
+                <span class="day-title">3. Optimized Thermoregulation <span class="day-when">Sweat Efficiency</span></span>
+                The adapted body begins sweating earlier at a lower core temperature threshold, increases total sweat output for evaporative cooling, and actively downregulates electrolyte excretion to preserve crucial sodium and potassium reserves.
+            </li>
+            <li>
+                <span class="day-title">4. Cool-Climate Cross-Adaptation <span class="day-when">VO2 Max Carryover</span></span>
+                As highlighted by the Gritty Soldier platform, the vascular expansion developed in high heat translates directly to superior aerobic capacity and VO2 max gains when returning to moderate or cooler climates.
+            </li>
+        </ul>
+
+        <h2>The Risk Spectrum: Respecting the Redline</h2>
+
+        <p>While the conditioning ceiling is exceptionally high, the margin for error in 94°F/80% humidity is paper-thin. In high humidity, the ambient air is saturated, preventing sweat from evaporating and trapping core body heat.</p>
+
+        <p>During the march, the reality of the heat index was evident. When pacing and hydration are miscalculated, athletes encounter severe medical risks:</p>
+
+        <ul class="protocol-list">
+            <li>
+                <span class="day-title">Exertional Heat Exhaustion & Syncope <span class="day-when">Warning Stage</span></span>
+                Cardiovascular strain causes dizziness, nausea, heavy disorientation, and sudden circulatory collapse as blood pools away from the brain.
+            </li>
+            <li>
+                <span class="day-title">Exertional Rhabdomyolysis <span class="day-when">Severe Hazard</span></span>
+                Rapid muscle cell breakdown leaks toxic myoglobin into the bloodstream, placing acute, life-threatening stress on the kidneys.
+            </li>
+            <li>
+                <span class="day-title">Exertional Heat Stroke (EHS) <span class="day-when">Medical Emergency</span></span>
+                A core body temperature exceeding 104°F accompanied by central nervous system failure. EHS requires immediate rapid cooling and emergency medical evacuation.
+            </li>
+        </ul>
+
+        <p>The soldiers who succeeded were the ones who checked their egos, maintained consistent sodium and water intake, and paced according to the heat index rather than an idealized flat-ground stopwatch.</p>
+
+        <aside class="verdict">
+            <h4>The Field-Tested Verdict</h4>
+            <p>Extreme heat is a double-edged sword. When programmed with discipline, electrolyte strategy, and gradual acclimation, it creates an elite aerobic engine. Respect your physical limits, monitor the signs of thermal distress, and use the environment to forge resilience.</p>
+        </aside>
+
+        <div class="challenge">
+            <h4>This Week's Challenge</h4>
+            <p>Incorporate deliberate heat exposure into your weekly conditioning. Whether it's a weighted ruck during midday heat or a 20-minute post-lift sauna session, track your hydration, log your heart rate recovery, and focus on steady breathing under thermal load.</p>
+        </div>
+    </div>
+
+    <div class="post-tags">
+        <a href="#">#Rucking</a>
+        <a href="#">#Conditioning</a>
+        <a href="#">#HeatAcclimation</a>
+        <a href="#">#MilitaryPT</a>
+        <a href="#">#Deployment</a>
+        <a href="#">#Cardio</a>
+    </div>
+
+    <div class="share-bar">
+        <span>Share this:</span>
+        <a href="#">Twitter</a>
+        <a href="https://www.reddit.com/user/cheeseletterham">Reddit</a>
+        <a href="#">Facebook</a>
+        <a href="#">Copy Link</a>
+    </div>
+
+    <div class="author-card">
+        <img src="images/avatar.jpg" class="author-byline-avatar" alt="Author Photo">
+        <div class="author-info">
+            <h4>About the Field Tester</h4>
+            <p>The Stride Project is built on a simple idea: real fitness research shouldn't live in journals — it should live in the dirt, the gym, and the trail. Field Tested is the blog series where I run experiments on my own body and report back with the raw, unfiltered data.</p>
+            <a href="index.html#field-tested">More Field Tested entries →</a>
+        </div>
+    </div>
+</article>
+
+<section class="related-section">
+    <div class="related-inner">
+        <h3>Keep Reading</h3>
+        <p class="related-sub">More from the Field Tested Series</p>
+        <div class="related-grid">
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Programming</span>
+                    <h4><a href="post7.html">Building the Foundation: Youth Athlete Protocol</a></h4>
+                    <span class="date">Entry #7 · May 20, 2026</span>
+                </div>
+            </article>
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Nutrition</span>
+                    <h4><a href="post6.html">The 33-Day Deployment Cut</a></h4>
+                    <span class="date">Entry #6 · May 15, 2026</span>
+                </div>
+            </article>
+            <article class="related-card">
+                <div class="related-thumb" style="background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600');"></div>
+                <div class="related-content">
+                    <span class="tag">Nutrition</span>
+                    <h4><a href="post5.html">Deployment Nutrition: Fueling the Cut</a></h4>
+                    <span class="date">Entry #5 · May 10, 2026</span>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<nav class="post-nav">
+    <a href="post7.html" class="prev">
+        <span class="label">← Previous Field Tested Entry</span>
+        <span class="title">Building the Foundation: Youth Athlete Protocol</span>
+    </a>
+    <span class="disabled-block next">
+        <span class="label" style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; color: var(--text-secondary); display: block; margin-bottom: 0.4rem; text-align: right;">Next Entry →</span>
+        <span class="title" style="color: var(--text-secondary); font-weight: bold; font-size: 1.05rem; text-align: right; display: block;">Coming soon</span>
+    </span>
+</nav>
+
+<footer class="site-footer">
+    <p class="footer-brand">THE STRIDE PROJECT</p>
+    <p>© 2026 The Stride Project. All Rights Reserved. · <em>Field Tested</em> is a research blog series of The Stride Project.</p>
+    <div><a href="#">Twitter</a> · <a href="#">Instagram</a> · <a href="#">Reddit</a></div>
+</footer>
+
+<script>
+window.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / docHeight) * 100 + '%';
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    menuToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parent = toggle.parentElement;
+            document.querySelectorAll('.dropdown.open').forEach(function (d) {
+                if (d !== parent) d.classList.remove('open');
+            });
+            parent.classList.toggle('open');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+        }
+        document.querySelectorAll('.dropdown').forEach(function (d) {
+            if (!d.contains(event.target)) d.classList.remove('open');
+        });
+    });
+});
+</script>
+</body>
+</html>
